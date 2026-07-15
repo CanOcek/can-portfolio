@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import VisualPlaceholder from "../components/VisualPlaceholder.astro";
 ---
 
 <BaseLayout
@@ -84,6 +85,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </p>
     </div>
   </section>
+
+  <section class="section" aria-labelledby="music-slots-title">
+    <div class="container">
+      <div class="music-section-heading">
+        <p class="eyebrow">Future assets</p>
+        <h2 id="music-slots-title">Media slots to replace</h2>
+      </div>
+      <div class="music-slot-grid">
+        <VisualPlaceholder
+          kind="music"
+          label="Performance photo placeholder"
+          caption="Replace with a performance photo or strong still from a selected video."
+        />
+        <VisualPlaceholder
+          kind="music"
+          label="Production session placeholder"
+          caption="Replace with a recording, mixing, or arrangement process image."
+        />
+        <VisualPlaceholder
+          kind="music"
+          label="Live setup placeholder"
+          caption="Replace with a live audio setup, room, or stage image if available."
+        />
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -96,6 +123,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: grid;
     gap: var(--space-7);
     grid-template-columns: minmax(0, 0.62fr) minmax(18rem, 1fr);
+  }
+
+  .music-slot-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    margin-block-start: var(--space-6);
   }
 
   @media (max-width: 820px) {

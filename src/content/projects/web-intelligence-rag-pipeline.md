@@ -13,5 +13,8 @@ role: "Technical implementation across data collection, storage, and retrieval. 
 featured: true
 status: "Draft, source details needed"
 draft: true
+visual:
+  kind: "pipeline"
+  label: "Architecture diagram placeholder"
+  caption: "Replace with a real data-flow or system architecture diagram."
 ---
-

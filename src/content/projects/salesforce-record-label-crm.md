@@ -12,5 +12,8 @@ role: "CRM and data-model design in an internship or training context. Exact sco
 featured: true
 status: "Draft, context confirmation needed"
 draft: true
+visual:
+  kind: "crm"
+  label: "CRM model placeholder"
+  caption: "Replace with a publishable object model, flow, or dashboard screenshot."
 ---
-

@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TagList from "../../components/TagList.astro";
+import VisualPlaceholder from "../../components/VisualPlaceholder.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, categories, technologies, role, status, draft, date } = project.data;
+const { title, description, categories, technologies, role, status, draft, date, visual } = project.data;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -27,6 +28,17 @@ const { title, description, categories, technologies, role, status, draft, date 
     <p class="lede">{description}</p>
     {date && <p class="muted with-space">{date}</p>}
   </header>
+
+  <section class="section section--media" aria-labelledby="visual-title">
+    <div class="container project-visual-section">
+      <div class="stack">
+        <p class="eyebrow">Visual placeholder</p>
+        <h2 id="visual-title">{visual.label}</h2>
+        <p>{visual.caption}</p>
+      </div>
+      <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
+    </div>
+  </section>
 
   <section class="section" aria-labelledby="context-title">
     <div class="container two-column">
@@ -81,5 +93,18 @@ const { title, description, categories, technologies, role, status, draft, date 
 <style>
   .with-space {
     margin-block-start: var(--space-4);
+  }
+
+  .project-visual-section {
+    align-items: center;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.5fr) minmax(18rem, 1fr);
+  }
+
+  @media (max-width: 820px) {
+    .project-visual-section {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

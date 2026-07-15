@@ -13,5 +13,8 @@ featured: true
 status: "Draft, media selection needed"
 draft: true
 date: "08/2023 - 10/2023"
+visual:
+  kind: "music"
+  label: "Performance still placeholder"
+  caption: "Replace with an approved video still, performance photo, or session image."
 ---
-

@@ -1,16 +1,23 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import TagList from "./TagList.astro";
+import VisualPlaceholder from "./VisualPlaceholder.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
 }
 
 const { project } = Astro.props;
-const { title, description, categories, role, status, draft, date } = project.data;
+const { title, description, categories, role, status, draft, date, visual } = project.data;
 ---
 
 <article class="project-card">
+  <VisualPlaceholder
+    kind={visual.kind}
+    label={visual.label}
+    caption={visual.caption}
+    compact
+  />
   <div class="project-card__body">
     <div class="project-card__meta">
       <span>{draft ? "Draft" : status}</span>
@@ -37,7 +44,7 @@ const { title, description, categories, role, status, draft, date } = project.da
     display: grid;
     gap: var(--space-5);
     min-height: 100%;
-    padding: var(--space-5);
+    padding: var(--space-4);
     position: relative;
     transition:
       border-color var(--transition-fast),
@@ -75,6 +82,7 @@ const { title, description, categories, role, status, draft, date } = project.da
   .project-card__footer {
     display: grid;
     gap: var(--space-4);
+    padding-inline: var(--space-1);
   }
 
   .project-card__meta {

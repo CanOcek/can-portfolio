@@ -13,5 +13,8 @@ featured: false
 status: "Draft, original paper needed"
 draft: true
 date: "03/2020 - 11/2020"
+visual:
+  kind: "pathfinding"
+  label: "Maze visualization placeholder"
+  caption: "Replace with a maze visualization or result chart from the original paper."
 ---
-

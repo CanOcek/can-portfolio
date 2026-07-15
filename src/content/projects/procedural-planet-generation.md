@@ -12,5 +12,8 @@ role: "Student developer. Original project context and final scope require confi
 featured: false
 status: "Draft, retrospective source material needed"
 draft: true
+visual:
+  kind: "procedural"
+  label: "Generated world placeholder"
+  caption: "Replace with a gameplay screenshot, terrain render, or demo clip still."
 ---
-
