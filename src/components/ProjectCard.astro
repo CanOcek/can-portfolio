@@ -38,6 +38,11 @@ const { title, description, categories, role, status, draft, date } = project.da
     padding: var(--space-5);
   }
 
+  .project-card:hover,
+  .project-card:focus-within {
+    border-color: var(--color-accent);
+  }
+
   .project-card__body,
   .project-card__footer {
     display: grid;

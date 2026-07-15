@@ -8,6 +8,14 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Git Workflow
+
+When working from a sprint plan, commit after each sprint is complete and validated. Use the sprint number and title as the commit message, for example:
+
+```
+Sprint 7: Responsive and Accessibility Pass
+```
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

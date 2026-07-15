@@ -60,6 +60,9 @@ const isCurrent = (href: string) =>
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
     color: var(--color-text-muted);
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
     font-size: 0.95rem;
     padding: 0.45rem 0.65rem;
     text-decoration: none;
@@ -85,6 +88,17 @@ const isCurrent = (href: string) =>
 
     .site-header__nav {
       justify-content: flex-start;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .site-header__nav {
+      gap: var(--space-1);
+    }
+
+    .site-header__nav a {
+      padding-inline: 0.55rem;
     }
   }
 </style>
