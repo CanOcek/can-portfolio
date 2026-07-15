@@ -1,0 +1,116 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="CV"
+  description="Selective web CV draft for Can Ocek, using non-sensitive confirmed information from the parsed CV."
+>
+  <header class="page-header container narrow">
+    <p class="eyebrow">CV</p>
+    <h1>Selective web CV</h1>
+    <p class="lede">
+      Management & Technology student at TUM with a computer-science foundation and hands-on work
+      across technical systems, music production, media, and earlier research projects.
+    </p>
+    <p class="status-note with-offset">
+      Downloadable PDF CV is intentionally withheld until a public version is approved and placed
+      under public/.
+    </p>
+  </header>
+
+  <section class="section" aria-labelledby="education-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Education</p>
+        <h2 id="education-title">Confirmed study history</h2>
+      </div>
+      <ul class="meta-list">
+        <li>
+          <strong>Technical University of Munich</strong>
+          <p>B.Sc. Management & Technology, 10/2023 - ongoing.</p>
+        </li>
+        <li>
+          <strong>Technical University of Munich</strong>
+          <p>B.Sc. Informatics, 10/2021 - 09/2023.</p>
+        </li>
+        <li>
+          <strong>Munich International School</strong>
+          <p>Grades 10-12, 09/2018 - 06/2021.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cv-projects-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Projects</p>
+        <h2 id="cv-projects-title">Selected project evidence</h2>
+      </div>
+      <ul class="meta-list">
+        <li>
+          <strong>Music and video production</strong>
+          <p>
+            Planned, arranged, recorded, produced audio, filmed video, edited, and color graded
+            YouTube video work in 08/2023 - 10/2023.
+          </p>
+        </li>
+        <li>
+          <strong>Mock database system and application</strong>
+          <p>
+            University team project in 06/2022 - 08/2022 involving user interface work, database
+            connection, APIs, and organized sprints.
+          </p>
+        </li>
+        <li>
+          <strong>Dijkstra versus A* Extended Essay</strong>
+          <p>
+            IB Computer Science research comparing pathfinding algorithms on procedurally generated
+            mazes in 03/2020 - 11/2020.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="skills-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Skills</p>
+        <h2 id="skills-title">Grouped by evidence</h2>
+      </div>
+      <div class="stack">
+        <div class="stack small">
+          <h3>Programming and data</h3>
+          <ul class="pill-list">
+            <li>Python</li>
+            <li>Java</li>
+            <li>C#</li>
+            <li>SQL</li>
+            <li>Swift</li>
+            <li>R</li>
+          </ul>
+        </div>
+        <div class="stack small">
+          <h3>Music, audio, and media</h3>
+          <ul class="pill-list">
+            <li>Reaper</li>
+            <li>FL Studio</li>
+            <li>DaVinci Resolve</li>
+            <li>Adobe Photoshop</li>
+            <li>Adobe Illustrator</li>
+          </ul>
+        </div>
+        <div class="stack small">
+          <h3>Languages</h3>
+          <ul class="pill-list">
+            <li>Turkish, native</li>
+            <li>English, highly proficient</li>
+            <li>German, B2</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

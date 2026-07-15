@@ -1,0 +1,90 @@
+---
+const navItems = [
+  { href: "/work/", label: "Work" },
+  { href: "/music/", label: "Music" },
+  { href: "/about/", label: "About" },
+  { href: "/cv/", label: "CV" },
+  { href: "/contact/", label: "Contact" },
+];
+
+const pathname = Astro.url.pathname;
+const isCurrent = (href: string) =>
+  href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="site-header__inner container">
+    <a class="site-header__brand" href="/" aria-label="Can Ocek home">Can &Ouml;cek</a>
+    <nav class="site-header__nav" aria-label="Primary navigation">
+      {
+        navItems.map((item) => (
+          <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-block-end: var(--border-subtle);
+    position: relative;
+  }
+
+  .site-header__inner {
+    align-items: center;
+    display: flex;
+    gap: var(--space-5);
+    justify-content: space-between;
+    min-height: 5.5rem;
+  }
+
+  .site-header__brand {
+    color: var(--color-text);
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    text-decoration: none;
+  }
+
+  .site-header__nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: flex-end;
+  }
+
+  .site-header__nav a {
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    padding: 0.45rem 0.65rem;
+    text-decoration: none;
+  }
+
+  .site-header__nav a:hover,
+  .site-header__nav a[aria-current="page"] {
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .site-header__nav a[aria-current="page"] {
+    background: var(--color-bg-soft);
+  }
+
+  @media (max-width: 700px) {
+    .site-header__inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-3);
+      padding-block: var(--space-4);
+    }
+
+    .site-header__nav {
+      justify-content: flex-start;
+    }
+  }
+</style>

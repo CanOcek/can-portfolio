@@ -1,17 +1,81 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Can Ocek Portfolio"
+  description="Draft portfolio foundation for Can Ocek across technology, strategy, and music."
+>
+  <section class="hero container" aria-labelledby="home-title">
+    <div class="hero__content">
+      <p class="eyebrow">Portfolio foundation</p>
+      <h1 id="home-title">Can &Ouml;cek</h1>
+    </div>
+    <div class="hero__support">
+      <!-- TODO: Replace with final personal positioning copy. -->
+      <p class="lede">
+        I build systems, shape ideas, and make projects work across technology, strategy, and music.
+      </p>
+      <p>
+        This first version is intentionally small: a static structure for selected work, music,
+        background, CV content, and contact details as they are verified for publication.
+      </p>
+      <div class="button-row" aria-label="Primary actions">
+        <a class="button primary" href="/work/">View work</a>
+        <a class="button" href="/music/">Music</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="featured-title">
+    <div class="container">
+      <p class="eyebrow">First focus</p>
+      <h2 id="featured-title">Three areas to build around</h2>
+      <div class="grid three section-offset">
+        <article class="panel">
+          <p class="panel__meta">Systems</p>
+          <h3>Web intelligence and retrieval</h3>
+          <p>
+            A technical case-study area for data collection, structured storage, and retrieval
+            work once project details are verified.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="panel__meta">Sound</p>
+          <h3>Music performance and production</h3>
+          <p>
+            A central creative section for guitar, vocals, arrangement, recording, production,
+            live audio, and related media work.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="panel__meta">Strategy</p>
+          <h3>Business and platform design</h3>
+          <p>
+            A place for technical-business work such as CRM modeling, process design, and
+            cross-disciplinary project execution.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="disciplines-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Method</p>
+        <h2 id="disciplines-title">Working across disciplines</h2>
+      </div>
+      <div class="grid">
+        <p class="lede">
+          The common thread is not a list of tools. It is the habit of understanding the system,
+          finding the missing pieces, and doing the work needed to connect them.
+        </p>
+        <p>
+          The next implementation sprints will turn this foundation into navigable project drafts
+          without pretending that unfinished source material is final.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner container">
+    <p>&copy; {year} Can &Ouml;cek.</p>
+    <p class="muted">Static portfolio foundation. Content is being verified before publication.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-block-start: var(--border-subtle);
+    padding-block: var(--space-6);
+  }
+
+  .site-footer__inner {
+    align-items: center;
+    display: flex;
+    gap: var(--space-4);
+    justify-content: space-between;
+  }
+
+  .site-footer p {
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 720px) {
+    .site-footer__inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
