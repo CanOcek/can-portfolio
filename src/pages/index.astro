@@ -1,5 +1,17 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+
+const featuredOrder = [
+  "web-intelligence-rag-pipeline",
+  "music-performance-production",
+  "salesforce-record-label-crm",
+];
+
+const featuredProjects = (await getCollection("projects"))
+  .filter((project) => featuredOrder.includes(project.id))
+  .sort((a, b) => featuredOrder.indexOf(a.id) - featuredOrder.indexOf(b.id));
 ---
 
 <BaseLayout
@@ -17,8 +29,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         I build systems, shape ideas, and make projects work across technology, strategy, and music.
       </p>
       <p>
-        This first version is intentionally small: a static structure for selected work, music,
-        background, CV content, and contact details as they are verified for publication.
+        A Management & Technology student at TUM with a computer-science foundation, building a
+        portfolio around data systems, platform thinking, music, and creative media as the source
+        material is verified.
       </p>
       <div class="button-row" aria-label="Primary actions">
         <a class="button primary" href="/work/">View work</a>
@@ -31,31 +44,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="container">
       <p class="eyebrow">First focus</p>
       <h2 id="featured-title">Three areas to build around</h2>
-      <div class="grid three section-offset">
-        <article class="panel">
-          <p class="panel__meta">Systems</p>
-          <h3>Web intelligence and retrieval</h3>
-          <p>
-            A technical case-study area for data collection, structured storage, and retrieval
-            work once project details are verified.
-          </p>
-        </article>
-        <article class="panel">
-          <p class="panel__meta">Sound</p>
-          <h3>Music performance and production</h3>
-          <p>
-            A central creative section for guitar, vocals, arrangement, recording, production,
-            live audio, and related media work.
-          </p>
-        </article>
-        <article class="panel">
-          <p class="panel__meta">Strategy</p>
-          <h3>Business and platform design</h3>
-          <p>
-            A place for technical-business work such as CRM modeling, process design, and
-            cross-disciplinary project execution.
-          </p>
-        </article>
+      <div class="home-feature-grid">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
       </div>
     </div>
   </section>
@@ -72,10 +62,38 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           finding the missing pieces, and doing the work needed to connect them.
         </p>
         <p>
-          The next implementation sprints will turn this foundation into navigable project drafts
-          without pretending that unfinished source material is final.
+          That same pattern connects retrieval systems, CRM modeling, software projects, music
+          production, and the practical work of turning unfinished material into something usable.
         </p>
       </div>
     </div>
   </section>
+
+  <section class="section" aria-labelledby="contact-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Next step</p>
+        <h2 id="contact-title">Keep the public surface honest</h2>
+      </div>
+      <div class="stack">
+        <p class="lede">
+          Contact details, public links, media embeds, and the downloadable CV should be added only
+          after the exact public versions are approved.
+        </p>
+        <div class="button-row">
+          <a class="button primary" href="/contact/">Contact status</a>
+          <a class="button" href="/cv/">CV outline</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .home-feature-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    margin-block-start: var(--space-6);
+  }
+</style>
