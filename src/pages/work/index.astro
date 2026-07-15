@@ -1,5 +1,15 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) {
+    return a.data.featured ? -1 : 1;
+  }
+
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
 
 <BaseLayout
@@ -10,8 +20,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     <p class="eyebrow">Work</p>
     <h1>Selected work</h1>
     <p class="lede">
-      A first route for projects across technical systems, business platforms, music, and earlier
-      research. Full project entries will be added once the content collection is implemented.
+      Draft project entries across technical systems, business platforms, music, and earlier
+      research. Each page is intentionally framed as a working outline until source material is
+      verified.
     </p>
   </header>
 
@@ -22,44 +33,18 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p class="eyebrow">Draft set</p>
           <h2 id="work-drafts-title">Initial project areas</h2>
         </div>
-        <ul class="meta-list">
-          <li>
-            <strong>Web intelligence and semantic retrieval pipeline</strong>
-            <p>
-              Technical case study area for data collection, structured storage, and retrieval.
-              Exact title, metrics, and team responsibilities need source confirmation.
-            </p>
-          </li>
-          <li>
-            <strong>Music performance, arrangement, and production</strong>
-            <p>
-              A central creative body of work covering performance, recording, production, live
-              audio, and video once media links are selected.
-            </p>
-          </li>
-          <li>
-            <strong>Salesforce record-label CRM design</strong>
-            <p>
-              A technical-business CRM design or training case. It should not be described as a
-              deployed client system unless that is later verified.
-            </p>
-          </li>
-          <li>
-            <strong>Procedural planet generation</strong>
-            <p>
-              Earlier Unity and C# work around procedural generation, chunking, mesh construction,
-              and movement systems.
-            </p>
-          </li>
-          <li>
-            <strong>Dijkstra versus A* pathfinding research</strong>
-            <p>
-              A compact technical retrospective for the IB Extended Essay once the original paper
-              is used as the source for results.
-            </p>
-          </li>
-        </ul>
+        <div class="project-grid">
+          {projects.map((project) => <ProjectCard project={project} />)}
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .project-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+</style>

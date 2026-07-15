@@ -1,0 +1,85 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TagList from "../../components/TagList.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { title, description, categories, technologies, role, status, draft, date } = project.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="page-header container narrow">
+    <p class="eyebrow">Work / {draft ? "Draft" : status}</p>
+    <h1>{title}</h1>
+    <p class="lede">{description}</p>
+    {date && <p class="muted with-space">{date}</p>}
+  </header>
+
+  <section class="section" aria-labelledby="context-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Context</p>
+        <h2 id="context-title">Project frame</h2>
+      </div>
+      <div class="stack">
+        <p>{description}</p>
+        <TagList items={categories} label={`Categories for ${title}`} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="role-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Role</p>
+        <h2 id="role-title">Current wording</h2>
+      </div>
+      <p>{role}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="involves-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">What it involves</p>
+        <h2 id="involves-title">Tools and themes</h2>
+      </div>
+      <TagList items={technologies} label={`Technologies and themes for ${title}`} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="confirmation-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">What needs confirmation</p>
+        <h2 id="confirmation-title">Before this becomes a case study</h2>
+      </div>
+      <div class="stack">
+        <p class="status-note">{status}</p>
+        <p>
+          Confirm source documents, public links, screenshots or media, exact dates, personal
+          contribution, and any publishable outcomes before expanding this page.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .with-space {
+    margin-block-start: var(--space-4);
+  }
+</style>

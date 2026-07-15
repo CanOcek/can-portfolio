@@ -1,0 +1,74 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TagList from "./TagList.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { title, description, categories, role, status, draft, date } = project.data;
+---
+
+<article class="project-card">
+  <div class="project-card__body">
+    <div class="project-card__meta">
+      <span>{draft ? "Draft" : status}</span>
+      {date && <span>{date}</span>}
+    </div>
+    <h3>
+      <a href={`/work/${project.id}/`}>{title}</a>
+    </h3>
+    <p>{description}</p>
+  </div>
+  <div class="project-card__footer">
+    <TagList items={categories} label={`Categories for ${title}`} />
+    <p class="project-card__role">{role}</p>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    background: rgb(37 33 28 / 0.62);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    display: grid;
+    gap: var(--space-5);
+    min-height: 100%;
+    padding: var(--space-5);
+  }
+
+  .project-card__body,
+  .project-card__footer {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .project-card__meta {
+    color: var(--color-cool);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    font-weight: 700;
+    gap: var(--space-3);
+  }
+
+  .project-card h3 a {
+    text-decoration: none;
+  }
+
+  .project-card h3 a::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+
+  .project-card h3 {
+    position: relative;
+  }
+
+  .project-card__role {
+    color: var(--color-text-subtle);
+    font-size: 0.94rem;
+  }
+</style>
