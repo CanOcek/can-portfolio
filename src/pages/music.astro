@@ -15,6 +15,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </p>
   </header>
 
+  <section class="section section--media" aria-labelledby="music-video-title">
+    <div class="container music-video-section">
+      <div class="stack">
+        <p class="eyebrow">Selected media</p>
+        <h2 id="music-video-title">Video example</h2>
+        <p>
+          This public YouTube video is listed in the parsed CV as an example of planned, arranged,
+          recorded, produced, filmed, edited, and color-graded music/video work.
+        </p>
+      </div>
+      <div class="media-frame">
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/EWGPLWCOkmI"
+            title="Music and video production example by Can Ocek"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="music-areas-title">
     <div class="container">
       <div class="music-section-heading">
@@ -65,5 +89,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <style>
   .music-section-heading {
     max-width: var(--content-width-narrow);
+  }
+
+  .music-video-section {
+    align-items: center;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.62fr) minmax(18rem, 1fr);
+  }
+
+  @media (max-width: 820px) {
+    .music-video-section {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

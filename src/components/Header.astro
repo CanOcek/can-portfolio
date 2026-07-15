@@ -29,6 +29,7 @@ const isCurrent = (href: string) =>
 
 <style>
   .site-header {
+    background: rgb(5 6 8 / 0.9);
     border-block-end: var(--border-subtle);
     position: relative;
   }
@@ -70,12 +71,12 @@ const isCurrent = (href: string) =>
 
   .site-header__nav a:hover,
   .site-header__nav a[aria-current="page"] {
-    border-color: var(--color-border);
+    border-color: var(--color-border-strong);
     color: var(--color-text);
   }
 
   .site-header__nav a[aria-current="page"] {
-    background: var(--color-bg-soft);
+    background: var(--color-surface);
   }
 
   @media (max-width: 700px) {

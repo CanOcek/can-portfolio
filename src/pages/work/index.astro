@@ -11,8 +11,13 @@ const projectOrder = [
   "dijkstra-vs-a-star",
 ];
 
+const getProjectRank = (id: string) => {
+  const index = projectOrder.indexOf(id);
+  return index === -1 ? projectOrder.length : index;
+};
+
 const projects = (await getCollection("projects")).sort(
-  (a, b) => projectOrder.indexOf(a.id) - projectOrder.indexOf(b.id),
+  (a, b) => getProjectRank(a.id) - getProjectRank(b.id),
 );
 ---
 
