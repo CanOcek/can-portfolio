@@ -3,13 +3,17 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 
-const projects = (await getCollection("projects")).sort((a, b) => {
-  if (a.data.featured !== b.data.featured) {
-    return a.data.featured ? -1 : 1;
-  }
+const projectOrder = [
+  "web-intelligence-rag-pipeline",
+  "music-performance-production",
+  "salesforce-record-label-crm",
+  "procedural-planet-generation",
+  "dijkstra-vs-a-star",
+];
 
-  return a.data.title.localeCompare(b.data.title);
-});
+const projects = (await getCollection("projects")).sort(
+  (a, b) => projectOrder.indexOf(a.id) - projectOrder.indexOf(b.id),
+);
 ---
 
 <BaseLayout
@@ -28,23 +32,26 @@ const projects = (await getCollection("projects")).sort((a, b) => {
 
   <section class="section" aria-labelledby="work-drafts-title">
     <div class="container">
-      <div class="two-column">
-        <div>
-          <p class="eyebrow">Draft set</p>
-          <h2 id="work-drafts-title">Initial project areas</h2>
-        </div>
-        <div class="project-grid">
-          {projects.map((project) => <ProjectCard project={project} />)}
-        </div>
+      <div class="work-section-heading">
+        <p class="eyebrow">Draft set</p>
+        <h2 id="work-drafts-title">Initial project areas</h2>
+      </div>
+      <div class="project-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  .work-section-heading {
+    max-width: var(--content-width-narrow);
+  }
+
   .project-grid {
     display: grid;
     gap: var(--space-5);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    margin-block-start: var(--space-6);
   }
 </style>

@@ -17,37 +17,35 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   <section class="section" aria-labelledby="music-areas-title">
     <div class="container">
-      <div class="two-column">
-        <div>
-          <p class="eyebrow">Areas</p>
-          <h2 id="music-areas-title">What belongs here</h2>
-        </div>
-        <div class="grid three">
-          <article class="panel">
-            <p class="panel__meta">Performance</p>
-            <h3>Guitar and vocals</h3>
-            <p>
-              Classical, acoustic, electric, and bass guitar, with vocals to be described in more
-              detail after performance material is selected.
-            </p>
-          </article>
-          <article class="panel">
-            <p class="panel__meta">Production</p>
-            <h3>Recording and arrangement</h3>
-            <p>
-              Audio planning, arrangement, recording, editing, mixing, and production using the
-              confirmed tools from the CV and project material.
-            </p>
-          </article>
-          <article class="panel">
-            <p class="panel__meta">Media</p>
-            <h3>Video and live sound</h3>
-            <p>
-              A place for music-focused video, color grading, live setup notes, and selected
-              recordings once public media choices are confirmed.
-            </p>
-          </article>
-        </div>
+      <div class="music-section-heading">
+        <p class="eyebrow">Areas</p>
+        <h2 id="music-areas-title">What belongs here</h2>
+      </div>
+      <div class="grid three section-offset">
+        <article class="panel">
+          <p class="panel__meta">Performance</p>
+          <h3>Guitar and vocals</h3>
+          <p>
+            Classical, acoustic, electric, and bass guitar, with vocals to be described in more
+            detail after performance material is selected.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="panel__meta">Production</p>
+          <h3>Recording and arrangement</h3>
+          <p>
+            Audio planning, arrangement, recording, editing, mixing, and production using the
+            confirmed tools from the CV and project material.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="panel__meta">Media</p>
+          <h3>Video and live sound</h3>
+          <p>
+            A place for music-focused video, color grading, live setup notes, and selected
+            recordings once public media choices are confirmed.
+          </p>
+        </article>
       </div>
     </div>
   </section>
@@ -63,3 +61,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .music-section-heading {
+    max-width: var(--content-width-narrow);
+  }
+</style>
