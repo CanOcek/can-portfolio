@@ -1,6 +1,6 @@
 ---
 interface Props {
-  kind: "pipeline" | "music" | "crm" | "procedural" | "pathfinding";
+  kind: "pipeline" | "music" | "crm" | "procedural" | "pathfinding" | "hardware";
   label: string;
   caption?: string;
   compact?: boolean;
@@ -59,6 +59,15 @@ const { kind, label, caption, compact = false } = Astro.props;
       kind === "pathfinding" && (
         <div class="diagram diagram--pathfinding" aria-hidden="true">
           {Array.from({ length: 36 }).map((_, index) => <span class:list={{ "is-path": [2, 8, 14, 15, 21, 27, 28, 34].includes(index) }}></span>)}
+        </div>
+      )
+    }
+    {
+      kind === "hardware" && (
+        <div class="diagram diagram--hardware" aria-hidden="true">
+          <span class="diagram--hardware__coil"></span>
+          <span class="diagram--hardware__lens"></span>
+          <span class="diagram--hardware__beam"></span>
         </div>
       )
     }
@@ -264,6 +273,45 @@ const { kind, label, caption, compact = false } = Astro.props;
     box-shadow: 0 0 24px rgb(126 199 190 / 0.42);
   }
 
+  .diagram--hardware {
+    align-items: center;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: minmax(4rem, 0.75fr) minmax(5rem, 1fr);
+    min-height: 10rem;
+  }
+
+  .diagram--hardware__coil {
+    aspect-ratio: 1 / 1.35;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        rgb(244 241 234 / 0.18) 0 6px,
+        transparent 6px 12px
+      ),
+      linear-gradient(180deg, rgb(213 139 84 / 0.3), rgb(126 199 190 / 0.12));
+    border: 1px solid rgb(244 241 234 / 0.18);
+    border-radius: 8px;
+    display: block;
+  }
+
+  .diagram--hardware__lens {
+    align-self: end;
+    aspect-ratio: 1.8 / 1;
+    background: radial-gradient(ellipse at center, var(--color-cool), rgb(122 167 255 / 0.26));
+    border: 1px solid rgb(244 241 234 / 0.22);
+    border-radius: 50%;
+    display: block;
+  }
+
+  .diagram--hardware__beam {
+    background: linear-gradient(90deg, transparent, var(--color-focus), transparent);
+    block-size: 3px;
+    border-radius: 999px;
+    display: block;
+    grid-column: 1 / -1;
+  }
+
   .visual-placeholder.is-compact .diagram--pipeline {
     gap: var(--space-2);
   }
@@ -285,6 +333,10 @@ const { kind, label, caption, compact = false } = Astro.props;
   .visual-placeholder.is-compact .diagram--procedural span:first-child {
     block-size: 5.3rem;
     inline-size: 5.3rem;
+  }
+
+  .visual-placeholder.is-compact .diagram--hardware {
+    min-height: 7rem;
   }
 
   @media (max-width: 700px) {
