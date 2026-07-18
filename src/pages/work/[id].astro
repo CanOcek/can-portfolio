@@ -280,12 +280,16 @@ const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
 
   .project-prose :global(h2),
   .project-prose :global(h3) {
-    margin-block-start: var(--space-4);
+    border-block-start: var(--border-subtle);
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-6);
   }
 
   .project-prose :global(h2:first-child),
   .project-prose :global(h3:first-child) {
+    border-block-start: 0;
     margin-block-start: 0;
+    padding-block-start: 0;
   }
 
   .project-prose :global(ul),
@@ -317,12 +321,31 @@ const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
   }
 
   .project-prose :global(img) {
-    background: var(--color-bg-soft);
+    background: var(--color-bg);
     border: 1px solid var(--color-border-strong);
-    border-radius: 8px;
-    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius-sm);
     inline-size: 100%;
-    margin-block: var(--space-2) var(--space-4);
+  }
+
+  .project-prose :global(.benchmark-figure) {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent),
+      var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 var(--space-5);
+    overflow: hidden;
+    padding: var(--space-3);
+  }
+
+  .project-prose :global(.benchmark-figure figcaption) {
+    border-block-start: var(--border-subtle);
+    color: var(--color-text-subtle);
+    font-size: 0.9rem;
+    padding: var(--space-3) var(--space-2) 0;
   }
 
   @media (max-width: 820px) {

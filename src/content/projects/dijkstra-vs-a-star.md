@@ -69,20 +69,16 @@ That made the experiment easier to interpret, while also creating limitations fo
 
 Both algorithms returned the same shortest path lengths on the same mazes, which supported that the implementations were solving the same problem correctly.
 
-The benchmark showed A* was consistently faster in the tested cases:
+For the portfolio version, I regenerated the benchmark with the modern TypeScript implementation rather than only reusing the original 2020 C# table. The regenerated run used braided mazes from `40x40` to `320x320` in increments of 40, with 50 seeded trials per maze size. The bars show medians and the error bars show the interquartile range.
 
-| Maze size | Dijkstra runtime | A* runtime | Dijkstra/A* ratio |
-| --- | ---: | ---: | ---: |
-| 40x40 | 26.6 ms | 10.3 ms | 2.58x |
-| 80x80 | 417.9 ms | 134.0 ms | 3.10x |
-| 120x120 | 2131.8 ms | 802.0 ms | 2.60x |
-| 160x160 | 7780.9 ms | 2706.9 ms | 2.87x |
-| 200x200 | 23049.9 ms | 9733.8 ms | 2.30x |
-| 240x240 | 51978.3 ms | 24833.6 ms | 2.10x |
-| 280x280 | 109061.1 ms | 65271.1 ms | 1.67x |
-| 320x320 | 184742.9 ms | 121041.2 ms | 1.50x |
+<figure class="benchmark-figure">
+  <img src="/images/projects/maze-benchmark/runtime-by-maze-size.png" alt="Grouped bar chart comparing Dijkstra and A* runtime across braided maze sizes from 40x40 to 320x320." />
+  <figcaption>Regenerated benchmark from the modern TypeScript implementation. Each bar shows the median of 50 seeded braided maze trials; error bars show the interquartile range.</figcaption>
+</figure>
 
-The original conclusion was careful: A* performed much faster in this non-weighted maze setup, but the difference narrowed as maze size increased.
+Across the regenerated benchmark, Dijkstra searched a median average of `90.2%` of each maze, while A* searched `52.7%`. That means A* searched about `37.5` percentage points less of the maze overall, or roughly `41.5%` fewer cells relative to Dijkstra.
+
+The regenerated results support the same broad conclusion as the original report: A* reached the same shortest paths while searching less of the maze and running faster in this non-weighted setup. Runtime still depends on the machine and JavaScript runtime used for the benchmark, so the searched-cell comparison is the stronger algorithmic signal.
 
 ## What I Would Improve Now
 
