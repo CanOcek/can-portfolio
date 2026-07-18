@@ -6,14 +6,17 @@ categories:
   - Research
 technologies:
   - C#
+  - TypeScript
+  - Canvas
   - Algorithms
   - Procedural mazes
   - Recursive backtracking
   - Dead-end culling
+  - Priority queues
   - Performance comparison
 role: "Researcher and developer for the maze generator, pathfinding implementations, benchmark runs, and analysis."
 featured: false
-status: "Source-backed draft, visuals pending"
+status: "Source-backed draft with interactive demo"
 draft: true
 date: "03/2020 - 11/2020"
 cover:
@@ -42,6 +45,8 @@ The test pipeline was implemented in C#:
 - Solve it again with A*.
 - Measure runtime with `System.Diagnostics.Stopwatch`.
 - Record runtime and shortest path length for analysis in Excel.
+
+The portfolio version adds a browser-native TypeScript visualization of the same core idea. It keeps the recursive-backtracking maze generation and braided-maze behavior, while modernizing the pathfinding implementations with priority queues and a corrected A* cost model.
 
 Both pathfinding algorithms were expected to find shortest paths. The useful comparison was therefore not whether one was correct and the other was not, but how much runtime changed when A* used a heuristic to guide the search toward the goal.
 
