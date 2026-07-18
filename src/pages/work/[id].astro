@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TagList from "../../components/TagList.astro";
 import VisualPlaceholder from "../../components/VisualPlaceholder.astro";
@@ -18,7 +18,9 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, categories, technologies, role, status, draft, date, visual } = project.data;
+const { Content } = await render(project);
+const { title, description, categories, technologies, role, status, draft, date, cover, visual } = project.data;
+const hasCaseStudy = project.body?.trim().length > 0;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -32,11 +34,20 @@ const { title, description, categories, technologies, role, status, draft, date,
   <section class="section section--media" aria-labelledby="visual-title">
     <div class="container project-visual-section">
       <div class="stack">
-        <p class="eyebrow">Visual placeholder</p>
+        <p class="eyebrow">{cover ? "Project cover" : "Visual placeholder"}</p>
         <h2 id="visual-title">{visual.label}</h2>
         <p>{visual.caption}</p>
       </div>
-      <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
+      {
+        cover ? (
+          <figure class="project-cover">
+            <img src={cover.src} alt={cover.alt} />
+            {cover.caption && <figcaption>{cover.caption}</figcaption>}
+          </figure>
+        ) : (
+          <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
+        )
+      }
     </div>
   </section>
 
@@ -88,6 +99,22 @@ const { title, description, categories, technologies, role, status, draft, date,
       </div>
     </div>
   </section>
+
+  {
+    hasCaseStudy && (
+      <section class="section" aria-labelledby="case-study-title">
+        <div class="container two-column">
+          <div>
+            <p class="eyebrow">Case study draft</p>
+            <h2 id="case-study-title">Source-based writeup</h2>
+          </div>
+          <article class="project-prose">
+            <Content />
+          </article>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -100,6 +127,81 @@ const { title, description, categories, technologies, role, status, draft, date,
     display: grid;
     gap: var(--space-7);
     grid-template-columns: minmax(0, 0.5fr) minmax(18rem, 1fr);
+  }
+
+  .project-cover {
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .project-cover img {
+    aspect-ratio: 16 / 10;
+    display: block;
+    inline-size: 100%;
+    object-fit: contain;
+  }
+
+  .project-cover figcaption {
+    border-block-start: var(--border-subtle);
+    color: var(--color-text-subtle);
+    font-size: 0.9rem;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .project-prose {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .project-prose :global(h2),
+  .project-prose :global(h3) {
+    margin-block-start: var(--space-4);
+  }
+
+  .project-prose :global(h2:first-child),
+  .project-prose :global(h3:first-child) {
+    margin-block-start: 0;
+  }
+
+  .project-prose :global(ul),
+  .project-prose :global(ol) {
+    color: var(--color-text-muted);
+    display: grid;
+    gap: var(--space-2);
+    padding-inline-start: var(--space-5);
+  }
+
+  .project-prose :global(table) {
+    border-collapse: collapse;
+    color: var(--color-text-muted);
+    display: block;
+    inline-size: 100%;
+    overflow-x: auto;
+  }
+
+  .project-prose :global(th),
+  .project-prose :global(td) {
+    border-block-end: var(--border-subtle);
+    padding: var(--space-2);
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  .project-prose :global(th) {
+    color: var(--color-text);
+  }
+
+  .project-prose :global(img) {
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+    inline-size: 100%;
+    margin-block: var(--space-2) var(--space-4);
   }
 
   @media (max-width: 820px) {

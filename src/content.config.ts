@@ -14,6 +14,11 @@ const projects = defineCollection({
     status: z.string(),
     draft: z.boolean(),
     date: z.string().optional(),
+    cover: z.object({
+      src: z.string(),
+      alt: z.string(),
+      caption: z.string().optional(),
+    }).optional(),
     visual: z.object({
       kind: z.enum(["pipeline", "music", "crm", "procedural", "pathfinding"]),
       label: z.string(),

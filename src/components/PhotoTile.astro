@@ -1,0 +1,147 @@
+---
+interface Props {
+  src?: string;
+  alt: string;
+  title: string;
+  category: string;
+  caption?: string;
+  orientation?: "landscape" | "portrait" | "wide" | "square";
+  prominent?: boolean;
+}
+
+const {
+  src,
+  alt,
+  title,
+  category,
+  caption,
+  orientation = "landscape",
+  prominent = false,
+} = Astro.props;
+---
+
+<article class:list={["photo-tile", `photo-tile--${orientation}`, { "photo-tile--prominent": prominent }]}>
+  <div class="photo-tile__media">
+    {
+      src ? (
+        <img src={src} alt={alt} loading="lazy" />
+      ) : (
+        <div class="photo-tile__placeholder" role="img" aria-label={alt}></div>
+      )
+    }
+  </div>
+  <div class="photo-tile__body">
+    <p class="photo-tile__category">{category}</p>
+    <h3>{title}</h3>
+    {caption && <p>{caption}</p>}
+  </div>
+</article>
+
+<style>
+  .photo-tile {
+    background: var(--color-surface);
+    border: var(--border-subtle);
+    border-radius: 8px;
+    display: grid;
+    gap: var(--space-4);
+    min-height: 100%;
+    overflow: hidden;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .photo-tile:hover,
+  .photo-tile:focus-within {
+    background: var(--color-surface-strong);
+    border-color: var(--color-border-strong);
+    transform: translateY(-2px);
+  }
+
+  .photo-tile__media {
+    background: var(--color-bg-soft);
+    overflow: hidden;
+  }
+
+  .photo-tile__media img,
+  .photo-tile__placeholder {
+    aspect-ratio: 4 / 3;
+    block-size: 100%;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  .photo-tile--portrait .photo-tile__media img,
+  .photo-tile--portrait .photo-tile__placeholder {
+    aspect-ratio: 3 / 4;
+  }
+
+  .photo-tile--wide .photo-tile__media img,
+  .photo-tile--wide .photo-tile__placeholder {
+    aspect-ratio: 16 / 9;
+  }
+
+  .photo-tile--square .photo-tile__media img,
+  .photo-tile--square .photo-tile__placeholder {
+    aspect-ratio: 1;
+  }
+
+  .photo-tile__placeholder {
+    background:
+      linear-gradient(135deg, rgb(213 139 84 / 0.32), transparent 42%),
+      linear-gradient(315deg, rgb(126 199 190 / 0.22), transparent 44%),
+      linear-gradient(180deg, rgb(244 241 234 / 0.08), rgb(5 6 8 / 0.12)),
+      var(--color-surface-strong);
+    position: relative;
+  }
+
+  .photo-tile__placeholder::before {
+    background:
+      linear-gradient(90deg, rgb(255 255 255 / 0.08) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+    background-size: 34px 34px;
+    content: "";
+    inset: 0;
+    opacity: 0.22;
+    position: absolute;
+  }
+
+  .photo-tile__placeholder::after {
+    border: 1px solid rgb(244 241 234 / 0.16);
+    border-radius: 999px;
+    content: "";
+    inline-size: clamp(3rem, 18%, 5.5rem);
+    inset-block-end: var(--space-4);
+    inset-inline-end: var(--space-4);
+    opacity: 0.7;
+    position: absolute;
+  }
+
+  .photo-tile__body {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0 var(--space-4) var(--space-4);
+  }
+
+  .photo-tile__category {
+    color: var(--color-cool);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .photo-tile h3 {
+    font-size: 1.35rem;
+  }
+
+  .photo-tile p:not(.photo-tile__category) {
+    font-size: 0.95rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-tile:hover,
+    .photo-tile:focus-within {
+      transform: none;
+    }
+  }
+</style>
