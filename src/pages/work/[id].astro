@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import TagList from "../../components/TagList.astro";
 import VisualPlaceholder from "../../components/VisualPlaceholder.astro";
 import MazePathfindingDemo from "../../components/MazePathfindingDemo.astro";
+import RadarDemoTeaser from "../../components/RadarDemoTeaser.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -23,6 +24,7 @@ const { Content } = await render(project);
 const { title, description, categories, technologies, role, status, draft, date, cover, visual } = project.data;
 const hasCaseStudy = project.body?.trim().length > 0;
 const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
+const hasRadarDemoTeaser = project.id === "web-intelligence-rag-pipeline";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -115,6 +117,24 @@ const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
             </div>
           </div>
         </section>
+
+        {
+          hasRadarDemoTeaser && (
+            <section class="section interactive-demo-block" aria-labelledby="radar-demo-title">
+              <div class="container interactive-demo-section">
+                <div class="interactive-demo-intro">
+                  <p class="eyebrow">Interactive demo</p>
+                  <h2 id="radar-demo-title">A separate page for the scoped Radar demo</h2>
+                  <p>
+                    The demo gets its own route so it can grow into a dense retrieval interface
+                    without interrupting the case-study narrative.
+                  </p>
+                </div>
+                <RadarDemoTeaser />
+              </div>
+            </section>
+          )
+        }
 
         <section class="section" aria-labelledby="role-title">
           <div class="container two-column">

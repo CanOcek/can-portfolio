@@ -1,0 +1,677 @@
+---
+import { radarDemoData } from "../data/radarDemo";
+
+const serializedData = JSON.stringify(radarDemoData).replace(/</g, "\\u003c");
+---
+
+<section class="radar-demo-app" data-radar-demo-app>
+  <script type="application/json" data-radar-demo-data set:html={serializedData}></script>
+
+  <aside class="radar-demo-app__sidebar" aria-label="Radar demo controls">
+    <div class="radar-demo-app__brand">
+      <p>Business Development Radar</p>
+      <span>Static portfolio demo</span>
+    </div>
+
+    <div class="radar-demo-app__control-section">
+      <p class="radar-demo-app__control-label">Scope</p>
+      <label class="radar-demo-app__field">
+        <span>Company</span>
+        <select data-control="company"></select>
+      </label>
+      <p class="radar-demo-app__hint" data-company-description></p>
+      <div class="radar-demo-app__field">
+        <span>Categories</span>
+        <div class="radar-demo-app__check-grid" data-control-group="categories"></div>
+      </div>
+    </div>
+
+    <div class="radar-demo-app__control-section">
+      <p class="radar-demo-app__control-label">Filters</p>
+      <div class="radar-demo-app__field">
+        <span>Signal strength</span>
+        <div class="radar-demo-app__check-row" data-control-group="buckets"></div>
+      </div>
+      <div class="radar-demo-app__field">
+        <span>Direction</span>
+        <div class="radar-demo-app__check-grid is-compact" data-control-group="directions"></div>
+      </div>
+      <div class="radar-demo-app__field">
+        <span>Confidence</span>
+        <div class="radar-demo-app__check-grid is-compact" data-control-group="confidences"></div>
+      </div>
+      <label class="radar-demo-app__check is-secondary">
+        <input type="checkbox" data-control="secondary" checked />
+        <span>Include secondary categories</span>
+      </label>
+      <div class="radar-demo-app__field">
+        <span>Source types</span>
+        <div class="radar-demo-app__check-grid" data-control-group="source-types"></div>
+      </div>
+    </div>
+
+    <div class="radar-demo-app__control-section">
+      <p class="radar-demo-app__control-label">Retrieval</p>
+      <p class="radar-demo-app__hint">Choose how evidence is fetched from the local sample dataset.</p>
+      <label class="radar-demo-app__field">
+        <span>Strategy</span>
+        <select data-control="strategy">
+          <option value="exact">Exact metadata fetch</option>
+          <option value="vector">Similarity search</option>
+        </select>
+      </label>
+      <label class="radar-demo-app__field">
+        <span>Vector query</span>
+        <select data-control="vector-query"></select>
+      </label>
+      <p class="radar-demo-app__hint" data-query-description></p>
+      <label class="radar-demo-app__field">
+        <span>Min. vector similarity</span>
+        <input data-control="similarity" type="range" min="0" max="100" step="1" value="25" />
+      </label>
+      <label class="radar-demo-app__field">
+        <span>Evidence limit</span>
+        <input data-control="limit" type="range" min="1" max="50" step="1" value="50" />
+      </label>
+      <button class="radar-demo-app__reset" type="button" data-action="reset">Reset filters</button>
+    </div>
+  </aside>
+
+  <main class="radar-demo-app__workspace">
+    <div class="radar-demo-app__topbar">
+      <div>
+        <p class="radar-demo-app__eyebrow">Scoped public rebuild</p>
+        <h2>Evidence retrieval and pre-generated synthesis</h2>
+      </div>
+      <div class="radar-demo-app__run-steps" aria-label="Demo workflow status">
+        <div>
+          <strong>1 Evidence</strong>
+          <span data-status="retrieval"></span>
+        </div>
+        <div>
+          <strong>2 Synthesis</strong>
+          <span data-status="synthesis"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="radar-demo-app__constraint-note">
+      <strong>Demo boundary:</strong>
+      <span>
+        Filtering and ranking are functional in the browser. Strategy text is pre-generated from
+        sample data; this page never calls OpenAI, Postgres, or the original Streamlit backend.
+      </span>
+    </div>
+
+    <div class="radar-demo-app__metrics" data-metrics aria-label="Radar demo metrics"></div>
+
+    <nav class="radar-demo-app__tabs" data-tabs aria-label="Radar workspace tabs"></nav>
+    <section class="radar-demo-app__panel" data-panel aria-live="polite"></section>
+  </main>
+</section>
+
+<script>
+  import "../scripts/radarDemo";
+</script>
+
+<style>
+  .radar-demo-app {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 30rem),
+      rgb(11 13 17 / 0.94);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 18px;
+    box-shadow: var(--shadow-soft);
+    color: var(--color-text);
+    display: grid;
+    grid-template-columns: minmax(18rem, 22rem) minmax(0, 1fr);
+    min-height: 52rem;
+    overflow: hidden;
+  }
+
+  .radar-demo-app h2,
+  .radar-demo-app h3,
+  .radar-demo-app h4,
+  .radar-demo-app p {
+    margin: 0;
+  }
+
+  .radar-demo-app__sidebar {
+    background:
+      linear-gradient(180deg, rgb(126 199 190 / 0.08), transparent 18rem),
+      var(--color-bg);
+    border-inline-end: var(--border-subtle);
+    display: grid;
+    gap: var(--space-4);
+    max-height: min(82rem, calc(100vh - 2rem));
+    overflow-y: auto;
+    padding: var(--space-4);
+  }
+
+  .radar-demo-app__brand {
+    border-bottom: var(--border-subtle);
+    display: grid;
+    gap: 0.2rem;
+    padding-block-end: var(--space-4);
+  }
+
+  .radar-demo-app__brand p {
+    color: var(--color-text);
+    font-weight: 800;
+  }
+
+  .radar-demo-app__brand span,
+  .radar-demo-app__hint,
+  .radar-demo-app__field > span,
+  .radar-demo-app__run-steps span,
+  .radar-demo-app__constraint-note span {
+    color: var(--color-text-subtle);
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .radar-demo-app__control-section {
+    border-bottom: var(--border-subtle);
+    display: grid;
+    gap: var(--space-3);
+    padding-block-end: var(--space-4);
+  }
+
+  .radar-demo-app__control-label,
+  .radar-demo-app__eyebrow {
+    color: var(--color-accent-strong);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .radar-demo-app__field {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .radar-demo-app select,
+  .radar-demo-app input,
+  .radar-demo-app button {
+    font: inherit;
+  }
+
+  .radar-demo-app select {
+    background: var(--color-surface);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    min-height: 2.45rem;
+    padding: 0.45rem 0.55rem;
+  }
+
+  .radar-demo-app input[type="range"] {
+    accent-color: var(--color-cool);
+    inline-size: 100%;
+  }
+
+  .radar-demo-app__check-grid,
+  .radar-demo-app__check-row {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .radar-demo-app__check-row,
+  .radar-demo-app__check-grid.is-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar-demo-app__check {
+    align-items: center;
+    background: rgb(255 255 255 / 0.03);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    gap: 0.45rem;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .radar-demo-app__check span {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    line-height: 1.25;
+  }
+
+  .radar-demo-app__check input {
+    accent-color: var(--color-cool);
+  }
+
+  .radar-demo-app__check.is-secondary {
+    background: rgb(126 199 190 / 0.08);
+  }
+
+  .radar-demo-app__reset {
+    background: var(--color-surface);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    cursor: pointer;
+    font-weight: 700;
+    min-height: 2.45rem;
+  }
+
+  .radar-demo-app__reset:hover {
+    border-color: var(--color-cool);
+  }
+
+  .radar-demo-app__workspace {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-rows: auto auto auto auto 1fr;
+    min-width: 0;
+    padding: var(--space-5);
+  }
+
+  .radar-demo-app__topbar {
+    align-items: start;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.75fr);
+  }
+
+  .radar-demo-app__topbar h2 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: 0;
+    max-width: 18ch;
+  }
+
+  .radar-demo-app__run-steps {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar-demo-app__run-steps div,
+  .radar-demo-app__constraint-note,
+  .radar-demo-app__metrics article,
+  .radar-demo-app__panel,
+  .radar-demo-app__priority-card,
+  .radar-demo-app__finding-card,
+  .radar-demo-app__signal-card,
+  .radar-demo-app__context-card,
+  .radar-demo-app__position-card,
+  .radar-demo-app__takeaway-list article,
+  .radar-demo-app__actions-panel {
+    background: rgb(255 255 255 / 0.035);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .radar-demo-app__run-steps div {
+    display: grid;
+    gap: 0.25rem;
+    padding: var(--space-3);
+  }
+
+  .radar-demo-app__run-steps strong,
+  .radar-demo-app__constraint-note strong {
+    color: var(--color-text);
+  }
+
+  .radar-demo-app__constraint-note {
+    align-items: start;
+    display: flex;
+    gap: 0.55rem;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .radar-demo-app__metrics {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .radar-demo-app__metrics article {
+    display: grid;
+    gap: 0.15rem;
+    min-height: 5.1rem;
+    padding: var(--space-3);
+  }
+
+  .radar-demo-app__metrics strong {
+    color: var(--color-text);
+    font-size: 1.45rem;
+    line-height: 1.1;
+  }
+
+  .radar-demo-app__metrics span {
+    color: var(--color-text-subtle);
+    font-size: 0.78rem;
+  }
+
+  .radar-demo-app__tabs {
+    background: var(--color-bg-soft);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    padding: 0.35rem;
+  }
+
+  .radar-demo-app__tabs button {
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-weight: 700;
+    min-height: 2.5rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .radar-demo-app__tabs button[aria-pressed="true"] {
+    background: var(--color-surface-strong);
+    color: var(--color-text);
+  }
+
+  .radar-demo-app__panel {
+    min-height: 34rem;
+    overflow: hidden;
+    padding: var(--space-5);
+  }
+
+  .radar-demo-app__overview,
+  .radar-demo-app__findings,
+  .radar-demo-app__evidence {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .radar-demo-app__overview {
+    grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+  }
+
+  .radar-demo-app__outlook,
+  .radar-demo-app__takeaway-list,
+  .radar-demo-app__actions-panel {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .radar-demo-app__outlook {
+    align-content: start;
+  }
+
+  .radar-demo-app__outlook h3,
+  .radar-demo-app__section-heading h3,
+  .radar-demo-app__context-grid h3 {
+    font-size: 1.75rem;
+    letter-spacing: 0;
+  }
+
+  .radar-demo-app__outlook p,
+  .radar-demo-app__section-heading p,
+  .radar-demo-app__finding-card p,
+  .radar-demo-app__signal-card p,
+  .radar-demo-app__context-card p {
+    color: var(--color-text-muted);
+  }
+
+  .radar-demo-app__panel-label {
+    color: var(--color-cool);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .radar-demo-app__position-card {
+    border-inline-start: 3px solid var(--color-accent);
+    display: grid;
+    gap: 0.4rem;
+    margin-block-start: var(--space-2);
+    padding: var(--space-4);
+  }
+
+  .radar-demo-app__position-card span {
+    color: var(--color-text-muted);
+  }
+
+  .radar-demo-app__takeaway-list article {
+    color: var(--color-text-muted);
+    padding: var(--space-3);
+  }
+
+  .radar-demo-app__priority-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .radar-demo-app__priority-card,
+  .radar-demo-app__actions-panel {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .radar-demo-app__priority-card h4,
+  .radar-demo-app__finding-card h4,
+  .radar-demo-app__signal-card h4,
+  .radar-demo-app__context-card h4 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .radar-demo-app__priority-card ul,
+  .radar-demo-app__actions-panel ol {
+    color: var(--color-text-muted);
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-inline-start: var(--space-4);
+  }
+
+  .radar-demo-app__actions-panel {
+    grid-column: 1 / -1;
+  }
+
+  .radar-demo-app__finding-list,
+  .radar-demo-app__evidence-list,
+  .radar-demo-app__context-grid > div {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .radar-demo-app__finding-card,
+  .radar-demo-app__signal-card,
+  .radar-demo-app__context-card {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .radar-demo-app__finding-head,
+  .radar-demo-app__signal-head {
+    align-items: start;
+    display: flex;
+    gap: var(--space-3);
+    justify-content: space-between;
+  }
+
+  .radar-demo-app__badge-row,
+  .radar-demo-app__tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .radar-demo-app__badge,
+  .radar-demo-app__tag-row span,
+  .radar-demo-app__context-card span {
+    border: var(--border-subtle);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .radar-demo-app__badge.is-opportunity,
+  .radar-demo-app__priority-card.is-opportunity {
+    border-color: rgb(126 199 190 / 0.35);
+  }
+
+  .radar-demo-app__badge.is-risk,
+  .radar-demo-app__priority-card.is-risk {
+    border-color: rgb(213 139 84 / 0.5);
+  }
+
+  .radar-demo-app__badge.is-main,
+  .radar-demo-app__badge.is-high {
+    color: var(--color-cool);
+  }
+
+  .radar-demo-app__badge.is-similarity {
+    color: var(--color-accent);
+  }
+
+  .radar-demo-app__link-note {
+    border-block-start: var(--border-subtle);
+    font-size: 0.84rem;
+    padding-block-start: var(--space-2);
+  }
+
+  .radar-demo-app__category-summary {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+
+  .radar-demo-app__category-summary article {
+    background: var(--color-bg);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: 0.1rem;
+    padding: var(--space-3);
+  }
+
+  .radar-demo-app__category-summary strong {
+    color: var(--color-text);
+    font-size: 1.2rem;
+  }
+
+  .radar-demo-app__category-summary span {
+    color: var(--color-text-subtle);
+    font-size: 0.78rem;
+  }
+
+  .radar-demo-app__signal-grid,
+  .radar-demo-app__detail-grid,
+  .radar-demo-app__context-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .radar-demo-app__signal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .radar-demo-app__signal-grid div,
+  .radar-demo-app__detail-grid section {
+    background: var(--color-bg);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: 0.25rem;
+    padding: var(--space-3);
+  }
+
+  .radar-demo-app__signal-grid strong,
+  .radar-demo-app__detail-grid strong {
+    color: var(--color-text);
+    font-size: 0.82rem;
+  }
+
+  .radar-demo-app__signal-grid span {
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+  }
+
+  .radar-demo-app details {
+    border-block-start: var(--border-subtle);
+    padding-block-start: var(--space-3);
+  }
+
+  .radar-demo-app summary {
+    color: var(--color-cool);
+    cursor: pointer;
+    font-weight: 800;
+  }
+
+  .radar-demo-app__detail-grid {
+    margin-block-start: var(--space-3);
+  }
+
+  .radar-demo-app__detail-grid section:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .radar-demo-app__context-grid.is-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1120px) {
+    .radar-demo-app {
+      grid-template-columns: 1fr;
+    }
+
+    .radar-demo-app__sidebar {
+      border-block-end: var(--border-subtle);
+      border-inline-end: 0;
+      max-height: none;
+    }
+
+    .radar-demo-app__topbar,
+    .radar-demo-app__overview,
+    .radar-demo-app__priority-grid,
+    .radar-demo-app__signal-grid,
+    .radar-demo-app__context-grid,
+    .radar-demo-app__context-grid.is-three {
+      grid-template-columns: 1fr;
+    }
+
+    .radar-demo-app__metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 680px) {
+    .radar-demo-app {
+      border-radius: var(--radius-sm);
+    }
+
+    .radar-demo-app__workspace,
+    .radar-demo-app__sidebar,
+    .radar-demo-app__panel {
+      padding: var(--space-3);
+    }
+
+    .radar-demo-app__run-steps,
+    .radar-demo-app__metrics,
+    .radar-demo-app__detail-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .radar-demo-app__finding-head,
+    .radar-demo-app__signal-head {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>

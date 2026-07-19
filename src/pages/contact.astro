@@ -1,54 +1,101 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const contactLinks = [
+  {
+    label: "Email",
+    href: "mailto:canocek@gmail.com",
+    value: "canocek@gmail.com",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/can-%C3%B6cek-677620192/",
+    value: "linkedin.com/in/can-öcek-677620192",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/CanOcek",
+    value: "github.com/CanOcek",
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@CanOcekMusic",
+    value: "@CanOcekMusic",
+  },
+];
 ---
 
 <BaseLayout
   title="Contact"
-  description="Draft contact page for Can Ocek with public links pending confirmation."
+  description="Contact Can Ocek for technical work, thesis conversations, business-system projects, music, and creative-technology collaboration."
 >
   <header class="page-header container narrow">
     <p class="eyebrow">Contact</p>
-    <h1>Contact links pending confirmation</h1>
+    <h1>Let's talk</h1>
     <p class="lede">
-      This page will hold public contact routes for project work, working-student roles, thesis
-      conversations, and music or creative-technology collaborations.
+      I am open to conversations about technical projects, working-student roles, bachelor's thesis
+      topics, business-system work, music, and creative-technology collaboration.
     </p>
-    <div class="button-row" aria-label="Download documents">
-      <a class="button primary" href="/pdfs/Can%20Ocek%20CV.pdf" download>Download CV</a>
-      <a class="button" href="/pdfs/Can%20Ocek%20Generic%20Motivation%20Letter.pdf" download>
-        Download motivation letter
-      </a>
+    <div class="button-row" aria-label="Contact actions">
+      <a class="button primary" href="mailto:canocek@gmail.com">Email me</a>
+      <a class="button" href="/pdfs/Can%20Ocek%20CV.pdf" download>Download CV</a>
     </div>
   </header>
 
-  <section class="section" aria-labelledby="contact-status-title">
+  <section class="section" aria-labelledby="contact-links-title">
     <div class="container two-column">
       <div>
-        <p class="eyebrow">Status</p>
-        <h2 id="contact-status-title">Public links pending</h2>
+        <p class="eyebrow">Links</p>
+        <h2 id="contact-links-title">Find me online</h2>
+      </div>
+      <ul class="meta-list">
+        {
+          contactLinks.map((link) => (
+            <li>
+              <strong>{link.label}</strong>
+              <p>
+                <a href={link.href}>{link.value}</a>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="contact-routes-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Routes</p>
+        <h2 id="contact-routes-title">What to contact me about</h2>
       </div>
       <div class="stack">
-        <p class="status-note">
-          Email, GitHub, LinkedIn, and music profiles should be added only after the exact public
-          links are confirmed. The CV phone number and private address are not published by default.
-        </p>
         <ul class="meta-list">
           <li>
-            <strong>Email</strong>
-            <p>Pending approval for publication.</p>
+            <strong>Working-student, thesis, and technical projects</strong>
+            <p>
+              I am open to software, AI-assisted retrieval, data pipelines, automation, bachelor's
+              thesis topics, and practical systems that need to be built clearly.
+            </p>
           </li>
           <li>
-            <strong>GitHub and LinkedIn</strong>
-            <p>Pending exact public URLs.</p>
+            <strong>Business systems and CRM</strong>
+            <p>
+              I am interested in work that connects business processes, data models, workflows, and
+              technical implementation.
+            </p>
           </li>
           <li>
-            <strong>Music profiles</strong>
-            <p>Pending selected public links and media choices.</p>
+            <strong>Music and creative technology</strong>
+            <p>
+              I am open to music, audio, video, photography, and creative-technology projects where
+              technical execution and presentation both matter.
+            </p>
           </li>
         </ul>
         <div class="button-row">
-          <a class="button" href="/work/">Review work areas</a>
-          <a class="button" href="/cv/">View CV outline</a>
+          <a class="button primary" href="/work/">Browse work</a>
+          <a class="button" href="/music/">Music work</a>
         </div>
       </div>
     </div>

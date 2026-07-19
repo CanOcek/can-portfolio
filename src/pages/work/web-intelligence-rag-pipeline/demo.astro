@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import RadarDemoApp from "../../../components/RadarDemoApp.astro";
+---
+
+<BaseLayout
+  title="Business Development Radar Demo"
+  description="Scoped Business Development Radar demo with pre-generated synthesis, local retrieval, and evidence review."
+>
+  <header class="page-header container demo-header">
+    <p class="eyebrow">Work / Business Development Radar / Demo</p>
+    <h1>Scoped Radar demo</h1>
+    <p class="lede">
+      A bounded portfolio demo with pre-generated company synthesis, functional signal filters,
+      scoped semantic retrieval, and evidence drill-down without live LLM synthesis.
+    </p>
+    <div class="button-row">
+      <a class="button" href="/work/web-intelligence-rag-pipeline/">Back to case study</a>
+    </div>
+  </header>
+
+  <section class="section demo-stage" aria-labelledby="demo-title">
+    <div class="demo-stage__layout">
+      <div class="container demo-stage__intro">
+        <p class="eyebrow">Demo scope</p>
+        <h2 id="demo-title">Retrieval visible, synthesis fixed</h2>
+        <p>
+          This Astro rebuild follows the original Streamlit flow, but all data is local sample data.
+          Use the sidebar controls to change scope, filters, and retrieval strategy.
+        </p>
+      </div>
+      <div class="demo-stage__app">
+        <RadarDemoApp />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="demo-plan-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Implemented behavior</p>
+        <h2 id="demo-plan-title">What this demo includes</h2>
+      </div>
+      <ul class="demo-plan-list">
+        <li>Company selection across local sample records.</li>
+        <li>Category, confidence, direction, and signal-strength filters.</li>
+        <li>Bounded semantic search using precomputed local similarity scores.</li>
+        <li>Pre-generated synthesis panels for each sample company.</li>
+        <li>Evidence drill-down from final finding to LLM1 signal and raw source fragment.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .demo-header {
+    max-width: 92rem;
+  }
+
+  .demo-stage {
+    background:
+      linear-gradient(180deg, rgb(17 20 26 / 0.72), rgb(5 6 8 / 0.44)),
+      linear-gradient(90deg, transparent, rgb(126 199 190 / 0.08), transparent);
+  }
+
+  .demo-stage__layout {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .demo-stage__intro {
+    max-width: 92rem;
+  }
+
+  .demo-stage__intro h2 {
+    margin-block-end: var(--space-4);
+  }
+
+  .demo-stage__app {
+    margin-inline: auto;
+    max-width: min(96vw, 110rem);
+    padding-inline: var(--space-4);
+    width: 100%;
+  }
+
+  .demo-plan-list {
+    color: var(--color-text-muted);
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding-inline-start: var(--space-5);
+  }
+</style>

@@ -5,8 +5,7 @@ import ProjectCard from "../components/ProjectCard.astro";
 
 const featuredOrder = [
   "web-intelligence-rag-pipeline",
-  "salesforce-record-label-crm",
-  "magnetic-liquid-lens-microscope",
+  "dijkstra-vs-a-star",
 ];
 
 const featuredProjects = (await getCollection("projects"))
@@ -16,36 +15,64 @@ const featuredProjects = (await getCollection("projects"))
 
 <BaseLayout
   title="Can Ocek Portfolio"
-  description="Draft portfolio foundation for Can Ocek across technology, strategy, and music."
+  description="Can Ocek's portfolio across software, business systems, music, photography, and multidisciplinary project work."
 >
   <section class="hero container" aria-labelledby="home-title">
     <div class="hero__content">
-      <p class="eyebrow">Portfolio foundation</p>
+      <p class="eyebrow">Portfolio</p>
       <h1 id="home-title">Can &Ouml;cek</h1>
     </div>
     <div class="hero__support">
-      <!-- TODO: Replace with final personal positioning copy. -->
       <p class="lede">
-        I build systems, shape ideas, and make projects work across technology, strategy, and music.
+        Multidisciplinary builder across software, business systems, and music.
       </p>
       <p>
-        A Management & Technology student at TUM with a computer-science foundation, building a
-        portfolio around data systems, platform thinking, music, and creative media as the source
-        material is verified.
+        I study Management & Technology at TUM with a computer-science foundation, and I build
+        projects that connect technical systems, business context, and creative production.
       </p>
+      <ul class="proof-list" aria-label="Portfolio proof points">
+        <li>RAG pipeline</li>
+        <li>Pathfinding demo</li>
+        <li>Salesforce CRM</li>
+        <li>Music production</li>
+      </ul>
       <div class="button-row" aria-label="Primary actions">
         <a class="button primary" href="/work/">View work</a>
-        <a class="button" href="/pdfs/Can%20Ocek%20CV.pdf" download>Download CV</a>
+        <a class="button" href="/contact/">Contact</a>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="featured-title">
     <div class="container">
-      <p class="eyebrow">First focus</p>
-      <h2 id="featured-title">Three areas to build around</h2>
+      <p class="eyebrow">Featured work</p>
+      <h2 id="featured-title">Three proof points</h2>
       <div class="home-feature-grid">
         {featuredProjects.map((project) => <ProjectCard project={project} />)}
+        <article class="home-feature-card">
+          <img
+            class="home-feature-card__cover"
+            src="https://i.ytimg.com/vi/EWGPLWCOkmI/maxresdefault.jpg"
+            alt="Thumbnail from Can Ocek's music and video production example."
+            loading="lazy"
+          />
+          <div class="home-feature-card__body">
+            <div class="home-feature-card__meta">
+              <span>Music & Audio</span>
+              <span>Media</span>
+            </div>
+            <h3>
+              <a href="/music/">Music Performance & Production</a>
+            </h3>
+            <p>
+              Performance, arrangement, recording, mixing, video production, and live-audio work
+              treated as a central discipline rather than a side note.
+            </p>
+          </div>
+          <p class="home-feature-card__role">
+            Performer, arranger, producer, recording engineer, and video creator.
+          </p>
+        </article>
       </div>
     </div>
   </section>
@@ -54,16 +81,13 @@ const featuredProjects = (await getCollection("projects"))
     <div class="container two-column">
       <div>
         <p class="eyebrow">Method</p>
-        <h2 id="disciplines-title">Working across disciplines</h2>
+        <h2 id="disciplines-title">How the range fits together</h2>
       </div>
       <div class="grid">
         <p class="lede">
-          The common thread is not a list of tools. It is the habit of understanding the system,
-          finding the missing pieces, and doing the work needed to connect them.
-        </p>
-        <p>
-          That same pattern connects retrieval systems, CRM modeling, software projects, music
-          production, and the practical work of turning unfinished material into something usable.
+          My projects span software, business systems, engineering, and creative production, but
+          the working pattern is consistent: understand the system, identify what is missing, and
+          turn incomplete ideas into usable results.
         </p>
         <div class="system-panel" aria-label="Disciplines connected by the portfolio">
           <div class="signal-card">
@@ -85,20 +109,70 @@ const featuredProjects = (await getCollection("projects"))
     </div>
   </section>
 
+  <section class="section" aria-labelledby="experience-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Background</p>
+        <h2 id="experience-title">Experience and education snapshot</h2>
+      </div>
+      <div class="snapshot-list">
+        <article>
+          <strong>Technical University of Munich</strong>
+          <p>Management & Technology student with earlier Informatics study.</p>
+        </article>
+        <article>
+          <strong>Business and CRM</strong>
+          <p>Salesforce internship and CRM data-model work in a record-label context.</p>
+        </article>
+        <article>
+          <strong>Technical and creative projects</strong>
+          <p>RAG systems, pathfinding research, Unity prototypes, music, video, and photography.</p>
+        </article>
+        <div class="button-row">
+          <a class="button primary" href="/about/">About</a>
+          <a class="button" href="/cv/">CV</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--media" aria-labelledby="creative-title">
+    <div class="container creative-routes">
+      <div class="creative-routes__intro">
+        <p class="eyebrow">Creative work</p>
+        <h2 id="creative-title">Music and visual media</h2>
+        <p>
+          The creative pages hold the deeper media archive so the homepage can stay focused and
+          easy to scan.
+        </p>
+      </div>
+      <div class="route-grid">
+        <a class="route-card" href="/music/">
+          <span>Music</span>
+          <strong>Performance, arrangement, production, and video.</strong>
+        </a>
+        <a class="route-card" href="/photography/">
+          <span>Photography</span>
+          <strong>Concerts, portraits, products, events, and creative brands.</strong>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="contact-title">
     <div class="container two-column">
       <div>
-        <p class="eyebrow">Next step</p>
-        <h2 id="contact-title">Keep the public surface honest</h2>
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-title">Start with the right page</h2>
       </div>
       <div class="stack">
         <p class="lede">
-          Contact details, public links, media embeds, and the downloadable CV should be added only
-          after the exact public versions are approved.
+          For technical work, business-system projects, thesis conversations, or creative
+          collaboration, the contact page collects the public routes as they are confirmed.
         </p>
         <div class="button-row">
-          <a class="button primary" href="/contact/">Contact status</a>
-          <a class="button" href="/cv/">CV outline</a>
+          <a class="button primary" href="/contact/">Contact</a>
+          <a class="button" href="/work/">Browse work</a>
         </div>
       </div>
     </div>
@@ -109,7 +183,197 @@ const featuredProjects = (await getCollection("projects"))
   .home-feature-grid {
     display: grid;
     gap: var(--space-5);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     margin-block-start: var(--space-6);
+  }
+
+  .proof-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+  }
+
+  .proof-list li {
+    border: var(--border-subtle);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    padding: 0.34rem 0.68rem;
+  }
+
+  .home-feature-card {
+    background:
+      linear-gradient(180deg, rgb(126 199 190 / 0.055), transparent 42%),
+      var(--color-surface);
+    border: var(--border-subtle);
+    border-radius: 14px;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-rows: auto 1fr auto;
+    min-height: 100%;
+    padding: var(--space-4);
+    position: relative;
+    transition:
+      border-color var(--transition-fast),
+      transform var(--transition-fast),
+      background var(--transition-fast);
+  }
+
+  .home-feature-card::before {
+    background: linear-gradient(180deg, var(--color-cool), var(--color-accent));
+    border-radius: 999px;
+    content: "";
+    inline-size: 3px;
+    inset-block: var(--space-5);
+    inset-inline-start: 0;
+    opacity: 0;
+    position: absolute;
+    transition: opacity var(--transition-fast);
+  }
+
+  .home-feature-card:hover,
+  .home-feature-card:focus-within {
+    background:
+      linear-gradient(180deg, rgb(126 199 190 / 0.095), transparent 45%),
+      var(--color-surface-strong);
+    border-color: var(--color-border-strong);
+    transform: translateY(-2px);
+  }
+
+  .home-feature-card:hover::before,
+  .home-feature-card:focus-within::before {
+    opacity: 1;
+  }
+
+  .home-feature-card__body {
+    display: grid;
+    gap: var(--space-4);
+    padding-inline: var(--space-1);
+  }
+
+  .home-feature-card__cover {
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 12px;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  .home-feature-card__meta {
+    color: var(--color-cool);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    font-weight: 700;
+    gap: var(--space-3);
+  }
+
+  .home-feature-card h3 {
+    position: relative;
+  }
+
+  .home-feature-card h3 a {
+    text-decoration: none;
+  }
+
+  .home-feature-card h3 a::after {
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+
+  .home-feature-card__role {
+    color: var(--color-text-subtle);
+    font-size: 0.94rem;
+    padding-inline: var(--space-1);
+  }
+
+  .snapshot-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .snapshot-list article {
+    border-block-start: var(--border-subtle);
+    display: grid;
+    gap: var(--space-2);
+    padding-block-start: var(--space-4);
+  }
+
+  .snapshot-list strong {
+    color: var(--color-text);
+  }
+
+  .creative-routes {
+    align-items: start;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.7fr) minmax(18rem, 1fr);
+  }
+
+  .creative-routes__intro {
+    max-width: var(--content-width-narrow);
+  }
+
+  .route-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .route-card {
+    background: rgb(5 6 8 / 0.42);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    text-decoration: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .route-card:hover,
+  .route-card:focus-visible {
+    background: var(--color-surface);
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  .route-card span {
+    color: var(--color-cool);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .route-card strong {
+    color: var(--color-text);
+    font-family: var(--font-serif);
+    font-size: 1.55rem;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+
+  @media (max-width: 820px) {
+    .creative-routes {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .route-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-feature-card:hover,
+    .home-feature-card:focus-within {
+      transform: none;
+    }
   }
 </style>
