@@ -60,6 +60,8 @@ PUBLIC_RADAR_STREAMLIT_URL=https://radar.example.com/?embed=true
 
 Temporary Vercel setup can host this Astro portfolio while the Streamlit app runs on a Streamlit-capable host. The Vercel environment variable should point to that external Streamlit URL.
 
+The retired Astro-native Radar demo is archived under `outdated-code/radar-astro-demo/`.
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

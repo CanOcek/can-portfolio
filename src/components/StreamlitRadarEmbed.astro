@@ -10,29 +10,32 @@ const streamlitUrl = configuredUrl || "http://localhost:8501/?embed=true";
       <p>Business Development Radar</p>
       <span>Native Streamlit embed</span>
     </div>
-    <nav class="streamlit-radar-embed__actions" aria-label="Radar demo links">
-      <a href="/work/web-intelligence-rag-pipeline/demo/">Astro demo</a>
+    <nav class="streamlit-radar-embed__actions" aria-label="Radar app links">
       <a href={streamlitUrl} target="_blank" rel="noreferrer">Open app</a>
     </nav>
   </header>
 
-  <iframe
-    class="streamlit-radar-embed__frame"
-    src={streamlitUrl}
-    title="Business Development Radar Streamlit app"
-    loading="eager"
-    referrerpolicy="no-referrer-when-downgrade"
-    allow="fullscreen"
-  ></iframe>
+  <div class="streamlit-radar-embed__frame-shell">
+    <iframe
+      class="streamlit-radar-embed__frame"
+      src={streamlitUrl}
+      title="Business Development Radar Streamlit app"
+      loading="eager"
+      referrerpolicy="no-referrer-when-downgrade"
+      allow="fullscreen"
+    ></iframe>
+  </div>
 </section>
 
 <style>
   .streamlit-radar-embed {
+    block-size: 100vh;
     background: #0e1117;
     color: #f8fafc;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
     min-height: 100vh;
+    overflow: hidden;
   }
 
   .streamlit-radar-embed__bar {
@@ -107,12 +110,47 @@ const streamlitUrl = configuredUrl || "http://localhost:8501/?embed=true";
     color: #ffffff;
   }
 
+  .streamlit-radar-embed__frame-shell {
+    block-size: 100%;
+    background: #0e1117;
+    box-shadow:
+      inset 0 10px 0 #0e1117,
+      inset 0 -36px 0 #0e1117;
+    min-block-size: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .streamlit-radar-embed__frame-shell::before,
+  .streamlit-radar-embed__frame-shell::after {
+    background: #0e1117;
+    content: "";
+    display: block;
+    inset-inline: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .streamlit-radar-embed__frame-shell::before {
+    height: 10px;
+    inset-block-start: 0;
+  }
+
+  .streamlit-radar-embed__frame-shell::after {
+    height: 36px;
+    inset-block-end: 0;
+  }
+
   .streamlit-radar-embed__frame {
     background: #0e1117;
     border: 0;
-    block-size: 100%;
-    inline-size: 100%;
-    min-height: calc(100vh - 3.5rem);
+    display: block;
+    height: calc(100% + 24px);
+    inset: -12px;
+    outline: 0;
+    position: absolute;
+    width: calc(100% + 24px);
   }
 
   @media (max-width: 760px) {

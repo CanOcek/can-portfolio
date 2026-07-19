@@ -24,4 +24,8 @@ import StreamlitRadarEmbed from "../../../components/StreamlitRadarEmbed.astro";
   body:has(.streamlit-radar-embed) .site-main {
     min-height: 100vh;
   }
+
+  body:has(.streamlit-radar-embed) astro-dev-toolbar {
+    display: none !important;
+  }
 </style>
