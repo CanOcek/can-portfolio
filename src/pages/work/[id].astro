@@ -33,6 +33,14 @@ const hasRadarDemoTeaser = project.id === "web-intelligence-rag-pipeline";
     <h1>{title}</h1>
     <p class="lede">{description}</p>
     {date && <p class="muted with-space">{date}</p>}
+    {
+      hasRadarDemoTeaser && (
+        <div class="button-row" aria-label="Business Development Radar primary actions">
+          <a class="button primary" href="/radar/">Try demo</a>
+          <a class="button" href="#case-study-title">Read case study</a>
+        </div>
+      )
+    }
   </header>
 
   {

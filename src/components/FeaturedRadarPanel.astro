@@ -1,0 +1,115 @@
+---
+interface Props {
+  eyebrow?: string;
+  titleId?: string;
+}
+
+const { eyebrow = "Flagship project", titleId = "featured-radar-title" } = Astro.props;
+---
+
+<section class="featured-radar" aria-labelledby={titleId}>
+  <div class="featured-radar__copy">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 id={titleId}>Business Development Radar</h2>
+    <p class="lede">
+      An evidence-backed intelligence system for spotting company signals, opportunity areas, and
+      risks across public data.
+    </p>
+    <p>
+      The project combines public-source collection, LLM signal classification, PostgreSQL and
+      pgvector retrieval, and Streamlit synthesis into a working business-development demo.
+    </p>
+    <div class="button-row" aria-label="Business Development Radar actions">
+      <a class="button primary" href="/radar/">Try demo</a>
+      <a class="button" href="/work/web-intelligence-rag-pipeline/">View case study</a>
+    </div>
+  </div>
+
+  <a class="featured-radar__preview" href="/radar/" aria-label="Open Business Development Radar demo">
+    <img
+      src="/images/projects/radar-extracted/radar-pdf-obj-320.png"
+      alt="Business Development Radar Streamlit dashboard showing key takeaways and evidence-backed findings."
+      loading="eager"
+    />
+  </a>
+</section>
+
+<style>
+  .featured-radar {
+    align-items: center;
+    background:
+      linear-gradient(135deg, rgb(126 199 190 / 0.12), transparent 44%),
+      linear-gradient(180deg, var(--color-surface-strong), rgb(11 13 17 / 0.92));
+    border: 1px solid var(--color-border-strong);
+    border-radius: 18px;
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.68fr) minmax(18rem, 1fr);
+    overflow: hidden;
+    padding: clamp(var(--space-5), 4vw, var(--space-7));
+  }
+
+  .featured-radar__copy {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .featured-radar h2 {
+    font-size: 4.25rem;
+    max-width: 9ch;
+  }
+
+  .featured-radar .lede {
+    max-width: 36rem;
+  }
+
+  .featured-radar__preview {
+    background: var(--color-bg);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: 12px;
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    transition:
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .featured-radar__preview:hover,
+  .featured-radar__preview:focus-visible {
+    border-color: var(--color-cool);
+    transform: translateY(-2px);
+  }
+
+  .featured-radar__preview img {
+    aspect-ratio: 2674 / 1092;
+    inline-size: 100%;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  @media (max-width: 820px) {
+    .featured-radar {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-radar h2 {
+      font-size: 3rem;
+      max-width: 12ch;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .featured-radar h2 {
+      font-size: 2.45rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-radar__preview:hover,
+    .featured-radar__preview:focus-visible {
+      transform: none;
+    }
+  }
+</style>

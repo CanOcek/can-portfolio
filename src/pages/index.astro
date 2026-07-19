@@ -2,10 +2,11 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import FeaturedRadarPanel from "../components/FeaturedRadarPanel.astro";
 
 const featuredOrder = [
-  "web-intelligence-rag-pipeline",
   "dijkstra-vs-a-star",
+  "salesforce-record-label-crm",
 ];
 
 const featuredProjects = (await getCollection("projects"))
@@ -31,7 +32,7 @@ const featuredProjects = (await getCollection("projects"))
         projects that connect technical systems, business context, and creative production.
       </p>
       <ul class="proof-list" aria-label="Portfolio proof points">
-        <li>RAG pipeline</li>
+        <li>Business Development Radar</li>
         <li>Pathfinding demo</li>
         <li>Salesforce CRM</li>
         <li>Music production</li>
@@ -43,10 +44,16 @@ const featuredProjects = (await getCollection("projects"))
     </div>
   </section>
 
+  <section class="section section--flagship" aria-labelledby="radar-feature-title">
+    <div class="container">
+      <FeaturedRadarPanel titleId="radar-feature-title" />
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="featured-title">
     <div class="container">
       <p class="eyebrow">Featured work</p>
-      <h2 id="featured-title">Three proof points</h2>
+      <h2 id="featured-title">More proof points</h2>
       <div class="home-feature-grid">
         {featuredProjects.map((project) => <ProjectCard project={project} />)}
         <article class="home-feature-card">

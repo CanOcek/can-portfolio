@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StreamlitRadarEmbed from "../components/StreamlitRadarEmbed.astro";
+---
+
+<BaseLayout
+  title="Business Development Radar Demo"
+  description="Native Streamlit demo for the Business Development Radar portfolio project."
+>
+  <StreamlitRadarEmbed />
+</BaseLayout>
+
+<style is:global>
+  .site-header,
+  .site-footer {
+    display: none;
+  }
+
+  body:has(.streamlit-radar-embed) {
+    background: #0e1117;
+    overflow: hidden;
+  }
+
+  body:has(.streamlit-radar-embed) .site-main {
+    min-height: 100vh;
+  }
+
+  body:has(.streamlit-radar-embed) astro-dev-toolbar {
+    display: none !important;
+  }
+</style>
