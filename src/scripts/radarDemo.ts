@@ -14,12 +14,14 @@ type DemoState = {
   directions: Set<string>;
   confidences: Set<string>;
   sourceTypes: Set<string>;
-  strategy: "exact" | "vector";
+  strategy: "exact" | "single" | "multi";
   vectorQueryId: string;
   minSimilarity: number;
   evidenceLimit: number;
+  tokenLimit: number;
   includeSecondaryCategories: boolean;
   activeTab: string;
+  workflowStatus: string;
 };
 
 const TAB_LABELS = [
@@ -82,6 +84,7 @@ function signalMatchesCategory(signal: RadarSignal, state: DemoState): boolean {
 }
 
 function getFilteredSignals(data: RadarData, state: DemoState): RadarSignal[] {
+  const vectorMode = state.strategy !== "exact";
   const signals = data.signals
     .filter((signal) => signal.companyId === state.companyId)
     .filter((signal) => signalMatchesCategory(signal, state))
@@ -93,11 +96,11 @@ function getFilteredSignals(data: RadarData, state: DemoState): RadarSignal[] {
   const ranked = signals
     .map((signal) => ({
       signal,
-      similarity: state.strategy === "vector" ? signal.similarity[state.vectorQueryId] || 0 : 1,
+      similarity: vectorMode ? signal.similarity[state.vectorQueryId] || 0 : 1,
     }))
-    .filter((entry) => state.strategy === "exact" || entry.similarity >= state.minSimilarity)
+    .filter((entry) => !vectorMode || entry.similarity >= state.minSimilarity)
     .sort((a, b) => {
-      if (state.strategy === "vector" && b.similarity !== a.similarity) {
+      if (vectorMode && b.similarity !== a.similarity) {
         return b.similarity - a.similarity;
       }
       if (a.signal.bucket !== b.signal.bucket) {
@@ -119,6 +122,20 @@ function countBy<T extends string>(values: T[]): Record<T, number> {
   );
 }
 
+function renderRadioGroup(container: HTMLElement, options: Array<{ value: string; label: string }>, selected: string, name: string): void {
+  container.innerHTML = options
+    .map((option) => {
+      const checked = selected === option.value ? "checked" : "";
+      return `
+        <label class="radar-demo-app__check">
+          <input type="radio" name="${name}" value="${option.value}" ${checked} />
+          <span>${option.label}</span>
+        </label>
+      `;
+    })
+    .join("");
+}
+
 function renderCheckboxGroup(container: HTMLElement, values: string[], selected: Set<string>, name: string): void {
   container.innerHTML = values
     .map((value) => {
@@ -131,6 +148,24 @@ function renderCheckboxGroup(container: HTMLElement, values: string[], selected:
       `;
     })
     .join("");
+}
+
+function setMultiselectSummary(root: HTMLElement, key: string, selected: Set<string>, total: number): void {
+  const summary = root.querySelector<HTMLElement>(`[data-summary="${key}"]`);
+  if (!summary) return;
+
+  const values = Array.from(selected);
+  if (values.length === 0) {
+    summary.textContent = "No options selected";
+    return;
+  }
+
+  if (values.length === total) {
+    summary.textContent = "All options selected";
+    return;
+  }
+
+  summary.textContent = values.length <= 2 ? values.join(", ") : `${values.length} options selected`;
 }
 
 function readCheckboxGroup(root: HTMLElement, name: string): Set<string> {
@@ -152,21 +187,20 @@ function renderControls(root: HTMLElement, data: RadarData, state: DemoState): v
   renderCheckboxGroup(requireElement(root, "[data-control-group='buckets']"), ["main", "weak"], state.buckets, "bucket");
   renderCheckboxGroup(requireElement(root, "[data-control-group='directions']"), ["opportunity", "neutral", "risk"], state.directions, "direction");
   renderCheckboxGroup(requireElement(root, "[data-control-group='confidences']"), ["high", "medium", "low"], state.confidences, "confidence");
-  renderCheckboxGroup(
-    requireElement(root, "[data-control-group='source-types']"),
-    ["webpages", "pdfs", "northdata_publications", "northdata_events"],
-    state.sourceTypes,
-    "sourceType",
+  setMultiselectSummary(root, "categories", state.categories, data.categories.length);
+  setMultiselectSummary(root, "buckets", state.buckets, 2);
+  setMultiselectSummary(root, "directions", state.directions, 3);
+  setMultiselectSummary(root, "confidences", state.confidences, 3);
+  renderRadioGroup(
+    requireElement(root, "[data-control-group='strategy']"),
+    [
+      { value: "exact", label: "Standard (all matching signals)" },
+      { value: "single", label: "Similarity search (1 query)" },
+      { value: "multi", label: "Similarity search (multiple queries)" },
+    ],
+    state.strategy,
+    "strategy",
   );
-
-  const strategySelect = requireElement<HTMLSelectElement>(root, "[data-control='strategy']");
-  strategySelect.value = state.strategy;
-
-  const querySelect = requireElement<HTMLSelectElement>(root, "[data-control='vector-query']");
-  querySelect.innerHTML = data.vectorQueries
-    .map((query) => `<option value="${query.id}">${query.label}</option>`)
-    .join("");
-  querySelect.value = state.vectorQueryId;
 
   const similarityInput = requireElement<HTMLInputElement>(root, "[data-control='similarity']");
   similarityInput.value = String(Math.round(state.minSimilarity * 100));
@@ -174,6 +208,9 @@ function renderControls(root: HTMLElement, data: RadarData, state: DemoState): v
 
   const limitInput = requireElement<HTMLInputElement>(root, "[data-control='limit']");
   limitInput.value = String(state.evidenceLimit);
+
+  const tokenLimitInput = requireElement<HTMLInputElement>(root, "[data-control='token-limit']");
+  tokenLimitInput.value = String(state.tokenLimit);
 
   const secondaryInput = requireElement<HTMLInputElement>(root, "[data-control='secondary']");
   secondaryInput.checked = state.includeSecondaryCategories;
@@ -187,11 +224,13 @@ function readControls(root: HTMLElement, state: DemoState): DemoState {
     buckets: readCheckboxGroup(root, "bucket"),
     directions: readCheckboxGroup(root, "direction"),
     confidences: readCheckboxGroup(root, "confidence"),
-    sourceTypes: readCheckboxGroup(root, "sourceType"),
-    strategy: requireElement<HTMLSelectElement>(root, "[data-control='strategy']").value as DemoState["strategy"],
-    vectorQueryId: requireElement<HTMLSelectElement>(root, "[data-control='vector-query']").value,
+    sourceTypes: state.sourceTypes,
+    strategy: requireElement<HTMLInputElement>(root, "input[name='strategy']:checked").value as DemoState["strategy"],
+    vectorQueryId:
+      root.querySelector<HTMLSelectElement>("[data-control='vector-query']")?.value || state.vectorQueryId,
     minSimilarity: Number(requireElement<HTMLInputElement>(root, "[data-control='similarity']").value) / 100,
     evidenceLimit: Number(requireElement<HTMLInputElement>(root, "[data-control='limit']").value),
+    tokenLimit: Number(requireElement<HTMLInputElement>(root, "[data-control='token-limit']").value),
     includeSecondaryCategories: requireElement<HTMLInputElement>(root, "[data-control='secondary']").checked,
   };
 
@@ -204,27 +243,36 @@ function readControls(root: HTMLElement, state: DemoState): DemoState {
   return next;
 }
 
-function renderStatus(root: HTMLElement, data: RadarData, state: DemoState, signals: RadarSignal[]): void {
-  const query = data.vectorQueries.find((item) => item.id === state.vectorQueryId);
-  requireElement(root, "[data-status='retrieval']").textContent =
-    state.strategy === "vector"
-      ? `${signals.length} accepted evidence rows ranked for "${query?.label || "selected query"}".`
-      : `${signals.length} accepted evidence rows from metadata filters.`;
-  requireElement(root, "[data-status='synthesis']").textContent =
-    "Synthesis panel loaded from pre-generated sample output. No live LLM call is made.";
+function renderWorkflowStatus(root: HTMLElement, state: DemoState): void {
+  requireElement(root, "[data-workflow-status]").textContent = state.workflowStatus;
 }
 
-function renderMetrics(root: HTMLElement, company: RadarCompany, signals: RadarSignal[]): void {
+function workflowEvidenceMessage(data: RadarData, state: DemoState, signals: RadarSignal[]): string {
+  const query = data.vectorQueries.find((item) => item.id === state.vectorQueryId);
+  const limitStatus = signals.length >= state.evidenceLimit ? " Evidence limit reached." : " Evidence limit not reached.";
+  const tokenText = ` Token count: ${Math.min(state.tokenLimit, signals.length * 1450).toLocaleString()}.`;
+
+  if (state.strategy === "exact") {
+    return `Retrieved ${signals.length} evidence row(s) from metadata filters.${limitStatus}${tokenText}`;
+  }
+
+  return `Retrieved ${signals.length} evidence row(s) ranked for "${query?.label || "selected query"}".${limitStatus}${tokenText}`;
+}
+
+function renderMetrics(company: RadarCompany, signals: RadarSignal[]): string {
   const bucketCounts = countBy(signals.map((signal) => signal.bucket));
   const directionCounts = countBy(signals.map((signal) => signal.direction));
-  const categoryCount = new Set(signals.map((signal) => signal.category)).size;
-  requireElement(root, "[data-metrics]").innerHTML = `
-    <article><strong>${signals.length}</strong><span>Retrieved signals</span></article>
-    <article><strong>${bucketCounts.main || 0}</strong><span>Main signals</span></article>
-    <article><strong>${directionCounts.opportunity || 0}</strong><span>Opportunities</span></article>
-    <article><strong>${directionCounts.risk || 0}</strong><span>Risks</span></article>
-    <article><strong>${categoryCount}</strong><span>Active categories</span></article>
-    <article><strong>${titleCase(company.synthesis.confidence)}</strong><span>Synthesis confidence</span></article>
+  return `
+    <div class="radar-demo-app__metrics" aria-label="Radar demo metrics">
+      <article><span>Overall direction</span><strong>${directionCounts.risk ? "Mixed" : "Opportunity"}</strong></article>
+      <article><span>Overall confidence</span><strong>${titleCase(company.synthesis.confidence)}</strong></article>
+      <article><span>Signal count</span><strong>${signals.length}</strong></article>
+    </div>
+    <div class="radar-demo-app__category-summary">
+      <article><strong>${bucketCounts.main || 0}</strong><span>Main signals</span></article>
+      <article><strong>${directionCounts.opportunity || 0}</strong><span>Opportunities</span></article>
+      <article><strong>${directionCounts.risk || 0}</strong><span>Risks</span></article>
+    </div>
   `;
 }
 
@@ -239,21 +287,23 @@ function renderTabs(root: HTMLElement, state: DemoState): void {
   ).join("");
 }
 
-function renderOverview(container: HTMLElement, company: RadarCompany): void {
+function renderOverview(container: HTMLElement, company: RadarCompany, signals: RadarSignal[]): void {
   container.innerHTML = `
     <section class="radar-demo-app__overview">
       <div class="radar-demo-app__outlook">
-        <p class="radar-demo-app__panel-label">BD outlook</p>
-        <h3>${company.fullName}</h3>
-        <p>${company.synthesis.outlook}</p>
         <div class="radar-demo-app__position-card">
-          <strong>Strategic direction</strong>
-          <span>${company.synthesis.strategicDirection}</span>
+          <p class="radar-demo-app__position-kicker">Business Development Outlook</p>
+          <span>${company.synthesis.outlook}</span>
         </div>
       </div>
-      <div class="radar-demo-app__takeaway-list">
-        <p class="radar-demo-app__panel-label">Key takeaways</p>
-        ${company.synthesis.keyTakeaways.map((item) => `<article>${item}</article>`).join("")}
+      <div class="radar-demo-app__section-heading">
+        <h3>At a Glance</h3>
+        <p>Current assessment of commercial potential, confidence, and signal volume.</p>
+      </div>
+      ${renderMetrics(company, signals)}
+      <div class="radar-demo-app__section-heading">
+        <h3>Where to Focus</h3>
+        <p>Most relevant opportunities, early watchpoints, and risks for business development.</p>
       </div>
       <div class="radar-demo-app__priority-grid">
         ${renderPriorityCard("Top opportunities", company.synthesis.topOpportunities, "opportunity")}
@@ -336,7 +386,7 @@ function renderCategorySummary(signals: RadarSignal[]): string {
 function renderSignal(signal: RadarSignal, state: DemoState): string {
   const similarity = signal.similarity[state.vectorQueryId] || 0;
   const similarityBadge =
-    state.strategy === "vector" ? `<span class="radar-demo-app__badge is-similarity">Similarity ${formatPercent(similarity)}</span>` : "";
+    state.strategy !== "exact" ? `<span class="radar-demo-app__badge is-similarity">Similarity ${formatPercent(similarity)}</span>` : "";
 
   return `
     <article class="radar-demo-app__signal-card">
@@ -456,7 +506,7 @@ function renderIpCard(item: { title: string; date: string; note: string }): stri
 function renderPanel(root: HTMLElement, data: RadarData, state: DemoState, signals: RadarSignal[]): void {
   const company = getCompany(data, state);
   const panel = requireElement(root, "[data-panel]");
-  if (state.activeTab === "Key Takeaways") renderOverview(panel, company);
+  if (state.activeTab === "Key Takeaways") renderOverview(panel, company, signals);
   if (state.activeTab === "Findings") renderFindings(panel, company, signals);
   if (state.activeTab === "Evidence") renderEvidence(panel, state, signals);
   if (state.activeTab === "Company Structure") renderCompanyStructure(panel, company);
@@ -464,23 +514,74 @@ function renderPanel(root: HTMLElement, data: RadarData, state: DemoState, signa
   if (state.activeTab === "Patents & Trademarks") renderPatents(panel, company);
 }
 
-function renderQueryDescription(root: HTMLElement, data: RadarData, state: DemoState): void {
+function renderVectorPanel(root: HTMLElement, data: RadarData, state: DemoState): void {
+  const panel = requireElement(root, "[data-vector-panel]");
+
+  if (state.strategy === "exact") {
+    panel.innerHTML = "";
+    return;
+  }
+
+  const queries = data.vectorQueries
+    .map((query) => `<option value="${query.id}" ${query.id === state.vectorQueryId ? "selected" : ""}>${query.label}</option>`)
+    .join("");
   const query = data.vectorQueries.find((item) => item.id === state.vectorQueryId);
-  requireElement(root, "[data-query-description]").textContent =
-    state.strategy === "vector"
-      ? query?.description || ""
-      : "Exact metadata mode ignores semantic similarity and uses the selected scope and filters.";
+
+  if (state.strategy === "single") {
+    panel.innerHTML = `
+      <section class="radar-demo-app__vector-card">
+        <h3>Vector Search</h3>
+        <div class="radar-demo-app__vector-grid">
+          <label class="radar-demo-app__field">
+            <span>Query</span>
+            <select data-control="vector-query">${queries}</select>
+          </label>
+          <label class="radar-demo-app__check is-secondary">
+            <input type="checkbox" checked />
+            <span>Search by Raw Text Embeddings</span>
+          </label>
+        </div>
+        <p>${query?.description || ""}</p>
+      </section>
+    `;
+    return;
+  }
+
+  panel.innerHTML = `
+    <section class="radar-demo-app__vector-card">
+      <h3>Vector Search</h3>
+      <p>Each query can target different enrichment fields and chunk embeddings.</p>
+      <div class="radar-demo-app__vector-grid">
+        <label class="radar-demo-app__field">
+          <span>Query 1 text</span>
+          <select data-control="vector-query">${queries}</select>
+        </label>
+        <label class="radar-demo-app__check is-secondary">
+          <input type="checkbox" checked />
+          <span>Search by Raw Text Embeddings</span>
+        </label>
+      </div>
+      <div class="radar-demo-app__vector-grid">
+        <label class="radar-demo-app__field">
+          <span>Query 2 text</span>
+          <input type="text" value="New business developments" readonly />
+        </label>
+        <label class="radar-demo-app__check is-secondary">
+          <input type="checkbox" />
+          <span>Search by Raw Text Embeddings</span>
+        </label>
+      </div>
+    </section>
+  `;
 }
 
 function render(root: HTMLElement, data: RadarData, state: DemoState): void {
-  const company = getCompany(data, state);
   const signals = getFilteredSignals(data, state);
-  renderQueryDescription(root, data, state);
-  renderStatus(root, data, state, signals);
-  renderMetrics(root, company, signals);
+  renderVectorPanel(root, data, state);
+  renderWorkflowStatus(root, state);
   renderTabs(root, state);
   renderPanel(root, data, state, signals);
-  requireElement(root, "[data-company-description]").textContent = company.description;
+  requireElement(root, "[data-company-description]").textContent = getCompany(data, state).description;
 }
 
 function initialize(root: HTMLElement): void {
@@ -492,12 +593,14 @@ function initialize(root: HTMLElement): void {
     directions: new Set(["opportunity", "neutral", "risk"]),
     confidences: new Set(["high", "medium", "low"]),
     sourceTypes: new Set(["webpages", "pdfs", "northdata_publications", "northdata_events"]),
-    strategy: "vector",
+    strategy: "single",
     vectorQueryId: data.vectorQueries[0]?.id || "",
     minSimilarity: 0.25,
     evidenceLimit: 50,
+    tokenLimit: 50000,
     includeSecondaryCategories: true,
     activeTab: "Key Takeaways",
+    workflowStatus: "",
   };
 
   renderControls(root, data, state);
@@ -531,13 +634,35 @@ function initialize(root: HTMLElement): void {
         directions: new Set(["opportunity", "neutral", "risk"]),
         confidences: new Set(["high", "medium", "low"]),
         sourceTypes: new Set(["webpages", "pdfs", "northdata_publications", "northdata_events"]),
-        strategy: "vector",
+        strategy: "single",
         vectorQueryId: data.vectorQueries[0]?.id || "",
         minSimilarity: 0.25,
         evidenceLimit: 50,
+        tokenLimit: 50000,
         includeSecondaryCategories: true,
+        workflowStatus: "",
       };
       renderControls(root, data, state);
+      render(root, data, state);
+      return;
+    }
+
+    if (action?.dataset.action === "evidence") {
+      state = {
+        ...state,
+        activeTab: "Evidence",
+        workflowStatus: workflowEvidenceMessage(data, state, getFilteredSignals(data, state)),
+      };
+      render(root, data, state);
+      return;
+    }
+
+    if (action?.dataset.action === "synthesis") {
+      state = {
+        ...state,
+        activeTab: "Findings",
+        workflowStatus: "Synthesis panel loaded from pre-generated sample output. No live LLM call is made.",
+      };
       render(root, data, state);
     }
   });
