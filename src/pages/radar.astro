@@ -7,25 +7,27 @@ import StreamlitRadarEmbed from "../components/StreamlitRadarEmbed.astro";
   title="Business Development Radar Demo"
   description="Native Streamlit demo for the Business Development Radar portfolio project."
 >
-  <StreamlitRadarEmbed />
+  <StreamlitRadarEmbed variant="contained" />
 </BaseLayout>
 
 <style is:global>
-  .site-header,
-  .site-footer {
+  body:has(.streamlit-radar-embed--contained) {
+    background: #0e1117;
+  }
+
+  body:has(.streamlit-radar-embed--contained) .site-footer {
     display: none;
   }
 
-  body:has(.streamlit-radar-embed) {
-    background: #0e1117;
-    overflow: hidden;
+  body:has(.streamlit-radar-embed--contained) .site-main {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
   }
 
-  body:has(.streamlit-radar-embed) .site-main {
-    min-height: 100vh;
-  }
-
-  body:has(.streamlit-radar-embed) astro-dev-toolbar {
-    display: none !important;
+  body:has(.streamlit-radar-embed--contained) .site-shell {
+    block-size: 100dvh;
+    min-height: 100dvh;
   }
 </style>

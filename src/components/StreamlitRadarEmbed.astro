@@ -1,7 +1,16 @@
 ---
+interface Props {
+  variant?: "fullscreen" | "contained";
+}
+
+const { variant = "fullscreen" } = Astro.props;
 const configuredUrl = import.meta.env.PUBLIC_RADAR_STREAMLIT_URL?.trim();
 const rawStreamlitUrl = normalizeRawStreamlitUrl(configuredUrl || "http://localhost:8501");
 const embeddedStreamlitUrl = withStreamlitEmbedParam(rawStreamlitUrl);
+const embedClass =
+  variant === "contained"
+    ? "streamlit-radar-embed streamlit-radar-embed--contained"
+    : "streamlit-radar-embed";
 
 function normalizeRawStreamlitUrl(url: string) {
   try {
@@ -29,7 +38,7 @@ function withStreamlitEmbedParam(url: string) {
 }
 ---
 
-<section class="streamlit-radar-embed" aria-label="Business Development Radar Streamlit embed">
+<section class={embedClass} aria-label="Business Development Radar Streamlit embed">
   <header class="streamlit-radar-embed__bar">
     <a class="streamlit-radar-embed__back" href="/work/web-intelligence-rag-pipeline/">Radar case study</a>
     <div class="streamlit-radar-embed__title">
@@ -62,6 +71,18 @@ function withStreamlitEmbedParam(url: string) {
     grid-template-rows: auto minmax(0, 1fr);
     min-height: 100vh;
     overflow: hidden;
+  }
+
+  .streamlit-radar-embed--contained {
+    block-size: auto;
+    flex: 1 1 auto;
+    grid-template-rows: minmax(0, 1fr);
+    min-block-size: 0;
+    min-height: 0;
+  }
+
+  .streamlit-radar-embed--contained .streamlit-radar-embed__bar {
+    display: none;
   }
 
   .streamlit-radar-embed__bar {
@@ -177,6 +198,28 @@ function withStreamlitEmbedParam(url: string) {
     outline: 0;
     position: absolute;
     width: calc(100% + 24px);
+  }
+
+  .streamlit-radar-embed--contained .streamlit-radar-embed__frame-shell {
+    box-shadow:
+      inset 0 8px 0 #0e1117,
+      inset 0 -12px 0 #0e1117;
+  }
+
+  .streamlit-radar-embed--contained .streamlit-radar-embed__frame-shell::before {
+    display: block;
+    height: 8px;
+  }
+
+  .streamlit-radar-embed--contained .streamlit-radar-embed__frame-shell::after {
+    display: block;
+    height: 12px;
+  }
+
+  .streamlit-radar-embed--contained .streamlit-radar-embed__frame {
+    height: calc(100% + 18px);
+    inset: 0 -4px -18px;
+    width: calc(100% + 8px);
   }
 
   @media (max-width: 760px) {
