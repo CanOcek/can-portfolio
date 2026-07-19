@@ -46,19 +46,19 @@ The native Streamlit preview is available at:
 /work/web-intelligence-rag-pipeline/streamlit/
 ```
 
-By default, the iframe points to the local Streamlit server:
+By default, the iframe points to the local Streamlit server and adds Streamlit embed mode internally:
 
 ```text
-http://localhost:8501/?embed=true
+http://localhost:8501
 ```
 
-For a deployed preview or future subdomain, set this public Astro environment variable:
+For a deployed preview or future subdomain, set this public Astro environment variable to the raw app URL:
 
 ```text
-PUBLIC_RADAR_STREAMLIT_URL=https://radar.example.com/?embed=true
+PUBLIC_RADAR_STREAMLIT_URL=https://radar.example.com
 ```
 
-Temporary Vercel setup can host this Astro portfolio while the Streamlit app runs on a Streamlit-capable host. The Vercel environment variable should point to that external Streamlit URL.
+The portfolio uses that raw URL for the `Open app` button, and appends `embed=true` only for the iframe. Temporary Vercel setup can host this Astro portfolio while the Streamlit app runs on a Streamlit-capable host. The Vercel environment variable should point to that external Streamlit URL.
 
 The retired Astro-native Radar demo is archived under `outdated-code/radar-astro-demo/`.
 

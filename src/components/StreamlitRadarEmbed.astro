@@ -1,6 +1,32 @@
 ---
 const configuredUrl = import.meta.env.PUBLIC_RADAR_STREAMLIT_URL?.trim();
-const streamlitUrl = configuredUrl || "http://localhost:8501/?embed=true";
+const rawStreamlitUrl = normalizeRawStreamlitUrl(configuredUrl || "http://localhost:8501");
+const embeddedStreamlitUrl = withStreamlitEmbedParam(rawStreamlitUrl);
+
+function normalizeRawStreamlitUrl(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    parsedUrl.searchParams.delete("embed");
+    return parsedUrl.toString();
+  } catch {
+    const [base, query = ""] = url.split("?");
+    const cleanedParams = query
+      .split("&")
+      .filter((param) => param && !param.toLowerCase().startsWith("embed="));
+    return cleanedParams.length ? `${base}?${cleanedParams.join("&")}` : base;
+  }
+}
+
+function withStreamlitEmbedParam(url: string) {
+  try {
+    const parsedUrl = new URL(url);
+    parsedUrl.searchParams.set("embed", "true");
+    return parsedUrl.toString();
+  } catch {
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}embed=true`;
+  }
+}
 ---
 
 <section class="streamlit-radar-embed" aria-label="Business Development Radar Streamlit embed">
@@ -11,14 +37,14 @@ const streamlitUrl = configuredUrl || "http://localhost:8501/?embed=true";
       <span>Native Streamlit embed</span>
     </div>
     <nav class="streamlit-radar-embed__actions" aria-label="Radar app links">
-      <a href={streamlitUrl} target="_blank" rel="noreferrer">Open app</a>
+      <a href={rawStreamlitUrl} target="_blank" rel="noreferrer">Open app</a>
     </nav>
   </header>
 
   <div class="streamlit-radar-embed__frame-shell">
     <iframe
       class="streamlit-radar-embed__frame"
-      src={streamlitUrl}
+      src={embeddedStreamlitUrl}
       title="Business Development Radar Streamlit app"
       loading="eager"
       referrerpolicy="no-referrer-when-downgrade"
