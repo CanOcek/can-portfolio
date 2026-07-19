@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import StreamlitRadarEmbed from "../../../components/StreamlitRadarEmbed.astro";
+---
+
+<BaseLayout
+  title="Business Development Radar Streamlit Embed"
+  description="Native Streamlit preview for the Business Development Radar portfolio demo."
+>
+  <StreamlitRadarEmbed />
+</BaseLayout>
+
+<style is:global>
+  .site-header,
+  .site-footer {
+    display: none;
+  }
+
+  body:has(.streamlit-radar-embed) {
+    background: #0e1117;
+    overflow: hidden;
+  }
+
+  body:has(.streamlit-radar-embed) .site-main {
+    min-height: 100vh;
+  }
+</style>

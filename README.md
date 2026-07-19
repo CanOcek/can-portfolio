@@ -38,6 +38,28 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Business Development Radar Streamlit Embed
+
+The native Streamlit preview is available at:
+
+```text
+/work/web-intelligence-rag-pipeline/streamlit/
+```
+
+By default, the iframe points to the local Streamlit server:
+
+```text
+http://localhost:8501/?embed=true
+```
+
+For a deployed preview or future subdomain, set this public Astro environment variable:
+
+```text
+PUBLIC_RADAR_STREAMLIT_URL=https://radar.example.com/?embed=true
+```
+
+Temporary Vercel setup can host this Astro portfolio while the Streamlit app runs on a Streamlit-capable host. The Vercel environment variable should point to that external Streamlit URL.
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

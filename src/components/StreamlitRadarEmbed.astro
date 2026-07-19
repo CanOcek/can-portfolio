@@ -1,0 +1,133 @@
+---
+const configuredUrl = import.meta.env.PUBLIC_RADAR_STREAMLIT_URL?.trim();
+const streamlitUrl = configuredUrl || "http://localhost:8501/?embed=true";
+---
+
+<section class="streamlit-radar-embed" aria-label="Business Development Radar Streamlit embed">
+  <header class="streamlit-radar-embed__bar">
+    <a class="streamlit-radar-embed__back" href="/work/web-intelligence-rag-pipeline/">Radar case study</a>
+    <div class="streamlit-radar-embed__title">
+      <p>Business Development Radar</p>
+      <span>Native Streamlit embed</span>
+    </div>
+    <nav class="streamlit-radar-embed__actions" aria-label="Radar demo links">
+      <a href="/work/web-intelligence-rag-pipeline/demo/">Astro demo</a>
+      <a href={streamlitUrl} target="_blank" rel="noreferrer">Open app</a>
+    </nav>
+  </header>
+
+  <iframe
+    class="streamlit-radar-embed__frame"
+    src={streamlitUrl}
+    title="Business Development Radar Streamlit app"
+    loading="eager"
+    referrerpolicy="no-referrer-when-downgrade"
+    allow="fullscreen"
+  ></iframe>
+</section>
+
+<style>
+  .streamlit-radar-embed {
+    background: #0e1117;
+    color: #f8fafc;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  .streamlit-radar-embed__bar {
+    align-items: center;
+    background: rgb(14 17 23 / 0.96);
+    border-block-end: 1px solid rgb(255 255 255 / 0.12);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(8rem, 1fr) auto minmax(8rem, 1fr);
+    min-height: 3.5rem;
+    padding: 0.65rem clamp(0.85rem, 2vw, 1.5rem);
+  }
+
+  .streamlit-radar-embed__title {
+    display: grid;
+    gap: 0.1rem;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .streamlit-radar-embed__title p,
+  .streamlit-radar-embed__title span {
+    margin: 0;
+  }
+
+  .streamlit-radar-embed__title p {
+    color: #f8fafc;
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
+  .streamlit-radar-embed__title span {
+    color: rgb(248 250 252 / 0.68);
+    font-size: 0.78rem;
+  }
+
+  .streamlit-radar-embed__back,
+  .streamlit-radar-embed__actions a {
+    align-items: center;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: 6px;
+    color: rgb(248 250 252 / 0.86);
+    display: inline-flex;
+    font-size: 0.86rem;
+    font-weight: 700;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.75rem;
+    text-decoration: none;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .streamlit-radar-embed__back {
+    justify-self: start;
+  }
+
+  .streamlit-radar-embed__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  .streamlit-radar-embed__back:hover,
+  .streamlit-radar-embed__back:focus-visible,
+  .streamlit-radar-embed__actions a:hover,
+  .streamlit-radar-embed__actions a:focus-visible {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(126 199 190 / 0.78);
+    color: #ffffff;
+  }
+
+  .streamlit-radar-embed__frame {
+    background: #0e1117;
+    border: 0;
+    block-size: 100%;
+    inline-size: 100%;
+    min-height: calc(100vh - 3.5rem);
+  }
+
+  @media (max-width: 760px) {
+    .streamlit-radar-embed__bar {
+      grid-template-columns: 1fr;
+    }
+
+    .streamlit-radar-embed__title {
+      justify-items: start;
+      order: -1;
+      text-align: start;
+    }
+
+    .streamlit-radar-embed__actions {
+      justify-content: flex-start;
+    }
+  }
+</style>

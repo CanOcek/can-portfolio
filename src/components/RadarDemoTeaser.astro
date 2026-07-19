@@ -1,4 +1,4 @@
-<a class="radar-demo-teaser" href="/work/web-intelligence-rag-pipeline/demo/">
+<article class="radar-demo-teaser">
   <figure class="radar-demo-teaser__media">
     <img
       src="/images/projects/radar-extracted/radar-pdf-obj-320.png"
@@ -6,15 +6,18 @@
     />
   </figure>
   <div class="radar-demo-teaser__body">
-    <p class="radar-demo-teaser__eyebrow">Scoped demo</p>
-    <h3>Open the Radar demo</h3>
+    <p class="radar-demo-teaser__eyebrow">Interactive demo</p>
+    <h3>Open the Radar demos</h3>
     <p>
-      The future demo will use approved sample data, pre-generated synthesis, functional signal
-      filtering, and bounded retrieval so the evidence chain is visible without live LLM generation.
+      Compare the native Streamlit interface with the bounded Astro version that uses redacted
+      sample data and pre-generated synthesis.
     </p>
-    <span class="radar-demo-teaser__button">Open demo page</span>
+    <div class="radar-demo-teaser__actions">
+      <a class="radar-demo-teaser__button" href="/work/web-intelligence-rag-pipeline/streamlit/">Native Streamlit</a>
+      <a class="radar-demo-teaser__button is-secondary" href="/work/web-intelligence-rag-pipeline/demo/">Astro demo</a>
+    </div>
   </div>
-</a>
+</article>
 
 <style>
   .radar-demo-teaser {
@@ -29,17 +32,6 @@
     gap: 0;
     grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
     overflow: hidden;
-    text-decoration: none;
-    transition:
-      border-color var(--transition-fast),
-      transform var(--transition-fast);
-  }
-
-  .radar-demo-teaser:hover,
-  .radar-demo-teaser:focus-visible {
-    border-color: var(--color-cool);
-    color: var(--color-text);
-    transform: translateY(-2px);
   }
 
   .radar-demo-teaser__media {
@@ -90,10 +82,37 @@
     display: inline-flex;
     font-weight: 700;
     justify-content: center;
-    justify-self: start;
-    margin-block-start: var(--space-2);
     min-height: 2.75rem;
     padding: 0.7rem 1rem;
+    text-decoration: none;
+    transition:
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .radar-demo-teaser__button:hover,
+  .radar-demo-teaser__button:focus-visible {
+    color: var(--color-bg);
+    transform: translateY(-2px);
+  }
+
+  .radar-demo-teaser__button.is-secondary {
+    background: transparent;
+    border: var(--border-subtle);
+    color: var(--color-text);
+  }
+
+  .radar-demo-teaser__button.is-secondary:hover,
+  .radar-demo-teaser__button.is-secondary:focus-visible {
+    border-color: var(--color-cool);
+    color: var(--color-text);
+  }
+
+  .radar-demo-teaser__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block-start: var(--space-2);
   }
 
   @media (max-width: 820px) {
