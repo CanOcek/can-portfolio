@@ -1,6 +1,15 @@
 ---
 interface Props {
-  kind: "pipeline" | "music" | "crm" | "procedural" | "pathfinding" | "hardware";
+  kind:
+    | "pipeline"
+    | "music"
+    | "crm"
+    | "procedural"
+    | "pathfinding"
+    | "hardware"
+    | "game"
+    | "database"
+    | "aircraft";
   label: string;
   caption?: string;
   compact?: boolean;
@@ -68,6 +77,37 @@ const { kind, label, caption, compact = false } = Astro.props;
           <span class="diagram--hardware__coil"></span>
           <span class="diagram--hardware__lens"></span>
           <span class="diagram--hardware__beam"></span>
+        </div>
+      )
+    }
+    {
+      kind === "game" && (
+        <div class="diagram diagram--game" aria-hidden="true">
+          <span class="diagram--game__room"></span>
+          <span class="diagram--game__player"></span>
+          <span class="diagram--game__enemy"></span>
+          <span class="diagram--game__enemy"></span>
+          <span class="diagram--game__loot"></span>
+        </div>
+      )
+    }
+    {
+      kind === "database" && (
+        <div class="diagram diagram--database" aria-hidden="true">
+          <span>UI</span>
+          <i></i>
+          <span>API</span>
+          <i></i>
+          <span>DB</span>
+        </div>
+      )
+    }
+    {
+      kind === "aircraft" && (
+        <div class="diagram diagram--aircraft" aria-hidden="true">
+          <span class="diagram--aircraft__wing"></span>
+          <span class="diagram--aircraft__body"></span>
+          <span class="diagram--aircraft__print-lines"></span>
         </div>
       )
     }
@@ -312,6 +352,124 @@ const { kind, label, caption, compact = false } = Astro.props;
     grid-column: 1 / -1;
   }
 
+  .diagram--game {
+    aspect-ratio: 1;
+    display: grid;
+    inline-size: min(11rem, 82%);
+    justify-self: center;
+    position: relative;
+  }
+
+  .diagram--game__room {
+    background:
+      linear-gradient(90deg, rgb(244 241 234 / 0.08) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(244 241 234 / 0.08) 1px, transparent 1px),
+      rgb(5 6 8 / 0.68);
+    background-size: 22px 22px;
+    border: 1px solid rgb(244 241 234 / 0.16);
+    border-radius: 10px;
+    inset: 0;
+    position: absolute;
+  }
+
+  .diagram--game__player,
+  .diagram--game__enemy,
+  .diagram--game__loot {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    position: absolute;
+  }
+
+  .diagram--game__player {
+    background: var(--color-cool);
+    inline-size: 18%;
+    inset-block-end: 20%;
+    inset-inline-start: 24%;
+  }
+
+  .diagram--game__enemy {
+    background: var(--color-accent-strong);
+    inline-size: 14%;
+  }
+
+  .diagram--game__enemy:nth-child(3) {
+    inset-block-start: 22%;
+    inset-inline-end: 24%;
+  }
+
+  .diagram--game__enemy:nth-child(4) {
+    inset-block-start: 52%;
+    inset-inline-end: 34%;
+  }
+
+  .diagram--game__loot {
+    background: var(--color-focus);
+    border-radius: 50%;
+    inline-size: 9%;
+    inset-block-start: 28%;
+    inset-inline-start: 30%;
+  }
+
+  .diagram--database {
+    align-items: center;
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+  }
+
+  .diagram--database span {
+    background: rgb(5 6 8 / 0.72);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: var(--space-3);
+    text-align: center;
+  }
+
+  .diagram--database i {
+    background: var(--color-cool);
+    block-size: 2px;
+    inline-size: 28px;
+  }
+
+  .diagram--aircraft {
+    aspect-ratio: 1.8 / 1;
+    inline-size: min(14rem, 90%);
+    justify-self: center;
+    position: relative;
+  }
+
+  .diagram--aircraft__wing {
+    background: linear-gradient(135deg, rgb(126 199 190 / 0.65), rgb(122 167 255 / 0.18));
+    border: 1px solid rgb(244 241 234 / 0.18);
+    clip-path: polygon(50% 8%, 92% 82%, 50% 62%, 8% 82%);
+    inset: 0;
+    position: absolute;
+  }
+
+  .diagram--aircraft__body {
+    background: rgb(244 241 234 / 0.78);
+    border-radius: 999px;
+    block-size: 72%;
+    inline-size: 8%;
+    inset-block-start: 12%;
+    inset-inline-start: 46%;
+    position: absolute;
+  }
+
+  .diagram--aircraft__print-lines {
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0 8px,
+        rgb(244 241 234 / 0.14) 8px 10px
+      );
+    inset: 12% 16%;
+    position: absolute;
+  }
+
   .visual-placeholder.is-compact .diagram--pipeline {
     gap: var(--space-2);
   }
@@ -339,12 +497,31 @@ const { kind, label, caption, compact = false } = Astro.props;
     min-height: 7rem;
   }
 
+  .visual-placeholder.is-compact .diagram--database span {
+    font-size: 0.72rem;
+    padding: var(--space-2);
+  }
+
+  .visual-placeholder.is-compact .diagram--database {
+    gap: var(--space-2);
+  }
+
   @media (max-width: 700px) {
     .diagram--pipeline {
       grid-template-columns: 1fr;
     }
 
     .diagram--pipeline i {
+      block-size: 16px;
+      inline-size: 2px;
+      justify-self: center;
+    }
+
+    .diagram--database {
+      grid-template-columns: 1fr;
+    }
+
+    .diagram--database i {
       block-size: 16px;
       inline-size: 2px;
       justify-self: center;

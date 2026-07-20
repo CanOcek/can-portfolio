@@ -1,0 +1,744 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TagList from "./TagList.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { title, description, categories, technologies, role, status, draft, date, cover } = project.data;
+
+const isRoguelike = project.id === "libgdx-top-down-roguelike";
+
+const storeConfig = isRoguelike
+  ? {
+      variant: "roguelike",
+      primaryAlt: "Placeholder top-down roguelike gameplay screen.",
+      primaryCaption: "Placeholder gameplay capture for the libGDX roguelike prototype.",
+      mediaItems: [
+        { label: "Gameplay loop", placeholder: "dungeon", active: true },
+        { label: "Player systems", placeholder: "combat" },
+        { label: "Rooms and map", placeholder: "map" },
+        { label: "Build notes", placeholder: "build" },
+      ],
+      aboutEyebrow: "About this prototype",
+      aboutTitle: "A Java game prototype built around core roguelike systems",
+      aboutParagraphs: [
+        "This page is structured as a playable-project storefront while the exact gameplay media is still pending. The current source-safe framing is intentionally limited to what the CV confirms: a top-down roguelike built with libGDX, focused on core functionality.",
+        "The page is ready to absorb real screenshots, short clips, mechanics notes, and a fuller breakdown once the project details are selected for publication.",
+      ],
+      featureHighlights: [
+        "Top-down roguelike prototype built with libGDX",
+        "Core game functionality implemented in Java",
+        "Placeholder space for player movement and interaction systems",
+        "Placeholder space for enemy, room, or item behavior",
+        "Placeholder space for UI, state, and progression notes",
+        "Ready for gameplay screenshots, clips, and architecture notes",
+      ],
+      systemsTitle: "Gameplay, state, and loop",
+      systemCards: [
+        {
+          title: "Game loop",
+          body: "A libGDX project naturally centers on update and render cycles, input handling, and state transitions between gameplay views.",
+        },
+        {
+          title: "Player systems",
+          body: "This section can later describe movement, collision, interaction, combat, inventory, or progression once the exact mechanics are confirmed.",
+        },
+        {
+          title: "Content structure",
+          body: "The storefront layout leaves room for map, room, enemy, item, and UI architecture notes without presenting unverified details as finished facts.",
+        },
+      ],
+      capsuleMeta: [
+        { label: "Developer", value: "Can Ocek" },
+        { label: "Context", value: "Game-development project" },
+        { label: "Timeline", value: date ?? "12/2024 - 02/2025" },
+        { label: "Status", value: status },
+      ],
+      systemSpecs: [
+        { label: "Framework", value: "libGDX" },
+        { label: "Language", value: "Java" },
+        { label: "Perspective", value: "Top-down" },
+        { label: "Genre", value: "Roguelike prototype" },
+      ],
+      notesTitle: "What needs detail next",
+      noteParagraphs: [
+        "The next content pass should identify the actual mechanics, screenshots, playable build status, repository status, and whether the work was solo or collaborative.",
+        "Once those details are confirmed, this page can become a compact game case study focused on implementation decisions rather than only a placeholder entry.",
+      ],
+    }
+  : {
+      variant: "terrain",
+      primaryAlt: cover?.alt ?? "In-game view from behind a plane flying above generated terrain.",
+      primaryCaption: cover?.caption ?? "In-game terrain and flight view from the Unity prototype.",
+      mediaItems: [
+        { label: "Terrain flight prototype screenshot.", src: "/images/projects/procedural-terrain-cover.png", active: true },
+        { label: "Terrain generator", placeholder: "terrain" },
+        { label: "Flight controls", placeholder: "flight" },
+        { label: "Build notes", placeholder: "build" },
+      ],
+      aboutEyebrow: "About this prototype",
+      aboutTitle: "Relaxed flight over generated terrain",
+      aboutParagraphs: [
+        "This Unity prototype was built around a client brief for a low-pressure flying and exploration game. The core work was not missions or combat, but a terrain system that could keep generating around the player while still allowing the world to be tuned through public parameters.",
+        "The project combines procedural mesh generation, chunk loading, seed-based replay, and a simple aircraft controller. It is best read as an early technical game prototype with clear success criteria, client testing, and honest limitations.",
+      ],
+      featureHighlights: [
+        "Procedural terrain generated from layered Perlin noise",
+        "Chunk-based world loading around the player",
+        "Keyboard-controlled pitch, roll, yaw, and throttle",
+        "Seed-based terrain replayability",
+        "Editable terrain colors, shape, and aircraft handling parameters",
+        "Standalone prototype builds tested for Windows and Mac",
+      ],
+      systemsTitle: "Terrain, chunks, and flight",
+      systemCards: [
+        {
+          title: "Procedural terrain",
+          body: "Height maps were built from layered Perlin noise, then converted into Unity mesh vertices, triangles, UVs, and color maps.",
+        },
+        {
+          title: "Chunk loading",
+          body: "Terrain segments were generated around the plane so the world could feel larger without loading one unmanageable mesh.",
+        },
+        {
+          title: "Flight model",
+          body: "The aircraft used keyboard controls and simplified speed handling with throttle, drag, and frame-time updates.",
+        },
+      ],
+      capsuleMeta: [
+        { label: "Developer", value: "Can Ocek" },
+        { label: "Context", value: "IB Computer Science project" },
+        { label: "Original release", value: date ?? "2020" },
+        { label: "Status", value: status },
+      ],
+      systemSpecs: [
+        { label: "Engine", value: "Unity" },
+        { label: "Language", value: "C#" },
+        { label: "World", value: "Procedural terrain chunks" },
+        { label: "Controls", value: "Keyboard flight model" },
+      ],
+      notesTitle: "What I would improve now",
+      noteParagraphs: [
+        "The next version would focus on smoother chunk seams, proper pause and menu structure, camera control, real crash-and-restart behavior, and a more realistic flight model with lift and torque.",
+        "I would also separate the terrain-generation system from the gameplay layer so it could be tested and shown as a reusable procedural system rather than only as part of a game scene.",
+      ],
+    };
+---
+
+<article class:list={["store-page", `store-page--${storeConfig.variant}`]}>
+  <header class="store-hero">
+    <div class="container narrow store-hero__inner">
+      <p class="eyebrow">Projects / {draft ? "Draft" : status}</p>
+      <h1>{title}</h1>
+      <p class="lede">{description}</p>
+      {date && <p class="muted store-hero__date">{date}</p>}
+    </div>
+  </header>
+
+  <section class="store-shell container" aria-label={`${title} project overview`}>
+    <div class="store-main">
+      <div class="media-stage">
+        <figure class="media-stage__primary">
+          {
+            !isRoguelike ? (
+              <img
+                src={cover?.src ?? "/images/projects/procedural-terrain-cover.png"}
+                alt={storeConfig.primaryAlt}
+              />
+            ) : (
+              <div
+                class="media-stage__primary-placeholder media-stage__primary-placeholder--roguelike"
+                role="img"
+                aria-label={storeConfig.primaryAlt}
+              >
+                <span class="roguelike-room"></span>
+                <span class="roguelike-player"></span>
+                <span class="roguelike-enemy"></span>
+                <span class="roguelike-enemy"></span>
+                <span class="roguelike-loot"></span>
+              </div>
+            )
+          }
+          <figcaption>{storeConfig.primaryCaption}</figcaption>
+          <span class="media-stage__play" aria-hidden="true"></span>
+        </figure>
+
+        <div class="media-strip" aria-label="Prototype media placeholders">
+          {
+            storeConfig.mediaItems.map((item) => (
+              <figure
+                class:list={[
+                  "media-strip__item",
+                  { "is-active": item.active },
+                  item.placeholder && "media-strip__placeholder",
+                  item.placeholder && `media-strip__placeholder--${item.placeholder}`,
+                ]}
+              >
+                {item.src ? <img src={item.src} alt={item.label} /> : <span>{item.label}</span>}
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+
+      <section class="store-section" aria-labelledby="about-game-title">
+        <div class="store-section__heading">
+          <p class="eyebrow">{storeConfig.aboutEyebrow}</p>
+          <h2 id="about-game-title">{storeConfig.aboutTitle}</h2>
+        </div>
+        <div class="store-copy">
+          {storeConfig.aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      </section>
+
+      <section class="store-section" aria-labelledby="features-title">
+        <div class="store-section__heading">
+          <p class="eyebrow">Key features</p>
+          <h2 id="features-title">What was implemented</h2>
+        </div>
+        <ul class="feature-list">
+          {storeConfig.featureHighlights.map((feature) => <li>{feature}</li>)}
+        </ul>
+      </section>
+
+      <section class="store-section store-section--grid" aria-labelledby="systems-title">
+        <div class="store-section__heading">
+          <p class="eyebrow">Systems</p>
+          <h2 id="systems-title">{storeConfig.systemsTitle}</h2>
+        </div>
+        <div class="system-grid">
+          {
+            storeConfig.systemCards.map((card) => (
+              <article>
+                <strong>{card.title}</strong>
+                <p>{card.body}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+
+    <aside class="store-sidebar" aria-label="Prototype details">
+      <div class="capsule-card capsule-card--summary">
+        <p>{description}</p>
+        <TagList items={categories} label={`Categories for ${title}`} />
+      </div>
+
+      <div class="capsule-card">
+        <dl class="meta-table">
+          {storeConfig.capsuleMeta.map((item) => (
+            <>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+
+      <div class="capsule-card">
+        <p class="capsule-card__label">Role</p>
+        <p>{role}</p>
+      </div>
+
+      <div class="capsule-card">
+        <p class="capsule-card__label">Tech stack</p>
+        <TagList items={technologies} label={`Technologies and themes for ${title}`} />
+      </div>
+
+      <div class="capsule-card">
+        <p class="capsule-card__label">System requirements</p>
+        <dl class="spec-list">
+          {storeConfig.systemSpecs.map((item) => (
+            <>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </>
+          ))}
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <section class="store-notes">
+    <div class="container store-notes__inner">
+      <div>
+        <p class="eyebrow">Development notes</p>
+        <h2>{storeConfig.notesTitle}</h2>
+      </div>
+      <div class="store-copy">
+        {storeConfig.noteParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+</article>
+
+<style>
+  .store-page {
+    background:
+      linear-gradient(180deg, rgb(35 54 72 / 0.72), transparent 34rem),
+      linear-gradient(90deg, rgb(126 199 190 / 0.08), transparent 32rem),
+      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      var(--color-bg);
+    background-size: auto, auto, 72px 72px, auto;
+  }
+
+  .store-page--roguelike {
+    background:
+      linear-gradient(180deg, rgb(61 42 66 / 0.66), transparent 34rem),
+      linear-gradient(90deg, rgb(213 139 84 / 0.09), transparent 32rem),
+      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      var(--color-bg);
+    background-size: auto, auto, 72px 72px, auto;
+  }
+
+  .store-hero {
+    padding-block: var(--space-8) var(--space-7);
+  }
+
+  .store-hero__inner {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .store-hero h1 {
+    font-family: var(--font-serif);
+    font-size: 4.5rem;
+    font-weight: 500;
+    line-height: 1.05;
+    max-width: 14ch;
+  }
+
+  .store-hero .lede {
+    margin-block-start: var(--space-5);
+  }
+
+  .store-hero__date {
+    margin-block-start: var(--space-4);
+  }
+
+  .store-shell {
+    align-items: start;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: minmax(0, 1.65fr) minmax(19rem, 0.75fr);
+    padding-block-end: var(--space-8);
+  }
+
+  .store-main,
+  .store-sidebar {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .media-stage {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.055), transparent),
+      rgb(13 19 27 / 0.94);
+    border: 1px solid rgb(126 199 190 / 0.16);
+    box-shadow: 0 24px 80px rgb(0 0 0 / 0.5);
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+
+  .media-stage__primary {
+    background: #020508;
+    margin: 0;
+    position: relative;
+  }
+
+  .media-stage__primary img {
+    aspect-ratio: 16 / 9;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  .media-stage__primary-placeholder {
+    aspect-ratio: 16 / 9;
+    background: #020508;
+    inline-size: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .media-stage__primary-placeholder--roguelike {
+    background:
+      radial-gradient(circle at 74% 28%, rgb(255 210 125 / 0.16), transparent 12%),
+      linear-gradient(90deg, rgb(244 241 234 / 0.08) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(244 241 234 / 0.08) 1px, transparent 1px),
+      linear-gradient(135deg, rgb(19 16 24), rgb(7 10 14));
+    background-size: auto, 42px 42px, 42px 42px, auto;
+  }
+
+  .roguelike-room {
+    background: rgb(5 6 8 / 0.54);
+    border: 1px solid rgb(244 241 234 / 0.14);
+    inset: 12% 12%;
+    position: absolute;
+  }
+
+  .roguelike-room::before,
+  .roguelike-room::after {
+    background: rgb(5 6 8 / 0.8);
+    border: 1px solid rgb(244 241 234 / 0.12);
+    content: "";
+    position: absolute;
+  }
+
+  .roguelike-room::before {
+    block-size: 28%;
+    inline-size: 38%;
+    inset-block-start: 12%;
+    inset-inline-start: 10%;
+  }
+
+  .roguelike-room::after {
+    block-size: 24%;
+    inline-size: 30%;
+    inset-block-end: 14%;
+    inset-inline-end: 12%;
+  }
+
+  .roguelike-player,
+  .roguelike-enemy,
+  .roguelike-loot {
+    aspect-ratio: 1;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .roguelike-player {
+    background: var(--color-cool);
+    box-shadow: 0 0 28px rgb(126 199 190 / 0.45);
+    inline-size: 7%;
+    inset-block-end: 30%;
+    inset-inline-start: 28%;
+  }
+
+  .roguelike-enemy {
+    background: var(--color-accent-strong);
+    inline-size: 5.5%;
+  }
+
+  .roguelike-enemy:nth-of-type(3) {
+    inset-block-start: 31%;
+    inset-inline-end: 29%;
+  }
+
+  .roguelike-enemy:nth-of-type(4) {
+    inset-block-end: 28%;
+    inset-inline-end: 39%;
+  }
+
+  .roguelike-loot {
+    background: var(--color-focus);
+    border-radius: 50%;
+    box-shadow: 0 0 22px rgb(255 210 125 / 0.46);
+    inline-size: 3.8%;
+    inset-block-start: 34%;
+    inset-inline-start: 38%;
+  }
+
+  .media-stage__primary figcaption {
+    background: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.78));
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding: var(--space-5) var(--space-4) var(--space-3);
+    position: absolute;
+  }
+
+  .media-stage__play {
+    aspect-ratio: 1;
+    background: rgb(5 6 8 / 0.74);
+    border: 1px solid rgb(244 241 234 / 0.24);
+    border-radius: 50%;
+    box-shadow: 0 12px 34px rgb(0 0 0 / 0.38);
+    inline-size: 4.5rem;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  .media-stage__play::before {
+    border-block: 0.75rem solid transparent;
+    border-inline-start: 1.15rem solid var(--color-text);
+    content: "";
+    inset-block-start: 50%;
+    inset-inline-start: 54%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  .media-strip {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .media-strip__item {
+    aspect-ratio: 16 / 9;
+    background: rgb(5 6 8 / 0.72);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .media-strip__item.is-active {
+    border-color: var(--color-cool);
+  }
+
+  .media-strip__item img {
+    block-size: 100%;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  .media-strip__placeholder {
+    align-items: end;
+    display: grid;
+    padding: var(--space-2);
+  }
+
+  .media-strip__placeholder span {
+    color: var(--color-text);
+    font-size: 0.78rem;
+    font-weight: 800;
+    position: relative;
+    z-index: 1;
+  }
+
+  .media-strip__placeholder::before {
+    content: "";
+    inset: 0;
+    opacity: 0.82;
+    position: absolute;
+  }
+
+  .media-strip__placeholder--terrain::before {
+    background:
+      linear-gradient(135deg, transparent 48%, rgb(126 199 190 / 0.22) 49% 52%, transparent 53%),
+      repeating-linear-gradient(0deg, rgb(244 241 234 / 0.08) 0 1px, transparent 1px 16px),
+      linear-gradient(135deg, rgb(41 64 80), rgb(10 17 25));
+  }
+
+  .media-strip__placeholder--flight::before {
+    background:
+      radial-gradient(circle at 50% 46%, rgb(255 210 125 / 0.2), transparent 16%),
+      linear-gradient(135deg, rgb(126 199 190 / 0.28), transparent 48%),
+      rgb(12 18 25);
+  }
+
+  .media-strip__placeholder--build::before {
+    background:
+      linear-gradient(90deg, rgb(244 241 234 / 0.1) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(244 241 234 / 0.1) 1px, transparent 1px),
+      linear-gradient(135deg, rgb(213 139 84 / 0.22), rgb(11 17 24));
+    background-size: 18px 18px, 18px 18px, auto;
+  }
+
+  .media-strip__placeholder--dungeon::before {
+    background:
+      linear-gradient(90deg, rgb(244 241 234 / 0.1) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(244 241 234 / 0.1) 1px, transparent 1px),
+      linear-gradient(135deg, rgb(42 34 50), rgb(8 11 15));
+    background-size: 16px 16px, 16px 16px, auto;
+  }
+
+  .media-strip__placeholder--combat::before {
+    background:
+      radial-gradient(circle at 35% 52%, rgb(126 199 190 / 0.35), transparent 13%),
+      radial-gradient(circle at 66% 38%, rgb(255 176 113 / 0.32), transparent 12%),
+      linear-gradient(135deg, rgb(32 26 38), rgb(9 13 17));
+  }
+
+  .media-strip__placeholder--map::before {
+    background:
+      linear-gradient(90deg, transparent 48%, rgb(126 199 190 / 0.22) 49% 52%, transparent 53%),
+      linear-gradient(180deg, transparent 48%, rgb(213 139 84 / 0.2) 49% 52%, transparent 53%),
+      rgb(12 18 25);
+    background-size: 42px 42px, 42px 42px, auto;
+  }
+
+  .store-section,
+  .capsule-card {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.045), transparent),
+      rgb(15 22 31 / 0.92);
+    border: 1px solid rgb(255 255 255 / 0.09);
+  }
+
+  .store-section {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-5);
+  }
+
+  .store-section__heading {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .store-section h2,
+  .store-notes h2 {
+    font-family: var(--font-sans);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .store-copy {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .feature-list {
+    display: grid;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+  }
+
+  .feature-list li {
+    background: rgb(5 6 8 / 0.42);
+    border-inline-start: 3px solid var(--color-cool);
+    color: var(--color-text-muted);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .system-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .system-grid article {
+    background: rgb(5 6 8 / 0.36);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+  }
+
+  .system-grid strong {
+    color: var(--color-text);
+  }
+
+  .system-grid p {
+    font-size: 0.94rem;
+  }
+
+  .store-sidebar {
+    position: sticky;
+    top: var(--space-5);
+  }
+
+  .capsule-card {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .capsule-card--summary {
+    background:
+      linear-gradient(180deg, rgb(126 199 190 / 0.1), transparent 56%),
+      rgb(15 22 31 / 0.96);
+  }
+
+  .capsule-card__label {
+    color: var(--color-accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .meta-table,
+  .spec-list {
+    display: grid;
+    gap: var(--space-2) var(--space-3);
+    grid-template-columns: minmax(6rem, auto) minmax(0, 1fr);
+    margin: 0;
+  }
+
+  .meta-table dt,
+  .spec-list dt {
+    color: var(--color-text-subtle);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .meta-table dd,
+  .spec-list dd {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .store-notes {
+    background:
+      linear-gradient(180deg, rgb(17 20 26 / 0.92), rgb(5 6 8 / 0.86)),
+      linear-gradient(90deg, transparent, rgb(213 139 84 / 0.12), transparent);
+    border-block-start: 1px solid rgb(255 255 255 / 0.1);
+    padding-block: var(--space-8);
+  }
+
+  .store-notes__inner {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 0.65fr) minmax(0, 1fr);
+  }
+
+  @media (max-width: 920px) {
+    .store-shell,
+    .store-notes__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .store-sidebar {
+      position: static;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .store-hero h1 {
+      font-size: 3.2rem;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .media-strip,
+    .system-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .media-stage__primary figcaption {
+      position: static;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .store-hero h1 {
+      font-size: 2.75rem;
+    }
+
+    .media-strip,
+    .system-grid,
+    .meta-table,
+    .spec-list {
+      grid-template-columns: 1fr;
+    }
+
+    .store-section,
+    .capsule-card {
+      padding: var(--space-4);
+    }
+  }
+</style>

@@ -5,6 +5,7 @@ import TagList from "../../components/TagList.astro";
 import VisualPlaceholder from "../../components/VisualPlaceholder.astro";
 import MazePathfindingDemo from "../../components/MazePathfindingDemo.astro";
 import RadarDemoTeaser from "../../components/RadarDemoTeaser.astro";
+import GameStoreProjectPage from "../../components/GameStoreProjectPage.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -25,203 +26,212 @@ const { title, description, categories, technologies, role, status, draft, date,
 const hasCaseStudy = project.body?.trim().length > 0;
 const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
 const hasRadarDemoTeaser = project.id === "web-intelligence-rag-pipeline";
+const hasGameStorePage = ["procedural-planet-generation", "libgdx-top-down-roguelike"].includes(project.id);
 ---
 
 <BaseLayout title={title} description={description}>
-  <header class="page-header container narrow">
-    <p class="eyebrow">Work / {draft ? "Draft" : status}</p>
-    <h1>{title}</h1>
-    <p class="lede">{description}</p>
-    {date && <p class="muted with-space">{date}</p>}
-    {
-      hasRadarDemoTeaser && (
-        <div class="button-row" aria-label="Business Development Radar primary actions">
-          <a class="button primary" href="/radar/">Try demo</a>
-          <a class="button" href="#case-study-title">Read case study</a>
-        </div>
-      )
-    }
-  </header>
-
   {
-    hasInteractiveMazeDemo ? (
-      <>
-        <section class="section interactive-demo-block" aria-labelledby="interactive-demo-title">
-          <div class="container interactive-demo-section">
-            <div class="interactive-demo-intro">
-              <p class="eyebrow">Interactive demo</p>
-              <h2 id="interactive-demo-title">Same maze, two search strategies</h2>
-              <p>
-                Generate a seeded braided maze and watch Dijkstra and A* explore it from the same
-                start and destination points. The browser version is a TypeScript modernization of
-                the original C# experiment.
-              </p>
-            </div>
-            <MazePathfindingDemo />
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="snapshot-title">
-          <div class="container two-column">
-            <div>
-              <p class="eyebrow">Project snapshot</p>
-              <h2 id="snapshot-title">Research, code, and modernization</h2>
-            </div>
-            <div class="snapshot-grid">
-              <article class="snapshot-card">
-                <p class="snapshot-card__label">Role</p>
-                <p>{role}</p>
-              </article>
-              <article class="snapshot-card">
-                <p class="snapshot-card__label">Original implementation</p>
-                <p>C# console experiment for maze generation, solver benchmarking, and runtime analysis.</p>
-              </article>
-              <article class="snapshot-card">
-                <p class="snapshot-card__label">Browser demo</p>
-                <p>
-                  TypeScript and canvas port with seeded mazes, priority queues, and a corrected A*
-                  cost model.
-                </p>
-              </article>
-              <article class="snapshot-card">
-                <p class="snapshot-card__label">Tools and themes</p>
-                <TagList items={technologies} label={`Technologies and themes for ${title}`} />
-              </article>
-            </div>
-          </div>
-        </section>
-      </>
+    hasGameStorePage ? (
+      <GameStoreProjectPage project={project} />
     ) : (
       <>
-        <section class="section section--media" aria-labelledby="visual-title">
-          <div class="container project-visual-section">
-            <div class="stack">
-              <p class="eyebrow">{cover ? "Project cover" : "Visual placeholder"}</p>
-              <h2 id="visual-title">{visual.label}</h2>
-              <p>{visual.caption}</p>
-            </div>
-            {
-              cover ? (
-                <figure class="project-cover">
-                  <img src={cover.src} alt={cover.alt} />
-                  {cover.caption && <figcaption>{cover.caption}</figcaption>}
-                </figure>
-              ) : (
-                <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
-              )
-            }
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="context-title">
-          <div class="container two-column">
-            <div>
-              <p class="eyebrow">Context</p>
-              <h2 id="context-title">Project frame</h2>
-            </div>
-            <div class="stack">
-              <p>{description}</p>
-              <TagList items={categories} label={`Categories for ${title}`} />
-            </div>
-          </div>
-        </section>
+        <header class="page-header container narrow">
+          <p class="eyebrow">Projects / {draft ? "Draft" : status}</p>
+          <h1>{title}</h1>
+          <p class="lede">{description}</p>
+          {date && <p class="muted with-space">{date}</p>}
+          {
+            hasRadarDemoTeaser && (
+              <div class="button-row" aria-label="Business Development Radar primary actions">
+                <a class="button primary" href="/radar/">Try demo</a>
+                <a class="button" href="#case-study-title">Read case study</a>
+              </div>
+            )
+          }
+        </header>
 
         {
-          hasRadarDemoTeaser && (
-            <section class="section interactive-demo-block" aria-labelledby="radar-demo-title">
-              <div class="container interactive-demo-section">
-                <div class="interactive-demo-intro">
-                  <p class="eyebrow">Interactive demo</p>
-                  <h2 id="radar-demo-title">Preview the native Radar demo</h2>
-                  <p>
-                    The original Streamlit app is framed inside the portfolio so the retrieval and
-                    synthesis workflow can be reviewed in its native interface.
-                  </p>
+          hasInteractiveMazeDemo ? (
+            <>
+              <section class="section interactive-demo-block" aria-labelledby="interactive-demo-title">
+                <div class="container interactive-demo-section">
+                  <div class="interactive-demo-intro">
+                    <p class="eyebrow">Interactive demo</p>
+                    <h2 id="interactive-demo-title">Same maze, two search strategies</h2>
+                    <p>
+                      Generate a seeded braided maze and watch Dijkstra and A* explore it from the same
+                      start and destination points. The browser version is a TypeScript modernization of
+                      the original C# experiment.
+                    </p>
+                  </div>
+                  <MazePathfindingDemo />
                 </div>
-                <RadarDemoTeaser />
+              </section>
+
+              <section class="section" aria-labelledby="snapshot-title">
+                <div class="container two-column">
+                  <div>
+                    <p class="eyebrow">Project snapshot</p>
+                    <h2 id="snapshot-title">Research, code, and modernization</h2>
+                  </div>
+                  <div class="snapshot-grid">
+                    <article class="snapshot-card">
+                      <p class="snapshot-card__label">Role</p>
+                      <p>{role}</p>
+                    </article>
+                    <article class="snapshot-card">
+                      <p class="snapshot-card__label">Original implementation</p>
+                      <p>C# console experiment for maze generation, solver benchmarking, and runtime analysis.</p>
+                    </article>
+                    <article class="snapshot-card">
+                      <p class="snapshot-card__label">Browser demo</p>
+                      <p>
+                        TypeScript and canvas port with seeded mazes, priority queues, and a corrected A*
+                        cost model.
+                      </p>
+                    </article>
+                    <article class="snapshot-card">
+                      <p class="snapshot-card__label">Tools and themes</p>
+                      <TagList items={technologies} label={`Technologies and themes for ${title}`} />
+                    </article>
+                  </div>
+                </div>
+              </section>
+            </>
+          ) : (
+            <>
+              <section class="section section--media" aria-labelledby="visual-title">
+                <div class="container project-visual-section">
+                  <div class="stack">
+                    <p class="eyebrow">{cover ? "Project cover" : "Visual placeholder"}</p>
+                    <h2 id="visual-title">{visual.label}</h2>
+                    <p>{visual.caption}</p>
+                  </div>
+                  {
+                    cover ? (
+                      <figure class="project-cover">
+                        <img src={cover.src} alt={cover.alt} />
+                        {cover.caption && <figcaption>{cover.caption}</figcaption>}
+                      </figure>
+                    ) : (
+                      <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
+                    )
+                  }
+                </div>
+              </section>
+
+              <section class="section" aria-labelledby="context-title">
+                <div class="container two-column">
+                  <div>
+                    <p class="eyebrow">Context</p>
+                    <h2 id="context-title">Project frame</h2>
+                  </div>
+                  <div class="stack">
+                    <p>{description}</p>
+                    <TagList items={categories} label={`Categories for ${title}`} />
+                  </div>
+                </div>
+              </section>
+
+              {
+                hasRadarDemoTeaser && (
+                  <section class="section interactive-demo-block" aria-labelledby="radar-demo-title">
+                    <div class="container interactive-demo-section">
+                      <div class="interactive-demo-intro">
+                        <p class="eyebrow">Interactive demo</p>
+                        <h2 id="radar-demo-title">Preview the native Radar demo</h2>
+                        <p>
+                          The original Streamlit app is framed inside the portfolio so the retrieval and
+                          synthesis workflow can be reviewed in its native interface.
+                        </p>
+                      </div>
+                      <RadarDemoTeaser />
+                    </div>
+                  </section>
+                )
+              }
+
+              <section class="section" aria-labelledby="role-title">
+                <div class="container two-column">
+                  <div>
+                    <p class="eyebrow">Role</p>
+                    <h2 id="role-title">Current wording</h2>
+                  </div>
+                  <p>{role}</p>
+                </div>
+              </section>
+
+              <section class="section" aria-labelledby="involves-title">
+                <div class="container two-column">
+                  <div>
+                    <p class="eyebrow">What it involves</p>
+                    <h2 id="involves-title">Tools and themes</h2>
+                  </div>
+                  <TagList items={technologies} label={`Technologies and themes for ${title}`} />
+                </div>
+              </section>
+
+              <section class="section" aria-labelledby="confirmation-title">
+                <div class="container two-column">
+                  <div>
+                    <p class="eyebrow">What needs confirmation</p>
+                    <h2 id="confirmation-title">Before this becomes a case study</h2>
+                  </div>
+                  <div class="stack">
+                    <p class="status-note">{status}</p>
+                    <p>
+                      Confirm source documents, public links, screenshots or media, exact dates, personal
+                      contribution, and any publishable outcomes before expanding this page.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </>
+          )
+        }
+
+        {
+          hasCaseStudy && (
+            <section class="section" aria-labelledby="case-study-title">
+              <div class="container two-column">
+                <div>
+                  <p class="eyebrow">{hasInteractiveMazeDemo ? "Original research" : "Case study draft"}</p>
+                  <h2 id="case-study-title">
+                    {hasInteractiveMazeDemo ? "Method and findings" : "Source-based writeup"}
+                  </h2>
+                </div>
+                <article class="project-prose">
+                  <Content />
+                </article>
               </div>
             </section>
           )
         }
 
-        <section class="section" aria-labelledby="role-title">
-          <div class="container two-column">
-            <div>
-              <p class="eyebrow">Role</p>
-              <h2 id="role-title">Current wording</h2>
-            </div>
-            <p>{role}</p>
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="involves-title">
-          <div class="container two-column">
-            <div>
-              <p class="eyebrow">What it involves</p>
-              <h2 id="involves-title">Tools and themes</h2>
-            </div>
-            <TagList items={technologies} label={`Technologies and themes for ${title}`} />
-          </div>
-        </section>
-
-        <section class="section" aria-labelledby="confirmation-title">
-          <div class="container two-column">
-            <div>
-              <p class="eyebrow">What needs confirmation</p>
-              <h2 id="confirmation-title">Before this becomes a case study</h2>
-            </div>
-            <div class="stack">
-              <p class="status-note">{status}</p>
-              <p>
-                Confirm source documents, public links, screenshots or media, exact dates, personal
-                contribution, and any publishable outcomes before expanding this page.
-              </p>
-            </div>
-          </div>
-        </section>
+        {
+          hasInteractiveMazeDemo && (
+            <section class="section section--media" aria-labelledby="visual-title">
+              <div class="container project-visual-section">
+                <div class="stack">
+                  <p class="eyebrow">Source visual</p>
+                  <h2 id="visual-title">{visual.label}</h2>
+                  <p>{visual.caption}</p>
+                </div>
+                {
+                  cover ? (
+                    <figure class="project-cover">
+                      <img src={cover.src} alt={cover.alt} />
+                      {cover.caption && <figcaption>{cover.caption}</figcaption>}
+                    </figure>
+                  ) : (
+                    <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
+                  )
+                }
+              </div>
+            </section>
+          )
+        }
       </>
-    )
-  }
-
-  {
-    hasCaseStudy && (
-      <section class="section" aria-labelledby="case-study-title">
-        <div class="container two-column">
-          <div>
-            <p class="eyebrow">{hasInteractiveMazeDemo ? "Original research" : "Case study draft"}</p>
-            <h2 id="case-study-title">
-              {hasInteractiveMazeDemo ? "Method and findings" : "Source-based writeup"}
-            </h2>
-          </div>
-          <article class="project-prose">
-            <Content />
-          </article>
-        </div>
-      </section>
-    )
-  }
-
-  {
-    hasInteractiveMazeDemo && (
-      <section class="section section--media" aria-labelledby="visual-title">
-        <div class="container project-visual-section">
-          <div class="stack">
-            <p class="eyebrow">Source visual</p>
-            <h2 id="visual-title">{visual.label}</h2>
-            <p>{visual.caption}</p>
-          </div>
-          {
-            cover ? (
-              <figure class="project-cover">
-                <img src={cover.src} alt={cover.alt} />
-                {cover.caption && <figcaption>{cover.caption}</figcaption>}
-              </figure>
-            ) : (
-              <VisualPlaceholder kind={visual.kind} label={visual.label} caption={visual.caption} />
-            )
-          }
-        </div>
-      </section>
     )
   }
 </BaseLayout>

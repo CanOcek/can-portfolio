@@ -38,7 +38,7 @@ const featuredProjects = (await getCollection("projects"))
         <li>Music production</li>
       </ul>
       <div class="button-row" aria-label="Primary actions">
-        <a class="button primary" href="/work/">View work</a>
+        <a class="button primary" href="/work/">View projects</a>
         <a class="button" href="/contact/">Contact</a>
       </div>
     </div>
@@ -52,7 +52,7 @@ const featuredProjects = (await getCollection("projects"))
 
   <section class="section" aria-labelledby="featured-title">
     <div class="container">
-      <p class="eyebrow">Featured work</p>
+      <p class="eyebrow">Featured projects</p>
       <h2 id="featured-title">More proof points</h2>
       <div class="home-feature-grid">
         {featuredProjects.map((project) => <ProjectCard project={project} />)}
@@ -179,7 +179,7 @@ const featuredProjects = (await getCollection("projects"))
         </p>
         <div class="button-row">
           <a class="button primary" href="/contact/">Contact</a>
-          <a class="button" href="/work/">Browse work</a>
+          <a class="button" href="/work/">Browse projects</a>
         </div>
       </div>
     </div>

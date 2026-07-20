@@ -7,9 +7,12 @@ import FeaturedRadarPanel from "../../components/FeaturedRadarPanel.astro";
 const projectOrder = [
   "web-intelligence-rag-pipeline",
   "salesforce-record-label-crm",
+  "university-mock-database-app",
+  "libgdx-top-down-roguelike",
   "procedural-planet-generation",
   "dijkstra-vs-a-star",
   "magnetic-liquid-lens-microscope",
+  "rc-aircraft-uav-prototyping",
 ];
 
 const getProjectRank = (id: string) => {
@@ -24,12 +27,12 @@ const secondaryProjects = projects.filter((project) => project.id !== "web-intel
 ---
 
 <BaseLayout
-  title="Work"
-  description="Draft work index for Can Ocek across software, data, business systems, music, and research."
+  title="Projects"
+  description="Project index for Can Ocek across software, data, business systems, music, and research."
 >
   <header class="page-header container narrow">
-    <p class="eyebrow">Work</p>
-    <h1>Selected work</h1>
+    <p class="eyebrow">Projects</p>
+    <h1>Selected projects</h1>
     <p class="lede">
       Technical systems, business platforms, creative tools, and earlier research. The Business
       Development Radar is the flagship project, with a live demo and a deeper case study.
@@ -38,7 +41,7 @@ const secondaryProjects = projects.filter((project) => project.id !== "web-intel
 
   <section class="section section--flagship" aria-labelledby="work-radar-title">
     <div class="container">
-      <FeaturedRadarPanel eyebrow="Featured work" titleId="work-radar-title" />
+      <FeaturedRadarPanel eyebrow="Featured project" titleId="work-radar-title" />
     </div>
   </section>
 

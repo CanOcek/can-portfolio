@@ -20,7 +20,17 @@ const projects = defineCollection({
       caption: z.string().optional(),
     }).optional(),
     visual: z.object({
-      kind: z.enum(["pipeline", "music", "crm", "procedural", "pathfinding", "hardware"]),
+      kind: z.enum([
+        "pipeline",
+        "music",
+        "crm",
+        "procedural",
+        "pathfinding",
+        "hardware",
+        "game",
+        "database",
+        "aircraft",
+      ]),
       label: z.string(),
       caption: z.string(),
     }),
