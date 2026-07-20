@@ -26,7 +26,11 @@ const { title, description, categories, technologies, role, status, draft, date,
 const hasCaseStudy = project.body?.trim().length > 0;
 const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
 const hasRadarDemoTeaser = project.id === "web-intelligence-rag-pipeline";
-const hasGameStorePage = ["procedural-planet-generation", "libgdx-top-down-roguelike"].includes(project.id);
+const hasGameStorePage = [
+  "procedural-planet-generation",
+  "libgdx-top-down-roguelike",
+  "voxel-chunk-mesh-generation-prototype",
+].includes(project.id);
 ---
 
 <BaseLayout title={title} description={description}>

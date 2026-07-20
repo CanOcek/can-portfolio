@@ -10,10 +10,13 @@ const { project } = Astro.props;
 const { title, description, categories, technologies, role, status, draft, date, cover } = project.data;
 
 const isRoguelike = project.id === "libgdx-top-down-roguelike";
+const isMeshGeneration = project.id === "voxel-chunk-mesh-generation-prototype";
 
 const storeConfig = isRoguelike
   ? {
       variant: "roguelike",
+      primarySrc: undefined,
+      primaryPlaceholder: "roguelike",
       primaryAlt: "Placeholder top-down roguelike gameplay screen.",
       primaryCaption: "Placeholder gameplay capture for the libGDX roguelike prototype.",
       mediaItems: [
@@ -69,8 +72,107 @@ const storeConfig = isRoguelike
         "Once those details are confirmed, this page can become a compact game case study focused on implementation decisions rather than only a placeholder entry.",
       ],
     }
+  : isMeshGeneration
+    ? {
+        variant: "mesh",
+        primarySrc: undefined,
+        primaryPlaceholder: "mesh",
+        primaryAlt: "Placeholder voxel chunk terrain generated from block data.",
+        primaryCaption: "Placeholder for generated voxel terrain rendered from chunk mesh data.",
+        mediaItems: [
+          { label: "Chunk terrain", placeholder: "voxel", active: true },
+          { label: "Wireframe proof", placeholder: "wireframe" },
+          { label: "Visible faces", placeholder: "faces" },
+          { label: "Core loop", placeholder: "code" },
+        ],
+        aboutEyebrow: "About this prototype",
+        aboutTitle: "Turning a 3D block array into generated chunk meshes",
+        aboutParagraphs: [
+          "This project began as a self-directed high-school challenge: replace a naive Minecraft-style block world made from individual cube GameObjects with generated chunk meshes.",
+          "The prototype represents terrain as a 3D array of blocks. For each solid block, the mesh generator checks the six neighboring positions. If a neighbor is empty, it creates the exposed face using four vertices and two triangles. Faces between two solid blocks are skipped.",
+        ],
+        featureHighlights: [
+          "Converts voxel block data into generated Unity meshes",
+          "Skips hidden faces between adjacent solid blocks",
+          "Uses chunk-sized terrain sections with a Minecraft-style footprint",
+          "Generates terrain from Perlin noise height values",
+          "Separates grass, dirt, and stone into material groups in the revived version",
+          "Adds simple first-person inspection and block editing in the revived version",
+        ],
+        systemsTitle: "Blocks, neighbors, and mesh faces",
+        systemCards: [
+          {
+            title: "Block data",
+            body: "Each chunk stores terrain in a 3D block array. Filled positions represent blocks, while empty positions represent air.",
+          },
+          {
+            title: "Visible-face logic",
+            body: "The generator checks six neighbor directions and emits a face only where a solid block touches empty space.",
+          },
+          {
+            title: "Mesh construction",
+            body: "Each visible square face is built from four vertices and two triangles, then grouped into chunk mesh geometry.",
+          },
+        ],
+        capsuleMeta: [
+          { label: "Developer", value: "Can Ocek" },
+          { label: "Type", value: "Technical prototype" },
+          { label: "Timeframe", value: date ?? "Final year of high school" },
+          { label: "Status", value: status },
+        ],
+        systemSpecs: [
+          { label: "Engine", value: "Unity" },
+          { label: "Language", value: "C#" },
+          { label: "Focus", value: "Manual voxel mesh generation" },
+          { label: "Data model", value: "3D block array" },
+        ],
+        notesTitle: "Original challenge and revival",
+        noteParagraphs: [
+          "The original project was not a finished game. It was a focused technical challenge: understand enough about Unity meshes to generate voxel chunk geometry manually from a minimal reference.",
+          "During revival, the project was repaired and polished for demonstration with chunk boundary fixes, grass/dirt/stone materials, runtime colliders, and simple first-person movement and block editing.",
+        ],
+        algorithm: {
+          title: "How the 3D array becomes a mesh",
+          intro:
+            "The key step is converting block occupancy into renderable geometry. The mesh does not need every cube face; it only needs faces that touch air.",
+          blocks: [
+            {
+              label: "GenerateMeshData(allBlocks)",
+              lines: [
+                "create empty vertices list",
+                "create empty triangles list",
+                "",
+                "for each x in chunk length:",
+                "    for each z in chunk width:",
+                "        for each y in chunk height:",
+                "            currentBlock = allBlocks[x, z, y]",
+                "",
+                "            if currentBlock is not empty:",
+                "                for each of the six directions:",
+                "                    neighbor = block next to currentBlock in that direction",
+                "",
+                "                    if neighbor is empty:",
+                "                        add the face between currentBlock and empty space",
+                "",
+                "return vertices and triangles",
+              ],
+            },
+            {
+              label: "AddFace(face)",
+              lines: [
+                "define four corner vertices",
+                "add or reuse those vertices",
+                "add triangle 1 using three vertex indices",
+                "add triangle 2 using three vertex indices",
+              ],
+            },
+          ],
+        },
+      }
   : {
       variant: "terrain",
+      primarySrc: cover?.src ?? "/images/projects/procedural-terrain-cover.png",
+      primaryPlaceholder: undefined,
       primaryAlt: cover?.alt ?? "In-game view from behind a plane flying above generated terrain.",
       primaryCaption: cover?.caption ?? "In-game terrain and flight view from the Unity prototype.",
       mediaItems: [
@@ -143,22 +245,35 @@ const storeConfig = isRoguelike
       <div class="media-stage">
         <figure class="media-stage__primary">
           {
-            !isRoguelike ? (
+            storeConfig.primarySrc ? (
               <img
-                src={cover?.src ?? "/images/projects/procedural-terrain-cover.png"}
+                src={storeConfig.primarySrc}
                 alt={storeConfig.primaryAlt}
               />
             ) : (
               <div
-                class="media-stage__primary-placeholder media-stage__primary-placeholder--roguelike"
+                class={`media-stage__primary-placeholder media-stage__primary-placeholder--${storeConfig.primaryPlaceholder}`}
                 role="img"
                 aria-label={storeConfig.primaryAlt}
               >
-                <span class="roguelike-room"></span>
-                <span class="roguelike-player"></span>
-                <span class="roguelike-enemy"></span>
-                <span class="roguelike-enemy"></span>
-                <span class="roguelike-loot"></span>
+                {
+                  storeConfig.primaryPlaceholder === "roguelike" ? (
+                    <>
+                      <span class="roguelike-room"></span>
+                      <span class="roguelike-player"></span>
+                      <span class="roguelike-enemy"></span>
+                      <span class="roguelike-enemy"></span>
+                      <span class="roguelike-loot"></span>
+                    </>
+                  ) : (
+                    <>
+                      <span class="mesh-block mesh-block--grass"></span>
+                      <span class="mesh-block mesh-block--dirt"></span>
+                      <span class="mesh-block mesh-block--stone"></span>
+                      <span class="mesh-wire"></span>
+                    </>
+                  )
+                }
               </div>
             )
           }
@@ -220,6 +335,30 @@ const storeConfig = isRoguelike
           }
         </div>
       </section>
+
+      {
+        storeConfig.algorithm && (
+          <section class="store-section algorithm-section" aria-labelledby="algorithm-title">
+            <div class="store-section__heading">
+              <p class="eyebrow">Algorithm</p>
+              <h2 id="algorithm-title">{storeConfig.algorithm.title}</h2>
+            </div>
+            <div class="store-copy">
+              <p>{storeConfig.algorithm.intro}</p>
+              <div class="algorithm-grid">
+                {
+                  storeConfig.algorithm.blocks.map((block) => (
+                    <figure class="algorithm-card">
+                      <figcaption>{block.label}</figcaption>
+                      <pre><code>{block.lines.join("\n")}</code></pre>
+                    </figure>
+                  ))
+                }
+              </div>
+            </div>
+          </section>
+        )
+      }
     </div>
 
     <aside class="store-sidebar" aria-label="Prototype details">
@@ -290,6 +429,15 @@ const storeConfig = isRoguelike
     background:
       linear-gradient(180deg, rgb(61 42 66 / 0.66), transparent 34rem),
       linear-gradient(90deg, rgb(213 139 84 / 0.09), transparent 32rem),
+      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      var(--color-bg);
+    background-size: auto, auto, 72px 72px, auto;
+  }
+
+  .store-page--mesh {
+    background:
+      linear-gradient(180deg, rgb(38 58 48 / 0.68), transparent 34rem),
+      linear-gradient(90deg, rgb(126 199 190 / 0.08), transparent 32rem),
       linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px),
       var(--color-bg);
     background-size: auto, auto, 72px 72px, auto;
@@ -372,6 +520,59 @@ const storeConfig = isRoguelike
       linear-gradient(180deg, rgb(244 241 234 / 0.08) 1px, transparent 1px),
       linear-gradient(135deg, rgb(19 16 24), rgb(7 10 14));
     background-size: auto, 42px 42px, 42px 42px, auto;
+  }
+
+  .media-stage__primary-placeholder--mesh {
+    background:
+      radial-gradient(circle at 74% 22%, rgb(255 210 125 / 0.14), transparent 13%),
+      linear-gradient(90deg, rgb(244 241 234 / 0.055) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(244 241 234 / 0.055) 1px, transparent 1px),
+      linear-gradient(135deg, rgb(11 20 18), rgb(6 9 12));
+    background-size: auto, 36px 36px, 36px 36px, auto;
+  }
+
+  .mesh-block {
+    border: 1px solid rgb(244 241 234 / 0.14);
+    box-shadow: 0 18px 44px rgb(0 0 0 / 0.28);
+    position: absolute;
+    transform: skewY(-12deg);
+  }
+
+  .mesh-block--grass {
+    background:
+      linear-gradient(180deg, rgb(126 199 190 / 0.68) 0 26%, transparent 26%),
+      linear-gradient(135deg, rgb(94 125 76), rgb(36 47 31));
+    block-size: 42%;
+    inline-size: 38%;
+    inset-block-start: 26%;
+    inset-inline-start: 17%;
+  }
+
+  .mesh-block--dirt {
+    background: linear-gradient(135deg, rgb(147 101 67), rgb(71 45 29));
+    block-size: 34%;
+    inline-size: 32%;
+    inset-block-start: 42%;
+    inset-inline-start: 40%;
+  }
+
+  .mesh-block--stone {
+    background: linear-gradient(135deg, rgb(111 122 128), rgb(42 49 54));
+    block-size: 24%;
+    inline-size: 22%;
+    inset-block-start: 54%;
+    inset-inline-start: 64%;
+  }
+
+  .mesh-wire {
+    background:
+      linear-gradient(90deg, rgb(255 210 125 / 0.32) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(255 210 125 / 0.32) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border: 1px solid rgb(255 210 125 / 0.24);
+    inset: 18% 12% 16% 12%;
+    opacity: 0.62;
+    position: absolute;
   }
 
   .roguelike-room {
@@ -567,6 +768,37 @@ const storeConfig = isRoguelike
     background-size: 42px 42px, 42px 42px, auto;
   }
 
+  .media-strip__placeholder--voxel::before {
+    background:
+      linear-gradient(135deg, rgb(126 199 190 / 0.35) 0 18%, transparent 18%),
+      linear-gradient(135deg, rgb(85 116 70), rgb(24 37 31));
+  }
+
+  .media-strip__placeholder--wireframe::before {
+    background:
+      linear-gradient(90deg, rgb(255 210 125 / 0.26) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(255 210 125 / 0.26) 1px, transparent 1px),
+      linear-gradient(135deg, rgb(12 20 19), rgb(5 8 11));
+    background-size: 14px 14px, 14px 14px, auto;
+  }
+
+  .media-strip__placeholder--faces::before {
+    background:
+      linear-gradient(135deg, transparent 45%, rgb(126 199 190 / 0.34) 46% 54%, transparent 55%),
+      linear-gradient(45deg, rgb(213 139 84 / 0.24), transparent 42%),
+      rgb(12 18 17);
+  }
+
+  .media-strip__placeholder--code::before {
+    background:
+      repeating-linear-gradient(
+        180deg,
+        rgb(244 241 234 / 0.13) 0 2px,
+        transparent 2px 10px
+      ),
+      linear-gradient(135deg, rgb(23 30 36), rgb(8 11 14));
+  }
+
   .store-section,
   .capsule-card {
     background:
@@ -634,6 +866,49 @@ const storeConfig = isRoguelike
 
   .system-grid p {
     font-size: 0.94rem;
+  }
+
+  .algorithm-section {
+    background:
+      linear-gradient(180deg, rgb(126 199 190 / 0.075), transparent 52%),
+      rgb(12 18 22 / 0.95);
+  }
+
+  .algorithm-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .algorithm-card {
+    background: rgb(5 6 8 / 0.72);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    display: grid;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .algorithm-card figcaption {
+    background: rgb(255 255 255 / 0.055);
+    border-block-end: 1px solid rgb(255 255 255 / 0.08);
+    color: var(--color-cool);
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .algorithm-card pre {
+    color: var(--color-text-muted);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    margin: 0;
+    overflow-x: auto;
+    padding: var(--space-4);
+  }
+
+  .algorithm-card code {
+    font-family: inherit;
+    white-space: pre;
   }
 
   .store-sidebar {
