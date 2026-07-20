@@ -7,6 +7,7 @@ interface Props {
   caption?: string;
   orientation?: "landscape" | "portrait" | "wide" | "square";
   prominent?: boolean;
+  lightbox?: boolean;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   caption,
   orientation = "landscape",
   prominent = false,
+  lightbox = true,
 } = Astro.props;
 ---
 
@@ -24,7 +26,23 @@ const {
   <div class="photo-tile__media">
     {
       src ? (
-        <img src={src} alt={alt} loading="lazy" />
+        lightbox ? (
+          <button
+            class="photo-tile__trigger"
+            type="button"
+            aria-label={`Open photo: ${title}`}
+            data-lightbox-trigger
+            data-lightbox-src={src}
+            data-lightbox-alt={alt}
+            data-lightbox-title={title}
+            data-lightbox-category={category}
+            data-lightbox-caption={caption ?? ""}
+          >
+            <img src={src} alt={alt} loading="lazy" />
+          </button>
+        ) : (
+          <img src={src} alt={alt} loading="lazy" />
+        )
       ) : (
         <div class="photo-tile__placeholder" role="img" aria-label={alt}></div>
       )
@@ -40,7 +58,7 @@ const {
 <style>
   .photo-tile {
     background: var(--color-surface);
-    border: var(--border-subtle);
+    border: 1px solid rgb(41 48 58 / 0.72);
     border-radius: 8px;
     display: grid;
     gap: var(--space-4);
@@ -65,24 +83,60 @@ const {
   }
 
   .photo-tile__media img,
+  .photo-tile__trigger,
   .photo-tile__placeholder {
     aspect-ratio: 4 / 3;
     block-size: 100%;
     inline-size: 100%;
+  }
+
+  .photo-tile__media img,
+  .photo-tile__placeholder {
     object-fit: cover;
   }
 
+  .photo-tile__trigger {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: zoom-in;
+    display: block;
+    font: inherit;
+    line-height: 0;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    text-align: inherit;
+  }
+
+  .photo-tile__trigger:focus-visible {
+    outline: 0;
+  }
+
+  .photo-tile:has(.photo-tile__trigger:focus-visible) {
+    border-color: var(--color-focus);
+    box-shadow: 0 0 0 2px rgb(255 210 125 / 0.22);
+  }
+
+  .photo-tile__trigger img {
+    display: block;
+  }
+
   .photo-tile--portrait .photo-tile__media img,
+  .photo-tile--portrait .photo-tile__trigger,
   .photo-tile--portrait .photo-tile__placeholder {
     aspect-ratio: 3 / 4;
   }
 
   .photo-tile--wide .photo-tile__media img,
+  .photo-tile--wide .photo-tile__trigger,
   .photo-tile--wide .photo-tile__placeholder {
     aspect-ratio: 16 / 9;
   }
 
   .photo-tile--square .photo-tile__media img,
+  .photo-tile--square .photo-tile__trigger,
   .photo-tile--square .photo-tile__placeholder {
     aspect-ratio: 1;
   }

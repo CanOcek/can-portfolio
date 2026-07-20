@@ -1,78 +1,65 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PhotoLightbox from "../components/PhotoLightbox.astro";
 import PhotoTile from "../components/PhotoTile.astro";
 
 const selectedWork = [
   {
-    title: "Concert close-up",
+    src: "/images/photography/live-music/wonuola-crowd-perspective.jpg",
+    title: "Audience-facing performance",
     category: "Live music",
-    alt: "Placeholder for a close concert photograph of a performer under stage lighting.",
+    alt: "A vocalist seen from behind while performing to a small concert audience.",
+    caption: "A quiet audience-facing frame with venue atmosphere and performer context.",
+    orientation: "wide",
+    prominent: true,
+  },
+  {
+    src: "/images/photography/live-music/emanate-vocal-close.jpg",
+    title: "Close performance moment",
+    category: "Live music",
+    alt: "A vocalist singing intensely into a microphone with band members behind him.",
     caption: "Fast movement, low light, and expression at the decisive moment.",
-    orientation: "portrait",
+    orientation: "wide",
     prominent: true,
   },
   {
-    title: "Wide stage photograph",
+    src: "/images/photography/live-music/noah-juan-vocal-guitar.jpg",
+    title: "Vocal and guitar performance",
+    category: "Artist portrait",
+    alt: "A singer performing into a microphone while a guitarist plays behind him.",
+    caption: "Readable expression and enough stage context for artist-facing use.",
+    orientation: "landscape",
+  },
+  {
+    src: "/images/photography/live-music/steikon-drummer.jpg",
+    title: "Drummer under stage light",
     category: "Live music",
-    alt: "Placeholder for a wide stage photograph with band, lighting, and venue atmosphere.",
-    caption: "Full-room context for performances, venues, and production design.",
-    orientation: "wide",
-    prominent: true,
-  },
-  {
-    title: "Crowd atmosphere",
-    category: "Events",
-    alt: "Placeholder for a crowd and event atmosphere photograph.",
-    caption: "Audience energy, transitions, and the moments around the main performance.",
+    alt: "A drummer playing under blue and red stage lighting.",
+    caption: "Instrument-focused coverage with clear color separation and motion.",
     orientation: "landscape",
   },
   {
-    title: "Artist portrait",
-    category: "Portraits",
-    alt: "Placeholder for an artist portrait suitable for press or personal branding.",
-    caption: "Direct, usable portraits for artists, founders, and creative profiles.",
-    orientation: "portrait",
-  },
-  {
-    title: "Environmental portrait",
-    category: "People",
-    alt: "Placeholder for an environmental portrait showing a person in a meaningful space.",
-    caption: "People photographed in context, with the setting carrying part of the story.",
-    orientation: "landscape",
-  },
-  {
-    title: "Guitar product photograph",
-    category: "Product",
-    alt: "Placeholder for a guitar product photograph on a clean editorial background.",
-    caption: "Hero images for instruments, products, and creative brands.",
-    orientation: "wide",
-  },
-  {
-    title: "Craftsmanship detail",
-    category: "Brand detail",
-    alt: "Placeholder for a close detail photograph of guitar craftsmanship.",
-    caption: "Materials, hands, textures, and detail shots that make a process tangible.",
-    orientation: "square",
-  },
-  {
-    title: "Trade show coverage",
-    category: "Business event",
-    alt: "Placeholder for documentary-style trade show or booth coverage.",
-    caption: "Coverage for booths, teams, products, and the business context around an event.",
-    orientation: "landscape",
-  },
-  {
-    title: "Backstage moment",
+    src: "/images/photography/live-music/event-audio-desk.jpg",
+    title: "Event production detail",
     category: "Documentary",
-    alt: "Placeholder for a backstage or behind-the-scenes documentary photograph.",
-    caption: "Quiet moments that complete the story around performances and teams.",
-    orientation: "portrait",
+    alt: "A DJ and audio setup with laptops, mixer, turntables, and a crowd in the background.",
+    caption: "The technical layer around a performance: tools, timing, and room energy.",
+    orientation: "landscape",
   },
   {
-    title: "Brand environment",
-    category: "Commercial",
-    alt: "Placeholder for a creative brand environment or workshop photograph.",
-    caption: "Usable visual context for websites, social media, and launch material.",
+    src: "/images/photography/live-music/performer-crowd-rapport.jpg",
+    title: "Performer and crowd",
+    category: "Events",
+    alt: "A performer seen from behind while addressing a crowd in warm stage lighting.",
+    caption: "Audience energy and performer presence in the same frame.",
+    orientation: "wide",
+  },
+  {
+    src: "/images/photography/live-music/wonuola-stage-angle.jpg",
+    title: "Stage angle",
+    category: "Live music",
+    alt: "A vocalist performing on a small stage from a tilted overhead angle.",
+    caption: "A more graphic composition for variety inside the concert set.",
     orientation: "landscape",
   },
 ] as const;
@@ -164,21 +151,36 @@ const skills = [
         <a class="button" href="/contact/">Contact</a>
       </div>
     </div>
-    <PhotoTile
-      title="Featured image"
-      category="Portfolio cover"
-      alt="Placeholder for a large featured photography portfolio image."
-      caption="Replace with a strong concert or editorial photograph that can carry the page."
-      orientation="portrait"
-      prominent
-    />
+    <figure class="photography-hero__visual">
+      <button
+        class="photography-hero__trigger"
+        type="button"
+        aria-label="Open photo: Live music cover"
+        data-lightbox-trigger
+        data-lightbox-src="/images/photography/live-music/featured-live-crowd.jpg"
+        data-lightbox-alt="A vocalist performing in a small venue while the crowd watches under low stage lighting."
+        data-lightbox-title="Live music cover"
+        data-lightbox-category="Portfolio cover"
+        data-lightbox-caption="Concert photography in difficult light, with the room and the moment kept intact."
+      >
+        <img
+          src="/images/photography/live-music/featured-live-crowd.jpg"
+          alt="A vocalist performing in a small venue while the crowd watches under low stage lighting."
+          loading="eager"
+        />
+      </button>
+      <figcaption>
+        <span>Portfolio cover</span>
+        <strong>Live music cover</strong>
+      </figcaption>
+    </figure>
   </header>
 
   <section class="section" id="selected-work" aria-labelledby="selected-work-title">
     <div class="container">
       <div class="section-heading">
         <p class="eyebrow">Selected work</p>
-        <h2 id="selected-work-title">Editorial photo slots</h2>
+        <h2 id="selected-work-title">Selected concert work</h2>
       </div>
       <div class="photo-grid">
         {selectedWork.map((item) => <PhotoTile {...item} />)}
@@ -247,6 +249,8 @@ const skills = [
       </div>
     </div>
   </section>
+
+  <PhotoLightbox />
 </BaseLayout>
 
 <style>
@@ -262,6 +266,62 @@ const skills = [
   .photography-hero__content {
     display: grid;
     gap: var(--space-5);
+  }
+
+  .photography-hero__visual {
+    border-radius: 8px;
+    display: grid;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photography-hero__trigger {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: zoom-in;
+    display: block;
+    line-height: 0;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+  }
+
+  .photography-hero__trigger:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-focus) inset;
+  }
+
+  .photography-hero__visual img {
+    aspect-ratio: 4 / 5;
+    block-size: 100%;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  .photography-hero__visual figcaption {
+    background: linear-gradient(180deg, transparent, rgb(5 6 8 / 0.76));
+    display: grid;
+    gap: var(--space-1);
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding: var(--space-5);
+    position: absolute;
+  }
+
+  .photography-hero__visual span {
+    color: var(--color-cool);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .photography-hero__visual strong {
+    color: var(--color-text);
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.05;
   }
 
   .section-heading {
@@ -337,6 +397,10 @@ const skills = [
       grid-template-columns: 1fr;
       min-height: auto;
       padding-block: var(--space-7);
+    }
+
+    .photography-hero__visual img {
+      aspect-ratio: 16 / 10;
     }
   }
 

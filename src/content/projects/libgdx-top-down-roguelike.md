@@ -1,6 +1,6 @@
 ---
-title: "Top-Down Roguelike Prototype"
-description: "A libGDX game-development project focused on implementing core mechanics for a top-down roguelike."
+title: "Bomber Quest"
+description: "A Java and libGDX desktop game where the player drops book-bombs, destroys walls, collects upgrades, defeats enemies, and escapes through an unlocked exit."
 categories:
   - Software & Data
   - Game Development
@@ -8,27 +8,49 @@ categories:
 technologies:
   - Java
   - libGDX
+  - Box2D
+  - Gradle
   - Game loops
   - Input handling
   - 2D game systems
-role: "Game developer for core prototype functionality. Specific mechanics, scope, and media still need confirmation."
+role: "Student game developer on a university libGDX project, working with gameplay objects, map state, collision behavior, UI screens, and asset-driven rendering."
 featured: false
-status: "Placeholder draft, details pending"
+status: "Source-backed draft, gameplay media pending"
 draft: true
 date: "12/2024 - 02/2025"
 visual:
   kind: "game"
-  label: "Top-down roguelike placeholder"
-  caption: "Replace with a screenshot, gameplay clip, or architecture note once the exact mechanics are ready to publish."
+  label: "Bomber Quest gameplay media placeholder"
+  caption: "Replace with gameplay screenshots, short clips, menu captures, and architecture notes from the libGDX build."
 ---
 
-## Placeholder
+## Context
 
-This project is reserved for the libGDX top-down roguelike listed in the CV.
+Bomber Quest is a Java/libGDX desktop game built around a Bomberman-style loop with a student-themed twist: books act as timed bombs. The player moves through a top-down tile map, places book-bombs, destroys destructible walls, reveals upgrades, defeats enemies, and reaches the exit after the map is cleared.
 
-The current public-safe summary is intentionally narrow: the project used libGDX to implement core functionality for a top-down roguelike game. Before turning this into a fuller project page, confirm the main mechanics, whether the project was solo or team-based, whether screenshots can be shown, and whether the repository or build can be linked.
+The game uses libGDX for rendering, input, audio, and screen management, Box2D for collision detection, and Gradle for the desktop build. It is organized as a standard libGDX project with a shared `core` module and a `desktop` launcher.
 
-## Possible Case-Study Angle
+## Implemented Systems
 
-This page could focus on practical game-system implementation: player movement, combat or interaction loops, map structure, enemy behavior, UI state, asset handling, and the tradeoffs of building a Java/libGDX prototype.
+- Menu, gameplay, pause/continue, and end screens.
+- WASD and arrow-key movement with space-bar bomb placement.
+- Timed book-bombs that explode after a short countdown.
+- Blast propagation across the grid, blocked by indestructible walls.
+- Destructible walls that can reveal upgrades or the exit.
+- Blast-radius and concurrent-bomb-limit upgrades.
+- Enemy entities with simple wandering behavior and collision danger.
+- Box2D contact handling for blasts, enemies, powerups, walls, exit, and player death.
+- HUD display for timer, bomb capacity, blast radius, enemy progress, and exit unlock state.
+- Map loading from `.properties` files plus a native desktop file chooser.
+- Pixel-art sprite sheets, UI skin, sound effects, and background music.
+
+## Media To Add
+
+Priority media slots:
+
+- Hero gameplay screenshot showing the player, walls, enemies, bombs, and HUD.
+- Short clip of dropping a book-bomb and the blast spreading.
+- Menu and map-loading capture.
+- Upgrade pickup moment showing the HUD changing.
+- End screen capture with score.
 
