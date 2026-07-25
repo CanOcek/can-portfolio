@@ -1,8 +1,7 @@
 ---
 const navItems = [
   { href: "/work/", label: "Projects" },
-  { href: "/photography/", label: "Photography" },
-  { href: "/music/", label: "Music" },
+  { href: "/media/", label: "Media" },
   { href: "/about/", label: "About" },
   { href: "/cv/", label: "CV" },
   { href: "/contact/", label: "Contact" },
@@ -15,8 +14,21 @@ const isCurrent = (href: string) =>
 
 <header class="site-header">
   <div class="site-header__inner container">
-    <a class="site-header__brand" href="/" aria-label="Can Ocek home">Can &Ouml;cek</a>
-    <nav class="site-header__nav" aria-label="Primary navigation">
+    <div class="site-header__identity">
+      <a class="site-header__brand" href="/" aria-label="Can Ocek home">Can &Ouml;cek</a>
+      <span class="site-header__readout" data-section-readout>Portfolio</span>
+    </div>
+    <button
+      class="site-header__menu"
+      type="button"
+      aria-expanded="false"
+      aria-controls="primary-navigation"
+      data-menu-toggle
+    >
+      <span>Menu</span>
+      <i aria-hidden="true"></i>
+    </button>
+    <nav id="primary-navigation" class="site-header__nav" aria-label="Primary navigation" data-nav>
       {
         navItems.map((item) => (
           <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
@@ -30,9 +42,12 @@ const isCurrent = (href: string) =>
 
 <style>
   .site-header {
-    background: rgb(5 6 8 / 0.9);
+    backdrop-filter: blur(18px);
+    background: rgb(5 6 8 / 0.78);
     border-block-end: var(--border-subtle);
-    position: relative;
+    inset-block-start: 0;
+    position: sticky;
+    z-index: 10;
   }
 
   .site-header__inner {
@@ -40,7 +55,13 @@ const isCurrent = (href: string) =>
     display: flex;
     gap: var(--space-5);
     justify-content: space-between;
-    min-height: 5.5rem;
+    min-height: 5.25rem;
+  }
+
+  .site-header__identity {
+    align-items: baseline;
+    display: flex;
+    gap: var(--space-4);
   }
 
   .site-header__brand {
@@ -48,6 +69,56 @@ const isCurrent = (href: string) =>
     font-family: var(--font-serif);
     font-size: 1.35rem;
     text-decoration: none;
+  }
+
+  .site-header__readout {
+    color: var(--color-text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+  }
+
+  .site-header__readout::before {
+    color: var(--color-accent-strong);
+    content: "/";
+    margin-inline-end: var(--space-2);
+  }
+
+  .site-header__menu {
+    align-items: center;
+    background: transparent;
+    border: var(--border-subtle);
+    border-radius: 999px;
+    color: var(--color-text);
+    cursor: pointer;
+    display: none;
+    font: inherit;
+    font-size: 0.82rem;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    padding-inline: var(--space-4);
+  }
+
+  .site-header__menu i,
+  .site-header__menu i::before {
+    background: currentColor;
+    block-size: 1px;
+    content: "";
+    display: block;
+    inline-size: 0.8rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .site-header__menu i::before {
+    transform: translateY(4px);
+  }
+
+  .site-header__menu[aria-expanded="true"] i {
+    transform: rotate(45deg);
+  }
+
+  .site-header__menu[aria-expanded="true"] i::before {
+    transform: rotate(90deg);
   }
 
   .site-header__nav {
@@ -82,15 +153,33 @@ const isCurrent = (href: string) =>
 
   @media (max-width: 700px) {
     .site-header__inner {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: var(--space-3);
-      padding-block: var(--space-4);
+      display: grid;
+      gap: 0;
+      grid-template-columns: 1fr auto;
+      padding-block: var(--space-3);
+    }
+
+    .site-header__menu {
+      display: inline-flex;
     }
 
     .site-header__nav {
+      border-block-start: var(--border-subtle);
+      display: none;
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       justify-content: flex-start;
+      margin-block-start: var(--space-3);
+      padding-block-start: var(--space-3);
       width: 100%;
+    }
+
+    .site-header__nav.is-open {
+      display: grid;
+    }
+
+    .site-header__nav a {
+      justify-content: center;
     }
   }
 
@@ -104,3 +193,14 @@ const isCurrent = (href: string) =>
     }
   }
 </style>
+
+<script>
+  const menuButton = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const navigation = document.querySelector<HTMLElement>("[data-nav]");
+
+  menuButton?.addEventListener("click", () => {
+    const open = menuButton.getAttribute("aria-expanded") !== "true";
+    menuButton.setAttribute("aria-expanded", open ? "true" : "false");
+    navigation?.classList.toggle("is-open", open);
+  });
+</script>

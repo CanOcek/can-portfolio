@@ -1,0 +1,288 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PhotoLightbox from "../components/PhotoLightbox.astro";
+import PhotoTile from "../components/PhotoTile.astro";
+
+const selectedPhotos = [
+  {
+    src: "/images/photography/live-music/emanate-vocal-close.jpg",
+    title: "Close performance moment",
+    category: "Live music",
+    alt: "A vocalist singing intensely into a microphone with band members behind him.",
+    caption: "Fast movement, low light, and expression at the decisive moment.",
+    orientation: "wide",
+  },
+  {
+    src: "/images/photography/live-music/event-audio-desk.jpg",
+    title: "Event production detail",
+    category: "Documentary",
+    alt: "A DJ and audio setup with laptops, mixer, turntables, and a crowd in the background.",
+    caption: "The technical layer around a performance: tools, timing, and room energy.",
+    orientation: "wide",
+  },
+  {
+    src: "/images/photography/live-music/performer-crowd-rapport.jpg",
+    title: "Performer and crowd",
+    category: "Events",
+    alt: "A performer seen from behind while addressing a crowd in warm stage lighting.",
+    caption: "Audience energy and performer presence in the same frame.",
+    orientation: "wide",
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Media"
+  description="A concise selection of concert photography and music-video production by Can Ocek."
+>
+  <header
+    class="media-hero container"
+    aria-labelledby="media-title"
+    data-section-label="Media"
+  >
+    <div class="media-hero__content" data-reveal>
+      <p class="eyebrow">Selected media</p>
+      <h1 id="media-title">Media</h1>
+      <p class="lede">
+        A concise selection of visual and audiovisual work. These projects show how I handle
+        fast-moving environments, make clear creative decisions, and carry an idea through to a
+        finished piece.
+      </p>
+      <div class="button-row">
+        <a class="button primary" href="#photography">View selected work</a>
+        <a class="button" href="/contact/">Contact</a>
+      </div>
+    </div>
+
+    <figure class="media-hero__visual" data-reveal>
+      <button
+        class="media-hero__trigger"
+        type="button"
+        aria-label="Open photo: Live performance"
+        data-lightbox-trigger
+        data-lightbox-src="/images/photography/live-music/featured-live-crowd.jpg"
+        data-lightbox-alt="A vocalist performing in a small venue while the crowd watches under low stage lighting."
+        data-lightbox-title="Live performance"
+        data-lightbox-category="Concert photography"
+        data-lightbox-caption="A wide concert frame that keeps the performer, audience, and atmosphere together."
+      >
+        <img
+          src="/images/photography/live-music/featured-live-crowd.jpg"
+          alt="A vocalist performing in a small venue while the crowd watches under low stage lighting."
+          loading="eager"
+        />
+      </button>
+      <figcaption>
+        <span>Concert photography</span>
+        <strong>Performance, audience, atmosphere</strong>
+      </figcaption>
+    </figure>
+  </header>
+
+  <section
+    id="photography"
+    class="section"
+    aria-labelledby="photography-title"
+    data-section-label="Photography"
+  >
+    <div class="container">
+      <div class="section-heading" data-reveal>
+        <div>
+          <p class="eyebrow">Photography</p>
+          <h2 id="photography-title">A focused concert selection.</h2>
+        </div>
+        <p>
+          Four representative frames show low-light work, event context, and the interaction
+          between performers, production, and audience.
+        </p>
+      </div>
+      <div class="photo-grid" data-reveal>
+        {selectedPhotos.map((photo) => <PhotoTile {...photo} />)}
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="section section--media"
+    aria-labelledby="video-title"
+    data-section-label="Video production"
+  >
+    <div class="container video-section">
+      <div class="video-section__copy" data-reveal>
+        <p class="eyebrow">Selected production</p>
+        <h2 id="video-title">One completed music-video project.</h2>
+        <p>
+          This public YouTube piece is the single music example kept in this portfolio. The work
+          covered planning, arrangement, recording, production, filming, editing, and color
+          grading.
+        </p>
+        <ul class="pill-list" aria-label="Production roles">
+          <li>Arrangement</li>
+          <li>Recording</li>
+          <li>Production</li>
+          <li>Filming</li>
+          <li>Editing</li>
+          <li>Color grading</li>
+        </ul>
+      </div>
+      <div class="media-frame" data-reveal>
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/EWGPLWCOkmI"
+            title="Music and video production example by Can Ocek"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="media-contact-title" data-section-label="Contact">
+    <div class="container narrow media-contact" data-reveal>
+      <p class="eyebrow">Supporting practice</p>
+      <h2 id="media-contact-title">Creative work, presented in proportion.</h2>
+      <p>
+        Media is one supporting part of a portfolio centered on technical systems, business
+        context, research, and clear delivery.
+      </p>
+      <div class="button-row">
+        <a class="button primary" href="/work/">Browse projects</a>
+        <a class="button" href="/contact/">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <PhotoLightbox />
+</BaseLayout>
+
+<style>
+  .media-hero {
+    align-items: end;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.92fr) minmax(18rem, 0.72fr);
+    min-height: min(720px, calc(100vh - 5.25rem));
+    padding-block: var(--space-8);
+  }
+
+  .media-hero__content {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .media-hero__visual {
+    border-radius: 8px;
+    display: grid;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .media-hero__trigger {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: zoom-in;
+    display: block;
+    line-height: 0;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+  }
+
+  .media-hero__trigger:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-focus) inset;
+  }
+
+  .media-hero__visual img {
+    aspect-ratio: 4 / 5;
+    block-size: 100%;
+    inline-size: 100%;
+    object-fit: cover;
+  }
+
+  .media-hero__visual figcaption {
+    background: linear-gradient(180deg, transparent, rgb(5 6 8 / 0.84));
+    display: grid;
+    gap: var(--space-1);
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding: var(--space-5);
+    position: absolute;
+  }
+
+  .media-hero__visual span {
+    color: var(--color-cool);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .media-hero__visual strong {
+    color: var(--color-text);
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 2.5vw, 2.3rem);
+    font-weight: 500;
+    line-height: 1.08;
+  }
+
+  .section-heading {
+    align-items: end;
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.62fr);
+  }
+
+  .section-heading > p {
+    color: var(--color-text-muted);
+  }
+
+  .photo-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-block-start: var(--space-6);
+  }
+
+  .video-section {
+    align-items: center;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.72fr) minmax(20rem, 1fr);
+  }
+
+  .video-section__copy,
+  .media-contact {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .video-section__copy .pill-list {
+    margin-block-start: var(--space-2);
+  }
+
+  @media (max-width: 920px) {
+    .media-hero,
+    .section-heading,
+    .video-section {
+      grid-template-columns: 1fr;
+    }
+
+    .media-hero {
+      min-height: auto;
+      padding-block: var(--space-7);
+    }
+
+    .media-hero__visual img {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .photo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
