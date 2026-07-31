@@ -5,12 +5,38 @@ import PhotoTile from "../components/PhotoTile.astro";
 
 const selectedPhotos = [
   {
+    src: "/images/photography/live-music/wonuola-crowd-perspective.jpg",
+    title: "Audience-facing performance",
+    category: "Live music",
+    alt: "A vocalist seen from behind while performing to a small concert audience.",
+    caption: "A quiet audience-facing frame with venue atmosphere and performer context.",
+    orientation: "wide",
+    prominent: true,
+  },
+  {
     src: "/images/photography/live-music/emanate-vocal-close.jpg",
     title: "Close performance moment",
     category: "Live music",
     alt: "A vocalist singing intensely into a microphone with band members behind him.",
     caption: "Fast movement, low light, and expression at the decisive moment.",
     orientation: "wide",
+    prominent: true,
+  },
+  {
+    src: "/images/photography/live-music/noah-juan-vocal-guitar.jpg",
+    title: "Vocal and guitar performance",
+    category: "Artist portrait",
+    alt: "A singer performing into a microphone while a guitarist plays behind him.",
+    caption: "Readable expression and enough stage context for artist-facing use.",
+    orientation: "landscape",
+  },
+  {
+    src: "/images/photography/live-music/steikon-drummer.jpg",
+    title: "Drummer under stage light",
+    category: "Live music",
+    alt: "A drummer playing under blue and red stage lighting.",
+    caption: "Instrument-focused coverage with clear color separation and motion.",
+    orientation: "landscape",
   },
   {
     src: "/images/photography/live-music/event-audio-desk.jpg",
@@ -18,7 +44,7 @@ const selectedPhotos = [
     category: "Documentary",
     alt: "A DJ and audio setup with laptops, mixer, turntables, and a crowd in the background.",
     caption: "The technical layer around a performance: tools, timing, and room energy.",
-    orientation: "wide",
+    orientation: "landscape",
   },
   {
     src: "/images/photography/live-music/performer-crowd-rapport.jpg",
@@ -27,6 +53,14 @@ const selectedPhotos = [
     alt: "A performer seen from behind while addressing a crowd in warm stage lighting.",
     caption: "Audience energy and performer presence in the same frame.",
     orientation: "wide",
+  },
+  {
+    src: "/images/photography/live-music/wonuola-stage-angle.jpg",
+    title: "Stage angle",
+    category: "Live music",
+    alt: "A vocalist performing on a small stage from a tilted overhead angle.",
+    caption: "A more graphic composition for variety inside the concert set.",
+    orientation: "landscape",
   },
 ] as const;
 ---
@@ -89,11 +123,11 @@ const selectedPhotos = [
       <div class="section-heading" data-reveal>
         <div>
           <p class="eyebrow">Photography</p>
-          <h2 id="photography-title">A focused concert selection.</h2>
+          <h2 id="photography-title">Selected concert photography.</h2>
         </div>
         <p>
-          Four representative frames show low-light work, event context, and the interaction
-          between performers, production, and audience.
+          Seven frames from the live-music archive show low-light work, event context, and the
+          interaction between performers, production, and audience.
         </p>
       </div>
       <div class="photo-grid" data-reveal>
@@ -242,8 +276,17 @@ const selectedPhotos = [
   .photo-grid {
     display: grid;
     gap: var(--space-5);
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     margin-block-start: var(--space-6);
+  }
+
+  .photo-grid :global(.photo-tile) {
+    grid-column: span 2;
+  }
+
+  .photo-grid :global(.photo-tile--wide),
+  .photo-grid :global(.photo-tile--prominent) {
+    grid-column: span 3;
   }
 
   .video-section {
@@ -281,6 +324,18 @@ const selectedPhotos = [
   }
 
   @media (max-width: 760px) {
+    .photo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .photo-grid :global(.photo-tile),
+    .photo-grid :global(.photo-tile--wide),
+    .photo-grid :global(.photo-tile--prominent) {
+      grid-column: span 1;
+    }
+  }
+
+  @media (max-width: 620px) {
     .photo-grid {
       grid-template-columns: 1fr;
     }
