@@ -32,15 +32,16 @@ const hasGameStorePage = [
   "libgdx-top-down-roguelike",
   "voxel-chunk-mesh-generation-prototype",
 ].includes(project.id);
+const titleScale = title.length >= 48 ? "long" : "standard";
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} contextLabel="Case study">
   {
     hasGameStorePage ? (
       <GameStoreProjectPage project={project} />
     ) : (
       <>
-        <header class="page-header container narrow">
+        <header class="page-header project-detail-hero container narrow" data-title-scale={titleScale}>
           <p class="eyebrow">Projects / {draft ? "Draft" : status}</p>
           <h1>{title}</h1>
           <p class="lede">{description}</p>
@@ -246,6 +247,25 @@ const hasGameStorePage = [
 <style>
   .with-space {
     margin-block-start: var(--space-4);
+  }
+
+  .project-detail-hero {
+    padding-block: clamp(var(--space-6), 6vh, var(--space-7)) var(--space-5);
+  }
+
+  .project-detail-hero h1 {
+    font-size: clamp(3.2rem, 6.2vw, 5.9rem);
+    max-width: 13ch;
+  }
+
+  .project-detail-hero[data-title-scale="long"] h1 {
+    font-size: clamp(2.45rem, 4.4vw, 4.1rem);
+    line-height: 1;
+    max-width: 17ch;
+  }
+
+  .project-detail-hero[data-title-scale="long"] .lede {
+    max-width: 62ch;
   }
 
   .project-visual-section {

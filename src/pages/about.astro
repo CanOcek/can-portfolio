@@ -1,6 +1,41 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
+const processSteps = [
+  {
+    id: "frame",
+    index: "01",
+    label: "Frame",
+    title: "Find the actual question.",
+    text: "I start by reducing an open-ended brief to a clear decision, audience, and success condition. That keeps the work useful before it becomes technically impressive.",
+    proof: "Radar: public data should support a reviewer, not replace one.",
+  },
+  {
+    id: "build",
+    index: "02",
+    label: "Build",
+    title: "Make the smallest complete system.",
+    text: "I connect the pieces that prove the workflow end to end: source, transformation, interface, and result. The seams stay visible enough to inspect and improve.",
+    proof: "Maze lab: generation, solving, animation, and measurement in one browser flow.",
+  },
+  {
+    id: "test",
+    index: "03",
+    label: "Test",
+    title: "Measure what changes.",
+    text: "I compare outputs, expose evidence, and look for failure modes. A result becomes credible when the path to it is understandable.",
+    proof: "A* and Dijkstra return the same path, but search very different amounts of the maze.",
+  },
+  {
+    id: "communicate",
+    index: "04",
+    label: "Communicate",
+    title: "Turn the result into a story.",
+    text: "I shape the interface, visuals, and language around the person using the work. The portfolio is part of that practice—not a separate layer added at the end.",
+    proof: "One project can be entered through the demo, architecture, evidence, or case study.",
+  },
+] as const;
+
 const principles = [
   {
     title: "Make systems inspectable",
@@ -53,7 +88,7 @@ const books = [
 
 <BaseLayout
   title="About"
-  description="About Can Ocek's multidisciplinary work across technology, business, music, and media."
+  description="About Can Öcek's multidisciplinary work across technology, business, music, and media."
 >
   <header class="page-header container narrow">
     <p class="eyebrow">About</p>
@@ -71,6 +106,10 @@ const books = [
         <h2 id="about-trajectory-title">Technical and creative foundations</h2>
       </div>
       <div class="stack">
+        <figure class="about-image-placeholder" aria-label="Placeholder for a future approved portrait of Can Öcek.">
+          <span aria-hidden="true">Portrait placeholder</span>
+          <figcaption>Approved About image pending</figcaption>
+        </figure>
         <p>
           My background started with computer science and hands-on technical projects, then widened
           into management, communication, and creative production. I do not see those as separate
@@ -85,41 +124,53 @@ const books = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="about-work-title">
+  <section class="section working-method-section" aria-labelledby="about-work-title" data-process-flow>
     <div class="container two-column">
       <div>
-        <p class="eyebrow">Working style</p>
-        <h2 id="about-work-title">The useful pattern</h2>
+        <p class="eyebrow">Working method</p>
+        <h2 id="about-work-title">A process with a visible pulse.</h2>
+        <p>Move through the four steps. Each one changes what the next step needs.</p>
       </div>
-      <ul class="meta-list">
-        <li>
-          <strong>Understand the system</strong>
-          <p>
-            I try to map the technical, business, human, and creative constraints before choosing a
-            solution.
-          </p>
-        </li>
-        <li>
-          <strong>Work through uncertainty</strong>
-          <p>
-            I set clear goals, test methods, analyze results, and refine the approach when the first
-            version is not good enough.
-          </p>
-        </li>
-        <li>
-          <strong>Connect disciplines</strong>
-          <p>
-            I move between implementation, communication, and production instead of isolating them.
-          </p>
-        </li>
-        <li>
-          <strong>Make ideas usable</strong>
-          <p>
-            I care about the last step: making the result understandable, presentable, and useful to
-            the people who need it.
-          </p>
-        </li>
-      </ul>
+      <div class="process-flow">
+        <div class="process-flow__steps" role="tablist" aria-label="Working process">
+          {
+            processSteps.map((step, index) => (
+              <button
+                id={`process-tab-${step.id}`}
+                class:list={["process-step", { "is-active": index === 0 }]}
+                type="button"
+                role="tab"
+                aria-selected={index === 0 ? "true" : "false"}
+                aria-controls={`process-panel-${step.id}`}
+                tabindex={index === 0 ? "0" : "-1"}
+                data-process-tab={step.id}
+              >
+                <span>{step.index}</span>
+                <strong>{step.label}</strong>
+              </button>
+            ))
+          }
+        </div>
+        <div class="process-flow__content">
+          {
+            processSteps.map((step, index) => (
+              <article
+                id={`process-panel-${step.id}`}
+                role="tabpanel"
+                aria-labelledby={`process-tab-${step.id}`}
+                hidden={index !== 0}
+                data-process-panel={step.id}
+              >
+                <p class="process-flow__counter">Step {step.index} / 04</p>
+                <h3>{step.title}</h3>
+                <p class="lede">{step.text}</p>
+                <p class="process-flow__proof"><span>In practice</span>{step.proof}</p>
+              </article>
+            ))
+          }
+        </div>
+        <p class="sr-only" aria-live="polite" data-process-status></p>
+      </div>
     </div>
   </section>
 
@@ -210,7 +261,230 @@ const books = [
   </section>
 </BaseLayout>
 
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-process-flow]").forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-process-tab]"));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-process-panel]"));
+    const status = root.querySelector<HTMLElement>("[data-process-status]");
+
+    const activate = (id: string, focus = false) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.processTab === id;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", active ? "true" : "false");
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
+      });
+
+      panels.forEach((panel) => {
+        const active = panel.dataset.processPanel === id;
+        panel.hidden = !active;
+        if (active && !reduceMotion) {
+          panel.animate(
+            [
+              { opacity: 0, transform: "translateY(10px)" },
+              { opacity: 1, transform: "translateY(0)" },
+            ],
+            { duration: 240, easing: "cubic-bezier(.2,.8,.2,1)" },
+          );
+        }
+      });
+
+      const activeTab = tabs.find((tab) => tab.dataset.processTab === id);
+      if (status && activeTab) status.textContent = `${activeTab.textContent?.trim()} selected`;
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activate(tab.dataset.processTab ?? ""));
+      tab.addEventListener("keydown", (event) => {
+        const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+
+        let nextIndex = index;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          nextIndex = (index + 1) % tabs.length;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          nextIndex = (index - 1 + tabs.length) % tabs.length;
+        } else if (event.key === "Home") {
+          nextIndex = 0;
+        } else if (event.key === "End") {
+          nextIndex = tabs.length - 1;
+        }
+        activate(tabs[nextIndex].dataset.processTab ?? "", true);
+      });
+    });
+  });
+</script>
+
 <style>
+  .about-image-placeholder {
+    align-items: end;
+    aspect-ratio: 4 / 5;
+    background:
+      radial-gradient(circle at 78% 16%, rgb(126 199 190 / 0.2), transparent 12rem),
+      linear-gradient(135deg, rgb(213 139 84 / 0.14), transparent 48%),
+      var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    margin: 0 0 var(--space-2);
+    max-width: 22rem;
+    overflow: hidden;
+    padding: var(--space-5);
+    position: relative;
+  }
+
+  .about-image-placeholder::before {
+    background:
+      linear-gradient(90deg, rgb(255 255 255 / 0.07) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(255 255 255 / 0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+    content: "";
+    inset: 0;
+    opacity: 0.3;
+    position: absolute;
+  }
+
+  .about-image-placeholder span,
+  .about-image-placeholder figcaption {
+    position: relative;
+  }
+
+  .about-image-placeholder span {
+    color: var(--color-text);
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    max-width: 7ch;
+  }
+
+  .about-image-placeholder figcaption {
+    border-block-start: var(--border-subtle);
+    color: var(--color-text-subtle);
+    font-size: 0.82rem;
+    margin-block-start: var(--space-4);
+    padding-block-start: var(--space-3);
+  }
+
+  .working-method-section {
+    overflow: hidden;
+  }
+
+  .working-method-section .two-column > div:first-child {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .process-flow {
+    border: var(--border-subtle);
+    border-radius: 1.4rem;
+    display: grid;
+    grid-template-columns: minmax(11rem, 0.48fr) minmax(0, 1.52fr);
+    overflow: hidden;
+  }
+
+  .process-flow__steps {
+    background: var(--color-bg-soft);
+    border-inline-end: var(--border-subtle);
+    display: grid;
+  }
+
+  .process-step {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-block-start: var(--border-subtle);
+    color: var(--color-text-subtle);
+    cursor: pointer;
+    display: grid;
+    font: inherit;
+    gap: var(--space-3);
+    grid-template-columns: auto 1fr;
+    padding: var(--space-4);
+    text-align: start;
+    transition:
+      background var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .process-step:first-child {
+    border-block-start: 0;
+  }
+
+  .process-step span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .process-step strong {
+    font-family: var(--font-serif);
+    font-size: 1.22rem;
+    font-weight: 500;
+  }
+
+  .process-step:hover,
+  .process-step.is-active {
+    background:
+      linear-gradient(90deg, rgb(213 139 84 / 0.11), transparent),
+      var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .process-step.is-active {
+    box-shadow: inset 3px 0 0 var(--color-accent-strong);
+  }
+
+  .process-flow__content {
+    align-items: center;
+    background:
+      linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+      var(--color-surface);
+    background-size: 44px 44px;
+    display: grid;
+    padding: clamp(var(--space-5), 4vw, var(--space-7));
+  }
+
+  .process-flow__content article {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 42rem;
+  }
+
+  .process-flow__counter {
+    color: var(--color-accent-strong);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  .process-flow h3 {
+    font-size: clamp(2rem, 4vw, 3.65rem);
+    letter-spacing: -0.045em;
+    max-width: 10ch;
+  }
+
+  .process-flow__proof {
+    border-inline-start: 2px solid var(--color-accent);
+    color: var(--color-text);
+    font-size: 0.95rem;
+    margin-block-start: var(--space-2);
+    padding-inline-start: var(--space-4);
+  }
+
+  .process-flow__proof span {
+    color: var(--color-accent-strong);
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-block-end: var(--space-1);
+    text-transform: uppercase;
+  }
+
   .books-section {
     background:
       linear-gradient(115deg, rgb(126 199 190 / 0.08), transparent 42%),
@@ -309,6 +583,54 @@ const books = [
 
     .book-card h3 {
       font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .process-flow {
+      grid-template-columns: 1fr;
+    }
+
+    .process-flow__steps {
+      border-block-end: var(--border-subtle);
+      border-inline-end: 0;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .process-step {
+      border-block-start: 0;
+      border-inline-start: var(--border-subtle);
+      gap: var(--space-1);
+      grid-template-columns: 1fr;
+      padding: var(--space-3);
+      text-align: center;
+    }
+
+    .process-step:first-child {
+      border-inline-start: 0;
+    }
+
+    .process-step strong {
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+    }
+
+    .process-step.is-active {
+      box-shadow: inset 0 -3px 0 var(--color-accent-strong);
+    }
+
+    .process-flow__content {
+      padding: var(--space-5);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .process-flow__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .process-step:nth-child(odd) {
+      border-inline-start: 0;
     }
   }
 </style>

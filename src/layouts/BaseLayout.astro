@@ -6,14 +6,17 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  contextLabel?: string;
 }
 
+const defaultTitle = "Can Öcek Portfolio";
 const {
-  title = "Can Ocek Portfolio",
-  description = "Can Ocek's portfolio across technology, strategy, business systems, and selected media.",
+  title = defaultTitle,
+  description = "Can Öcek's portfolio across technology, strategy, business systems, and selected media.",
+  contextLabel = title === defaultTitle ? "Portfolio" : title,
 } = Astro.props;
 
-const pageTitle = title === "Can Ocek Portfolio" ? title : `${title} | Can Ocek`;
+const pageTitle = title === defaultTitle ? title : `${title} | Can Öcek`;
 ---
 
 <!doctype html>
@@ -34,7 +37,7 @@ const pageTitle = title === "Can Ocek Portfolio" ? title : `${title} | Can Ocek`
     </div>
     <a class="skip-link" href="#content">Skip to content</a>
     <div class="site-shell">
-      <Header />
+      <Header contextLabel={contextLabel} />
       <main id="content" class="site-main" tabindex="-1">
         <slot />
       </main>
@@ -48,6 +51,7 @@ const pageTitle = title === "Can Ocek Portfolio" ? title : `${title} | Can Ocek`
   const progress = document.querySelector<HTMLElement>("[data-scroll-progress]");
   const sectionReadout = document.querySelector<HTMLElement>("[data-section-readout]");
   const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-section-label]"));
+  const defaultSectionReadout = sectionReadout?.dataset.defaultSectionReadout ?? "Portfolio";
 
   const updateScrollState = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -56,15 +60,25 @@ const pageTitle = title === "Can Ocek Portfolio" ? title : `${title} | Can Ocek`
 
     if (sectionReadout && sections.length) {
       const active =
-        [...sections].reverse().find((section) => section.getBoundingClientRect().top <= 180) ??
+        [...sections].reverse().find((section) => section.getBoundingClientRect().top <= 240) ??
         sections[0];
-      sectionReadout.textContent = active.dataset.sectionLabel ?? "Portfolio";
+      sectionReadout.textContent = active.dataset.sectionLabel ?? defaultSectionReadout;
     }
   };
 
   updateScrollState();
   window.addEventListener("scroll", updateScrollState, { passive: true });
   window.addEventListener("resize", updateScrollState, { passive: true });
+
+  const revealTargetSelector = window.location.hash ? decodeURIComponent(window.location.hash) : "";
+  const revealHashTarget =
+    revealTargetSelector && revealTargetSelector.startsWith("#")
+      ? document.getElementById(revealTargetSelector.slice(1))
+      : null;
+  const revealAncestors = revealHashTarget
+    ? [revealHashTarget, ...Array.from(revealHashTarget.closest("[data-reveal]") ? [revealHashTarget.closest("[data-reveal]") as HTMLElement] : [])]
+    : [];
+  revealAncestors.forEach((element) => element.classList.add("is-visible"));
 
   const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
   if (reduceMotion || !("IntersectionObserver" in window)) {

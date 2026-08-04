@@ -7,7 +7,7 @@ categories:
 technologies:
   - C#
   - TypeScript
-  - Canvas
+  - HTML Canvas
   - Algorithms
   - Procedural mazes
   - Recursive backtracking

@@ -85,59 +85,10 @@ const projectLenses = [
   },
 ];
 
-const processSteps = [
-  {
-    id: "frame",
-    index: "01",
-    label: "Frame",
-    title: "Find the actual question.",
-    text: "I start by reducing an open-ended brief to a clear decision, audience, and success condition. That keeps the work useful before it becomes technically impressive.",
-    proof: "Radar: public data should support a reviewer, not replace one.",
-  },
-  {
-    id: "build",
-    index: "02",
-    label: "Build",
-    title: "Make the smallest complete system.",
-    text: "I connect the pieces that prove the workflow end to end: source, transformation, interface, and result. The seams stay visible enough to inspect and improve.",
-    proof: "Maze lab: generation, solving, animation, and measurement in one browser flow.",
-  },
-  {
-    id: "test",
-    index: "03",
-    label: "Test",
-    title: "Measure what changes.",
-    text: "I compare outputs, expose evidence, and look for failure modes. A result becomes credible when the path to it is understandable.",
-    proof: "A* and Dijkstra return the same path, but search very different amounts of the maze.",
-  },
-  {
-    id: "communicate",
-    index: "04",
-    label: "Communicate",
-    title: "Turn the result into a story.",
-    text: "I shape the interface, visuals, and language around the person using the work. The portfolio is part of that practice—not a separate layer added at the end.",
-    proof: "One project can be entered through the demo, architecture, evidence, or case study.",
-  },
-];
-
-const selectedToolGroups = [
-  {
-    label: "Data and automation",
-    tools: ["Python", "Scrapy", "Playwright", "PostgreSQL", "pgvector", "Streamlit"],
-  },
-  {
-    label: "Web and interface",
-    tools: ["TypeScript", "Astro", "Canvas", "HTML/CSS", "SQL"],
-  },
-  {
-    label: "Technical and creative systems",
-    tools: ["Java", "C#", "Unity", "libGDX", "DaVinci Resolve", "Reaper"],
-  },
-] as const;
 ---
 
 <BaseLayout
-  title="Can Ocek Portfolio"
+  title="Can Öcek Portfolio"
   description="Can Öcek builds evidence-backed software, business systems, interactive technical work, and selected media."
 >
   <section
@@ -268,84 +219,6 @@ const selectedToolGroups = [
         }
       </div>
       <p class="sr-only" aria-live="polite" data-project-status></p>
-    </div>
-  </section>
-
-  <section
-    class="section process-section"
-    aria-labelledby="process-title"
-    data-process-flow
-    data-section-label="Working method"
-  >
-    <div class="container">
-      <div class="section-heading section-heading--compact" data-reveal>
-        <div>
-          <p class="eyebrow">Working method</p>
-          <h2 id="process-title">A process with a visible pulse.</h2>
-        </div>
-        <p>Move through the four steps. Each one changes what the next step needs.</p>
-      </div>
-
-      <div class="process-flow" data-reveal>
-        <div class="process-flow__steps" role="tablist" aria-label="Working process">
-          {
-            processSteps.map((step, index) => (
-              <button
-                id={`process-tab-${step.id}`}
-                class:list={["process-step", { "is-active": index === 0 }]}
-                type="button"
-                role="tab"
-                aria-selected={index === 0 ? "true" : "false"}
-                aria-controls={`process-panel-${step.id}`}
-                tabindex={index === 0 ? "0" : "-1"}
-                data-process-tab={step.id}
-              >
-                <span>{step.index}</span>
-                <strong>{step.label}</strong>
-              </button>
-            ))
-          }
-        </div>
-        <div class="process-flow__content">
-          {
-            processSteps.map((step, index) => (
-              <article
-                id={`process-panel-${step.id}`}
-                role="tabpanel"
-                aria-labelledby={`process-tab-${step.id}`}
-                hidden={index !== 0}
-                data-process-panel={step.id}
-              >
-                <p class="process-flow__counter">Step {step.index} / 04</p>
-                <h3>{step.title}</h3>
-                <p class="lede">{step.text}</p>
-                <p class="process-flow__proof"><span>In practice</span>{step.proof}</p>
-              </article>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section tools-section" aria-labelledby="tools-title" data-section-label="Tools">
-    <div class="container tools-band" data-reveal>
-      <div>
-        <p class="eyebrow">Selected tools</p>
-        <h2 id="tools-title">Tools I keep close to the work.</h2>
-      </div>
-      <div class="tools-groups">
-        {
-          selectedToolGroups.map((group) => (
-            <article class="tools-group">
-              <h3>{group.label}</h3>
-              <ul class="pill-list" aria-label={group.label}>
-                {group.tools.map((tool) => <li>{tool}</li>)}
-              </ul>
-            </article>
-          ))
-        }
-      </div>
     </div>
   </section>
 
@@ -492,22 +365,50 @@ const selectedToolGroups = [
     "projectTab",
     "projectPanel",
   );
-  setupTabFlow(
-    "[data-process-flow]",
-    "[data-process-tab]",
-    "[data-process-panel]",
-    "processTab",
-    "processPanel",
-  );
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const explorer = document.querySelector<HTMLElement>("[data-project-explorer]");
+  const sectionReadout = document.querySelector<HTMLElement>("[data-section-readout]");
+  const activateLens = (lens: string, hash?: string) => {
+    if (!explorer || !lens) return;
+    explorer.dispatchEvent(new CustomEvent("activate-flow", { detail: lens }));
+    if (sectionReadout) sectionReadout.textContent = "Selected work";
+    if (hash && window.location.hash !== hash) {
+      history.pushState({ lens }, "", hash);
+    }
+    requestAnimationFrame(() => {
+      explorer.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    });
+  };
+
+  const activateLensFromHash = (replace = false) => {
+    const lens = window.location.hash.match(/^#project-(systems|algorithms|creative)$/)?.[1];
+    if (!explorer) return false;
+    if (!lens) {
+      if (!window.location.hash) {
+        explorer.dispatchEvent(new CustomEvent("activate-flow", { detail: "systems" }));
+      }
+      return false;
+    }
+    explorer.dispatchEvent(new CustomEvent("activate-flow", { detail: lens }));
+    if (sectionReadout) sectionReadout.textContent = "Selected work";
+    if (replace) {
+      requestAnimationFrame(() => {
+        explorer.scrollIntoView({ behavior: "auto", block: "start" });
+      });
+    }
+    return true;
+  };
+
+  activateLensFromHash(true);
+  window.addEventListener("hashchange", () => activateLensFromHash());
+  window.addEventListener("popstate", () => activateLensFromHash(true));
 
   document.querySelectorAll<HTMLAnchorElement>("[data-lens-target]").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      const explorer = document.querySelector<HTMLElement>("[data-project-explorer]");
       const lens = link.dataset.lensTarget;
-      if (!explorer || !lens) return;
-      explorer.dispatchEvent(new CustomEvent("activate-flow", { detail: lens }));
-      explorer.scrollIntoView({ behavior: "smooth", block: "start" });
+      activateLens(lens ?? "", link.getAttribute("href") ?? undefined);
     });
   });
 </script>
@@ -643,10 +544,6 @@ const selectedToolGroups = [
     font-size: 1.05rem;
   }
 
-  .section-heading--compact h2 {
-    max-width: 10ch;
-  }
-
   .project-journey {
     background:
       radial-gradient(circle at 78% 24%, rgb(126 199 190 / 0.11), transparent 24rem),
@@ -700,7 +597,7 @@ const selectedToolGroups = [
   }
 
   .lens-stage {
-    min-height: 42rem;
+    min-height: 38rem;
     padding-block-start: var(--space-6);
   }
 
@@ -712,7 +609,7 @@ const selectedToolGroups = [
     display: grid;
     gap: var(--space-7);
     grid-template-columns: minmax(0, 1.1fr) minmax(21rem, 0.9fr);
-    min-height: 40rem;
+    min-height: 36rem;
     overflow: hidden;
     padding: clamp(var(--space-4), 3.5vw, var(--space-7));
   }
@@ -730,7 +627,7 @@ const selectedToolGroups = [
     background: var(--color-bg);
     border: 1px solid color-mix(in srgb, var(--panel-accent) 34%, var(--color-border));
     border-radius: 1rem;
-    min-height: 30rem;
+    min-height: 27rem;
     overflow: hidden;
     position: relative;
   }
@@ -823,8 +720,7 @@ const selectedToolGroups = [
     font-size: 0.9rem;
   }
 
-  .lens-panel__role span,
-  .process-flow__proof span {
+  .lens-panel__role span {
     color: var(--panel-accent);
     display: block;
     font-size: 0.72rem;
@@ -833,153 +729,9 @@ const selectedToolGroups = [
     text-transform: uppercase;
   }
 
-  .process-section {
-    overflow: hidden;
-  }
-
-  .process-flow {
-    border: var(--border-subtle);
-    border-radius: 1.4rem;
-    display: grid;
-    grid-template-columns: minmax(15rem, 0.52fr) minmax(0, 1.48fr);
-    min-height: 35rem;
-    overflow: hidden;
-  }
-
-  .process-flow__steps {
-    background: var(--color-bg-soft);
-    border-inline-end: var(--border-subtle);
-    display: grid;
-  }
-
-  .process-step {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-block-start: var(--border-subtle);
-    color: var(--color-text-subtle);
-    cursor: pointer;
-    display: grid;
-    font: inherit;
-    gap: var(--space-4);
-    grid-template-columns: auto 1fr;
-    padding: var(--space-5);
-    text-align: start;
-    transition:
-      background var(--transition-fast),
-      color var(--transition-fast);
-  }
-
-  .process-step:first-child {
-    border-block-start: 0;
-  }
-
-  .process-step span {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-  }
-
-  .process-step strong {
-    font-family: var(--font-serif);
-    font-size: 1.45rem;
-    font-weight: 500;
-  }
-
-  .process-step:hover,
-  .process-step.is-active {
-    background:
-      linear-gradient(90deg, rgb(213 139 84 / 0.11), transparent),
-      var(--color-surface);
-    color: var(--color-text);
-  }
-
-  .process-step.is-active {
-    box-shadow: inset 3px 0 0 var(--color-accent-strong);
-  }
-
-  .process-flow__content {
-    align-items: center;
-    background:
-      linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
-      linear-gradient(180deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
-      var(--color-surface);
-    background-size: 44px 44px;
-    display: grid;
-    padding: clamp(var(--space-6), 6vw, var(--space-9));
-  }
-
-  .process-flow__content article {
-    display: grid;
-    gap: var(--space-5);
-    max-width: 44rem;
-  }
-
-  .process-flow__counter {
-    color: var(--color-accent-strong);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-  }
-
-  .process-flow h3 {
-    font-size: clamp(2.7rem, 5vw, 5rem);
-    letter-spacing: -0.045em;
-    max-width: 10ch;
-  }
-
-  .process-flow__proof {
-    border-inline-start: 2px solid var(--color-accent);
-    color: var(--color-text);
-    font-size: 0.95rem;
-    margin-block-start: var(--space-3);
-    padding-inline-start: var(--space-4);
-  }
-
-  .process-flow__proof span {
-    color: var(--color-accent-strong);
-  }
-
-  .tools-section {
-    background:
-      linear-gradient(90deg, rgb(126 199 190 / 0.08), transparent 34%),
-      var(--color-bg);
-  }
-
-  .tools-band {
-    align-items: start;
-    display: grid;
-    gap: var(--space-7);
-    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-  }
-
-  .tools-band h2 {
-    font-size: clamp(2.4rem, 4.4vw, 4.6rem);
-    letter-spacing: -0.04em;
-    max-width: 11ch;
-    text-wrap: balance;
-  }
-
-  .tools-groups {
-    display: grid;
-    gap: var(--space-4);
-  }
-
-  .tools-group {
-    border-block-start: var(--border-subtle);
-    display: grid;
-    gap: var(--space-3);
-    padding-block-start: var(--space-4);
-  }
-
-  .tools-group h3 {
-    font-family: var(--font-sans);
-    font-size: 0.92rem;
-    font-weight: 800;
-    letter-spacing: 0;
-    text-transform: uppercase;
-  }
-
   .proof-section {
     background: var(--color-bg-soft);
+    padding-block-start: var(--space-7);
   }
 
   .proof-grid {
@@ -1131,8 +883,7 @@ const selectedToolGroups = [
   @media (max-width: 960px) {
     .home-hero,
     .lens-panel,
-    .creative-stage,
-    .tools-band {
+    .creative-stage {
       grid-template-columns: 1fr;
     }
 
@@ -1200,43 +951,6 @@ const selectedToolGroups = [
       min-height: 21rem;
     }
 
-    .process-flow {
-      grid-template-columns: 1fr;
-    }
-
-    .process-flow__steps {
-      border-block-end: var(--border-subtle);
-      border-inline-end: 0;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .process-step {
-      border-block-start: 0;
-      border-inline-start: var(--border-subtle);
-      gap: var(--space-1);
-      grid-template-columns: 1fr;
-      padding: var(--space-3);
-      text-align: center;
-    }
-
-    .process-step:first-child {
-      border-inline-start: 0;
-    }
-
-    .process-step strong {
-      font-family: var(--font-sans);
-      font-size: 0.78rem;
-    }
-
-    .process-step.is-active {
-      box-shadow: inset 0 -3px 0 var(--color-accent-strong);
-    }
-
-    .process-flow__content {
-      min-height: 29rem;
-      padding: var(--space-6);
-    }
-
     .proof-grid {
       display: flex;
       margin-inline: calc(var(--space-4) * -1);
@@ -1287,14 +1001,6 @@ const selectedToolGroups = [
       grid-template-columns: 6rem 1fr;
     }
 
-    .process-flow__content {
-      min-height: 31rem;
-      padding: var(--space-5);
-    }
-
-    .process-step strong {
-      font-size: 0.7rem;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

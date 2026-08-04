@@ -44,7 +44,7 @@ The project started from optics and electromagnetism rather than from a ready-ma
 
 The project won first place in Physics at the 2018 Dr. Ibrahim Arikan MEF Education Institutions Research Projects Competition.
 
-Public records from Gelişim Koleji also name the project team as Can Ocek and Zafer Mert Ozkeroglu, advised by physics teacher Incifer Tekeli, and state that the project qualified in the TUBITAK high-school project competition. The exact TUBITAK stage wording should be checked before using this as final public copy.
+Public records from Gelişim Koleji also name the project team as Can Öcek and Zafer Mert Ozkeroglu, advised by physics teacher Incifer Tekeli, and state that the project qualified in the TUBITAK high-school project competition. The exact TUBITAK stage wording should be checked before using this as final public copy.
 
 ## What We Built
 

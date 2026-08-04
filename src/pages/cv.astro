@@ -1,10 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const skillGroups = [
+  {
+    label: "Data & automation",
+    tools: ["Python", "SQL", "PostgreSQL", "pgvector", "Scrapy", "Playwright", "Streamlit", "R"],
+  },
+  {
+    label: "Web & interfaces",
+    tools: ["TypeScript", "Astro", "HTML/CSS", "HTML Canvas"],
+  },
+  {
+    label: "Software & game systems",
+    tools: ["Java", "C#", "Unity", "libGDX", "Swift"],
+  },
+  {
+    label: "Media & audio",
+    tools: ["Reaper", "FL Studio", "DaVinci Resolve", "Photoshop", "Illustrator"],
+  },
+] as const;
+
+const languages = ["Turkish — native", "English — highly proficient", "German — B2"] as const;
 ---
 
 <BaseLayout
   title="CV"
-  description="A concise web CV for Can Ocek across Management & Technology, software, data systems, music production, and media."
+  description="A concise web CV for Can Öcek across Management & Technology, software, data systems, music production, and media."
 >
   <header class="page-header container narrow">
     <p class="eyebrow">CV</p>
@@ -99,39 +120,52 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="container two-column">
       <div>
         <p class="eyebrow">Skills</p>
-        <h2 id="skills-title">Skills</h2>
+        <h2 id="skills-title">Skills and tools</h2>
       </div>
-      <div class="stack">
-        <div class="stack small">
-          <h3>Programming and data</h3>
-          <ul class="pill-list">
-            <li>Python</li>
-            <li>Java</li>
-            <li>C#</li>
-            <li>SQL</li>
-            <li>Swift</li>
-            <li>R</li>
-          </ul>
-        </div>
-        <div class="stack small">
-          <h3>Music, audio, and media</h3>
-          <ul class="pill-list">
-            <li>Reaper</li>
-            <li>FL Studio</li>
-            <li>DaVinci Resolve</li>
-            <li>Adobe Photoshop</li>
-            <li>Adobe Illustrator</li>
-          </ul>
-        </div>
-        <div class="stack small">
+      <div class="cv-skills">
+        {
+          skillGroups.map((group) => (
+            <article class="cv-skill-group">
+              <h3>{group.label}</h3>
+              <ul class="pill-list" aria-label={group.label}>
+                {group.tools.map((tool) => <li>{tool}</li>)}
+              </ul>
+            </article>
+          ))
+        }
+        <article class="cv-skill-group cv-skill-group--languages">
           <h3>Languages</h3>
-          <ul class="pill-list">
-            <li>Turkish, native</li>
-            <li>English, highly proficient</li>
-            <li>German, B2</li>
+          <ul class="pill-list" aria-label="Languages">
+            {languages.map((language) => <li>{language}</li>)}
           </ul>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .cv-skills {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .cv-skill-group {
+    border-block-start: var(--border-subtle);
+    display: grid;
+    gap: var(--space-3);
+    padding-block-start: var(--space-4);
+  }
+
+  .cv-skill-group h3 {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .cv-skill-group--languages {
+    margin-block-start: var(--space-2);
+  }
+</style>

@@ -1,4 +1,8 @@
 ---
+interface Props {
+  contextLabel?: string;
+}
+
 const navItems = [
   { href: "/work/", label: "Projects" },
   { href: "/media/", label: "Media" },
@@ -10,13 +14,16 @@ const navItems = [
 const pathname = Astro.url.pathname;
 const isCurrent = (href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href);
+const { contextLabel = "Portfolio" } = Astro.props;
 ---
 
 <header class="site-header">
   <div class="site-header__inner container">
     <div class="site-header__identity">
-      <a class="site-header__brand" href="/" aria-label="Can Ocek home">Can &Ouml;cek</a>
-      <span class="site-header__readout" data-section-readout>Portfolio</span>
+      <a class="site-header__brand" href="/" aria-label="Can Öcek home">Can &Ouml;cek</a>
+      <span class="site-header__readout" data-section-readout data-default-section-readout={contextLabel}>
+        {contextLabel}
+      </span>
     </div>
     <button
       class="site-header__menu"
