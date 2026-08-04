@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="560" viewBox="0 0 1400 560" role="img">
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2 L10 6 L2 10 Z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-18%" y="-18%" width="136%" height="145%">
+      <feDropShadow dx="0" dy="12" stdDeviation="11" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .page { fill: #f6f7fb; }
+      .layer { stroke-width: 1.5; filter: url(#shadow); }
+      .header { stroke-width: 0; }
+      .box { fill: #ffffff; stroke-width: 1.4; }
+      .store { fill: #ffffff; stroke-width: 1.4; }
+      .layer-title { fill: #0f172a; font: 700 19px Inter, Segoe UI, Arial, sans-serif; text-anchor: middle; }
+      .layer-subtitle { fill: #0f172a; font: 500 14px Inter, Segoe UI, Arial, sans-serif; text-anchor: middle; }
+      .box-text { fill: #111827; font: 500 14px Inter, Segoe UI, Arial, sans-serif; text-anchor: middle; }
+      .box-text-bold { fill: #111827; font: 700 14px Inter, Segoe UI, Arial, sans-serif; text-anchor: middle; }
+      .flow { fill: none; stroke: #334155; stroke-width: 2.2; marker-end: url(#arrow); }
+      .flow-light { fill: none; stroke: #64748b; stroke-width: 1.8; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="page" width="1400" height="560"/>
+
+  <rect class="layer" x="28" y="32" width="184" height="496" rx="24" fill="#dbc3d0" stroke="#9c6f89"/>
+  <rect class="layer" x="244" y="32" width="184" height="496" rx="24" fill="#ffd6d7" stroke="#d86d71"/>
+  <rect class="layer" x="460" y="32" width="184" height="496" rx="24" fill="#d9efc8" stroke="#79b85c"/>
+  <rect class="layer" x="676" y="32" width="184" height="496" rx="24" fill="#dce8f7" stroke="#72a5d4"/>
+  <rect class="layer" x="892" y="32" width="184" height="496" rx="24" fill="#d9efc8" stroke="#79b85c"/>
+  <rect class="layer" x="1108" y="32" width="184" height="496" rx="24" fill="#fff0c7" stroke="#d49a3c"/>
+
+  <text class="layer-title" x="120" y="70">Layer 1</text>
+  <text class="layer-subtitle" x="120" y="91">Data Collection</text>
+  <text class="layer-title" x="336" y="70">Layer 2</text>
+  <text class="layer-subtitle" x="336" y="91">Data Processing</text>
+  <text class="layer-title" x="552" y="70">Layer 3</text>
+  <text class="layer-subtitle" x="552" y="91">Signal Classification</text>
+  <text class="layer-title" x="768" y="70">Layer 4</text>
+  <text class="layer-subtitle" x="768" y="91">Vector Storage &amp;</text>
+  <text class="layer-subtitle" x="768" y="111">Retrieval</text>
+  <text class="layer-title" x="984" y="70">Layer 5</text>
+  <text class="layer-subtitle" x="984" y="91">Synthesis</text>
+  <text class="layer-title" x="1200" y="70">Layer 6</text>
+  <text class="layer-subtitle" x="1200" y="91">User Interface</text>
+
+  <rect class="box" x="56" y="122" width="128" height="58" rx="8" stroke="#8f5274"/>
+  <text class="box-text" x="120" y="145">Official Company</text>
+  <text class="box-text" x="120" y="164">Websites</text>
+  <rect class="box" x="56" y="206" width="128" height="58" rx="8" stroke="#8f5274"/>
+  <text class="box-text" x="120" y="229">Official Company</text>
+  <text class="box-text" x="120" y="248">RSS Feeds</text>
+  <rect class="box" x="56" y="290" width="128" height="58" rx="8" stroke="#8f5274"/>
+  <text class="box-text" x="120" y="313">North Data</text>
+  <text class="box-text" x="120" y="332">API</text>
+
+  <rect class="box" x="272" y="122" width="128" height="58" rx="8" stroke="#cf5f62"/>
+  <text class="box-text" x="336" y="145">HTML text</text>
+  <text class="box-text" x="336" y="164">extraction</text>
+  <rect class="box" x="272" y="203" width="128" height="70" rx="8" stroke="#cf5f62"/>
+  <text class="box-text" x="336" y="226">Parsing and</text>
+  <text class="box-text" x="336" y="245">Segmentation of</text>
+  <text class="box-text" x="336" y="264">PDFs</text>
+  <rect class="box" x="272" y="300" width="128" height="58" rx="8" stroke="#cf5f62"/>
+  <text class="box-text" x="336" y="334">Raw Text Chunking</text>
+  <rect class="box" x="272" y="384" width="128" height="58" rx="8" stroke="#cf5f62"/>
+  <text class="box-text" x="336" y="407">Deduplication &amp;</text>
+  <text class="box-text" x="336" y="426">Filtering</text>
+  <path class="store" d="M272 478 C272 454 400 454 400 478 L400 512 C400 536 272 536 272 512 Z" stroke="#86b76c"/>
+  <ellipse cx="336" cy="478" rx="64" ry="24" fill="#edfbe2" stroke="#86b76c" stroke-width="1.4"/>
+  <text class="box-text" x="336" y="510">Storage</text>
+
+  <rect class="box" x="488" y="136" width="128" height="58" rx="8" stroke="#74a95b"/>
+  <text class="box-text-bold" x="552" y="159">LLM 1</text>
+  <text class="box-text" x="552" y="178">analysis</text>
+  <rect class="box" x="488" y="240" width="128" height="150" rx="20" fill="#fff4c4" stroke="#b8a34f"/>
+  <text class="box-text" x="552" y="270">Category</text>
+  <text class="box-text" x="552" y="309">Bucket</text>
+  <text class="box-text" x="552" y="348">Direction</text>
+  <text class="box-text" x="552" y="375">Confidence</text>
+  <path class="store" d="M488 478 C488 454 616 454 616 478 L616 512 C616 536 488 536 488 512 Z" stroke="#86b76c"/>
+  <ellipse cx="552" cy="478" rx="64" ry="24" fill="#edfbe2" stroke="#86b76c" stroke-width="1.4"/>
+  <text class="box-text" x="552" y="510">Storage</text>
+
+  <rect class="box" x="704" y="136" width="128" height="70" rx="8" fill="#b9daf6" stroke="#6097c7"/>
+  <text class="box-text" x="768" y="163">Embedding</text>
+  <text class="box-text" x="768" y="182">generation</text>
+  <path class="store" d="M704 302 C704 278 832 278 832 302 L832 348 C832 372 704 372 704 348 Z" fill="#6b72ff" stroke="#353ec6" stroke-width="1.4"/>
+  <ellipse cx="768" cy="302" rx="64" ry="24" fill="#797bff" stroke="#353ec6" stroke-width="1.4"/>
+  <text class="box-text" x="768" y="343">Storage</text>
+  <rect class="box" x="704" y="434" width="128" height="70" rx="8" fill="#b9daf6" stroke="#6097c7"/>
+  <text class="box-text" x="768" y="474">Signal Retrieval</text>
+
+  <rect class="box" x="920" y="136" width="128" height="70" rx="8" stroke="#74a95b"/>
+  <text class="box-text-bold" x="984" y="159">LLM 2</text>
+  <text class="box-text" x="984" y="178">analysis over</text>
+  <text class="box-text" x="984" y="197">retrieved signals</text>
+  <rect class="box" x="920" y="248" width="128" height="218" rx="20" fill="#fff4c4" stroke="#b8a34f"/>
+  <text class="box-text" x="984" y="292">Pattern Recognition</text>
+  <text class="box-text" x="984" y="341">Top Opportunities</text>
+  <text class="box-text" x="984" y="390">Top Risks</text>
+  <text class="box-text" x="984" y="433">Recommended</text>
+  <text class="box-text" x="984" y="452">Actions</text>
+
+  <rect class="box" x="1136" y="136" width="128" height="58" rx="8" fill="#ffdba8" stroke="#d49a3c"/>
+  <text class="box-text" x="1200" y="170">Key takeaways</text>
+  <rect class="box" x="1136" y="217" width="128" height="58" rx="8" fill="#ffdba8" stroke="#d49a3c"/>
+  <text class="box-text" x="1200" y="251">Grouped findings</text>
+  <rect class="box" x="1136" y="298" width="128" height="58" rx="8" fill="#ffdba8" stroke="#d49a3c"/>
+  <text class="box-text" x="1200" y="332">Evidence Review</text>
+  <rect class="box" x="1136" y="379" width="128" height="58" rx="8" fill="#ffdba8" stroke="#d49a3c"/>
+  <text class="box-text" x="1200" y="413">Company context</text>
+
+  <path class="flow" d="M616 194 V230"/>
+  <path class="flow" d="M552 390 V454"/>
+  <path class="flow" d="M768 206 V278"/>
+  <path class="flow" d="M768 372 V434"/>
+  <path class="flow-light" d="M832 171 H920"/>
+</svg>

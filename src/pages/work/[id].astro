@@ -6,6 +6,7 @@ import VisualPlaceholder from "../../components/VisualPlaceholder.astro";
 import MazePathfindingDemo from "../../components/MazePathfindingDemo.astro";
 import RadarDemoTeaser from "../../components/RadarDemoTeaser.astro";
 import GameStoreProjectPage from "../../components/GameStoreProjectPage.astro";
+import PersonalOutcome from "../../components/PersonalOutcome.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -22,7 +23,7 @@ interface Props {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, categories, technologies, role, status, draft, date, cover, visual } = project.data;
+const { title, description, categories, technologies, role, status, draft, date, cover, visual, personalOutcome } = project.data;
 const hasCaseStudy = project.body?.trim().length > 0;
 const hasInteractiveMazeDemo = project.id === "dijkstra-vs-a-star";
 const hasRadarDemoTeaser = project.id === "web-intelligence-rag-pipeline";
@@ -235,6 +236,8 @@ const hasGameStorePage = [
             </section>
           )
         }
+
+        <PersonalOutcome outcome={personalOutcome} />
       </>
     )
   }
@@ -369,6 +372,59 @@ const hasGameStorePage = [
     inline-size: 100%;
   }
 
+  .project-prose :global(.project-media-grid) {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent),
+      var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: var(--space-2) 0 var(--space-5);
+    overflow: hidden;
+    padding: var(--space-3);
+  }
+
+  .project-prose :global(.project-media-grid img) {
+    aspect-ratio: 4 / 3;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .project-prose :global(.project-media-grid figcaption),
+  .project-prose :global(.project-video figcaption) {
+    border-block-start: var(--border-subtle);
+    color: var(--color-text-subtle);
+    font-size: 0.9rem;
+    grid-column: 1 / -1;
+    padding: var(--space-3) var(--space-2) 0;
+  }
+
+  .project-prose :global(.project-video) {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent),
+      var(--color-bg-soft);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 var(--space-5);
+    overflow: hidden;
+    padding: var(--space-3);
+  }
+
+  .project-prose :global(.project-video video) {
+    aspect-ratio: 16 / 9;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    display: block;
+    inline-size: 100%;
+  }
+
   .project-prose :global(.benchmark-figure) {
     background:
       linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent),
@@ -392,6 +448,10 @@ const hasGameStorePage = [
 
   @media (max-width: 820px) {
     .project-visual-section {
+      grid-template-columns: 1fr;
+    }
+
+    .project-prose :global(.project-media-grid) {
       grid-template-columns: 1fr;
     }
   }

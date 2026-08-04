@@ -1,5 +1,54 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const principles = [
+  {
+    title: "Make systems inspectable",
+    body: "I like work where the path from input to result can be followed, questioned, and improved.",
+  },
+  {
+    title: "Build small complete loops",
+    body: "A compact prototype that teaches something is more useful than a large unfinished system with unclear assumptions.",
+  },
+  {
+    title: "Explain the decision",
+    body: "The implementation matters, but the reason behind it should be just as visible to the person using or reviewing the work.",
+  },
+  {
+    title: "Treat communication as part of the product",
+    body: "Documentation, interface language, framing, and visual hierarchy are not decoration. They decide whether the work can be understood.",
+  },
+] as const;
+
+const books = [
+  {
+    title: "How to Write Clearly",
+    author: "Tom Albrighton",
+    cover: "/images/books/how-to-write-clearly.jpg",
+    alt: "Cover of How to Write Clearly by Tom Albrighton.",
+    takeaway: "Clarity is part of the work",
+    note:
+      "I like how this book treats writing as a practical tool for thinking. It connects to the way I want my project pages, documentation, and interfaces to make complex systems easier to understand.",
+  },
+  {
+    title: "The Lean Startup",
+    author: "Eric Ries",
+    cover: "/images/books/lean-startup.jpg",
+    alt: "Cover of The Lean Startup by Eric Ries.",
+    takeaway: "Build small loops that teach you something",
+    note:
+      "The idea that stayed with me is testing assumptions through small, complete feedback loops. That maps closely to how I approach prototypes: build enough to learn, then use the result to decide what deserves more depth.",
+  },
+  {
+    title: "Hook Point",
+    author: "Brendan Kane",
+    cover: "/images/books/hook-point.jpg",
+    alt: "Cover of Hook Point by Brendan Kane.",
+    takeaway: "Give good work a clear first signal",
+    note:
+      "I enjoyed its focus on the first moment of attention. It made me think more deliberately about framing a project so people can quickly see why it matters before they dig into the technical detail.",
+  },
+] as const;
 ---
 
 <BaseLayout
@@ -74,6 +123,51 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
+  <section class="section principles-section" aria-labelledby="about-principles-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Principles</p>
+        <h2 id="about-principles-title">Principles I work by</h2>
+      </div>
+      <div class="principle-list">
+        {
+          principles.map((principle) => (
+            <article class="principle-item">
+              <h3>{principle.title}</h3>
+              <p>{principle.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section books-section" aria-labelledby="about-books-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Reading</p>
+        <h2 id="about-books-title">Books that shape my work</h2>
+      </div>
+      <div class="book-grid">
+        {
+          books.map((book) => (
+            <article class="book-card">
+              <div class="book-card__cover">
+                <img src={book.cover} alt={book.alt} loading="lazy" />
+              </div>
+              <div class="book-card__body">
+                <p class="book-card__author">{book.author}</p>
+                <h3>{book.title}</h3>
+                <p class="book-card__takeaway">{book.takeaway}</p>
+                <p>{book.note}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="about-range-title">
     <div class="container two-column">
       <div>
@@ -115,3 +209,106 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .books-section {
+    background:
+      linear-gradient(115deg, rgb(126 199 190 / 0.08), transparent 42%),
+      var(--color-bg-soft);
+  }
+
+  .principles-section {
+    background:
+      linear-gradient(115deg, rgb(213 139 84 / 0.08), transparent 40%),
+      var(--color-bg);
+  }
+
+  .principle-list {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .principle-item {
+    border-block-start: var(--border-subtle);
+    display: grid;
+    gap: var(--space-2);
+    padding-block-start: var(--space-4);
+  }
+
+  .principle-item h3 {
+    font-size: 1.35rem;
+  }
+
+  .book-grid {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .book-card {
+    align-items: start;
+    background: var(--color-surface);
+    border: var(--border-subtle);
+    border-radius: var(--radius-md);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 6rem minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+
+  .book-card__cover {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 16px 34px rgb(0 0 0 / 0.32);
+    overflow: hidden;
+  }
+
+  .book-card__cover img {
+    aspect-ratio: 2 / 3;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .book-card__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .book-card__author,
+  .book-card__takeaway {
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .book-card__author {
+    color: var(--color-cool);
+  }
+
+  .book-card__takeaway {
+    color: var(--color-text);
+  }
+
+  .book-card h3 {
+    font-size: 1.45rem;
+  }
+
+  .book-card p:not(.book-card__author, .book-card__takeaway) {
+    font-size: 0.94rem;
+  }
+
+  @media (max-width: 520px) {
+    .principle-list {
+      grid-template-columns: 1fr;
+    }
+
+    .book-card {
+      grid-template-columns: 4.75rem minmax(0, 1fr);
+    }
+
+    .book-card h3 {
+      font-size: 1.25rem;
+    }
+  }
+</style>

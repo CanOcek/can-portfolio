@@ -24,6 +24,12 @@ visual:
   kind: "procedural"
   label: "Chunk-based terrain and flight prototype"
   caption: "A Unity prototype built around editable procedural terrain, chunk loading, and keyboard-controlled flight."
+personalOutcome:
+  intro: "This project made me comfortable with turning a broad creative idea into concrete technical systems. It was also one of the first times I had to balance what felt exciting to build with what could be tested and delivered."
+  takeaways:
+    - "I learned to expose parameters, test with a user in mind, and treat implementation choices as part of the product experience."
+    - "The terrain and chunk logic gave me an early foundation in procedural systems, mesh data, and runtime constraints."
+    - "Looking back, it reminds me how useful it is to define success criteria before the technical scope expands."
 ---
 
 ## Context

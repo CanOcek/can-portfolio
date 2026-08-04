@@ -73,7 +73,7 @@ const projectLenses = [
     imageLabel: "Performance · production · media",
     accent: "orange",
     facts: [
-      ["4", "selected concert frames"],
+      ["7", "selected concert frames"],
       ["1", "completed video production"],
       ["1", "focused media section"],
     ],
@@ -119,6 +119,21 @@ const processSteps = [
     proof: "One project can be entered through the demo, architecture, evidence, or case study.",
   },
 ];
+
+const selectedToolGroups = [
+  {
+    label: "Data and automation",
+    tools: ["Python", "Scrapy", "Playwright", "PostgreSQL", "pgvector", "Streamlit"],
+  },
+  {
+    label: "Web and interface",
+    tools: ["TypeScript", "Astro", "Canvas", "HTML/CSS", "SQL"],
+  },
+  {
+    label: "Technical and creative systems",
+    tools: ["Java", "C#", "Unity", "libGDX", "DaVinci Resolve", "Reaper"],
+  },
+] as const;
 ---
 
 <BaseLayout
@@ -309,6 +324,27 @@ const processSteps = [
             ))
           }
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tools-section" aria-labelledby="tools-title" data-section-label="Tools">
+    <div class="container tools-band" data-reveal>
+      <div>
+        <p class="eyebrow">Selected tools</p>
+        <h2 id="tools-title">Tools I keep close to the work.</h2>
+      </div>
+      <div class="tools-groups">
+        {
+          selectedToolGroups.map((group) => (
+            <article class="tools-group">
+              <h3>{group.label}</h3>
+              <ul class="pill-list" aria-label={group.label}>
+                {group.tools.map((tool) => <li>{tool}</li>)}
+              </ul>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -902,6 +938,46 @@ const processSteps = [
     color: var(--color-accent-strong);
   }
 
+  .tools-section {
+    background:
+      linear-gradient(90deg, rgb(126 199 190 / 0.08), transparent 34%),
+      var(--color-bg);
+  }
+
+  .tools-band {
+    align-items: start;
+    display: grid;
+    gap: var(--space-7);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .tools-band h2 {
+    font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+    letter-spacing: -0.04em;
+    max-width: 11ch;
+    text-wrap: balance;
+  }
+
+  .tools-groups {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .tools-group {
+    border-block-start: var(--border-subtle);
+    display: grid;
+    gap: var(--space-3);
+    padding-block-start: var(--space-4);
+  }
+
+  .tools-group h3 {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
   .proof-section {
     background: var(--color-bg-soft);
   }
@@ -1055,7 +1131,8 @@ const processSteps = [
   @media (max-width: 960px) {
     .home-hero,
     .lens-panel,
-    .creative-stage {
+    .creative-stage,
+    .tools-band {
       grid-template-columns: 1fr;
     }
 

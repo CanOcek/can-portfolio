@@ -20,6 +20,12 @@ visual:
   kind: "database"
   label: "Database application placeholder"
   caption: "Replace with a publishable schema diagram, UI screenshot, or API flow once the source material is reviewed."
+personalOutcome:
+  intro: "This project was useful because it put application work inside a team setting. The main lesson was not only connecting a UI to data, but coordinating decisions so the parts could become one usable prototype."
+  takeaways:
+    - "I got more practice thinking about database-backed workflows rather than isolated screens."
+    - "The team format made sprint structure, ownership, and communication part of the technical result."
+    - "It is a good reminder that a working application depends on both implementation and coordination."
 ---
 
 ## Placeholder
@@ -31,4 +37,3 @@ The CV describes a 5-person team project that implemented a user interface and c
 ## Possible Case-Study Angle
 
 This could become a useful software-team project page because it shows application structure, database-backed workflows, API integration, and coordinated delivery rather than only isolated coding.
-

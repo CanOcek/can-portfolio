@@ -26,6 +26,12 @@ visual:
   kind: "hardware"
   label: "Magnetically actuated liquid lens"
   caption: "The prototype used current-controlled magnetic force to move a piston, reshape a water lens, and tune focal distance."
+personalOutcome:
+  intro: "This project gave me an early experience of research as physical iteration: theory, prototype, measurement, failure, adjustment, and clearer explanation. It still feels important because the result depended on understanding the behavior of a real system, not only designing an idea."
+  takeaways:
+    - "I learned how experimental design changes when a mechanism has to be built, observed, and controlled in the real world."
+    - "The project connected physics, electronics, materials, and documentation in a way that made interdisciplinary work feel natural to me."
+    - "It gave me confidence that difficult technical topics become approachable when the mechanism and evidence are explained clearly."
 ---
 
 ## Context

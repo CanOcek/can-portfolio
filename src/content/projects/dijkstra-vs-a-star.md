@@ -27,6 +27,12 @@ visual:
   kind: "pathfinding"
   label: "Procedural maze and pathfinding comparison"
   caption: "The project generated braided mazes, solved them with Dijkstra and A*, and compared runtime as maze size increased."
+personalOutcome:
+  intro: "This project was an early proof that I enjoy making abstract algorithms visible and measurable. It also taught me that a good technical comparison needs a controlled environment, not only correct code."
+  takeaways:
+    - "I learned how research framing changes implementation: the maze generator, solver setup, and measurements all had to support the same question."
+    - "Rebuilding the idea for the browser made the original work easier to understand and showed me how visualization can strengthen technical communication."
+    - "The project still shapes how I think about evidence: the result matters more when the method can be inspected."
 ---
 
 ## Context

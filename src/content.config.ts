@@ -34,6 +34,10 @@ const projects = defineCollection({
       label: z.string(),
       caption: z.string(),
     }),
+    personalOutcome: z.object({
+      intro: z.string(),
+      takeaways: z.array(z.string()),
+    }).optional(),
   }),
 });
 

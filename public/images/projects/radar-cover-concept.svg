@@ -1,0 +1,191 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Business Development Radar cover concept</title>
+  <desc id="desc">A dark portfolio-style cover image showing public web noise being filtered into useful business development signals, with metrics for 13,753 evidence units, 1,523 useful signals, and 54.41 times less downstream LLM input.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171b22"/>
+      <stop offset="0.48" stop-color="#0b0d11"/>
+      <stop offset="1" stop-color="#050608"/>
+    </linearGradient>
+    <radialGradient id="tealGlow" cx="54%" cy="48%" r="54%">
+      <stop offset="0" stop-color="#7ec7be" stop-opacity="0.34"/>
+      <stop offset="0.48" stop-color="#7ec7be" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#7ec7be" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orangeGlow" cx="80%" cy="23%" r="48%">
+      <stop offset="0" stop-color="#d58b54" stop-opacity="0.25"/>
+      <stop offset="0.5" stop-color="#d58b54" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#d58b54" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8f96a3" stop-opacity="0.14"/>
+      <stop offset="0.55" stop-color="#7ec7be" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#d58b54" stop-opacity="0.82"/>
+    </linearGradient>
+    <linearGradient id="cardFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#171b22"/>
+      <stop offset="1" stop-color="#11141a"/>
+    </linearGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="tealShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#7ec7be" flood-opacity="0.48"/>
+    </filter>
+    <filter id="orangeShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="18" flood-color="#d58b54" flood-opacity="0.46"/>
+    </filter>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#f4f1ea" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2 2 10 6 2 10" fill="none" stroke="#7ec7be" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      .sans { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .serif { font-family: Georgia, "Times New Roman", serif; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+      .label { fill: #8f96a3; font-size: 22px; font-weight: 700; letter-spacing: 0.16em; }
+      .small { fill: #c5c0b8; font-size: 24px; }
+      .tiny { fill: #8f96a3; font-size: 18px; }
+      .node-title { fill: #f4f1ea; font-size: 27px; font-weight: 700; }
+      .node-sub { fill: #c5c0b8; font-size: 19px; }
+      .metric { fill: #f4f1ea; font-size: 88px; font-weight: 800; letter-spacing: -0.06em; }
+      .metric-secondary { fill: #7ec7be; font-size: 64px; font-weight: 800; letter-spacing: -0.05em; }
+      .headline { fill: #f4f1ea; font-size: 64px; font-weight: 500; letter-spacing: -0.04em; }
+      .headline-accent { fill: #7ec7be; }
+      .caption { fill: #c5c0b8; font-size: 25px; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+  <rect width="1600" height="1000" fill="url(#tealGlow)"/>
+  <rect width="1600" height="1000" fill="url(#orangeGlow)"/>
+
+  <g opacity="0.22">
+    <circle cx="132" cy="124" r="2.5" fill="#7ec7be"/>
+    <circle cx="208" cy="188" r="2.5" fill="#d58b54"/>
+    <circle cx="302" cy="104" r="2.5" fill="#f4f1ea"/>
+    <circle cx="426" cy="206" r="2.5" fill="#7ec7be"/>
+    <circle cx="492" cy="86" r="2.5" fill="#d58b54"/>
+    <circle cx="1188" cy="132" r="2.5" fill="#f4f1ea"/>
+    <circle cx="1308" cy="226" r="2.5" fill="#7ec7be"/>
+    <circle cx="1460" cy="154" r="2.5" fill="#d58b54"/>
+    <circle cx="1112" cy="820" r="2.5" fill="#f4f1ea"/>
+    <circle cx="1386" cy="764" r="2.5" fill="#7ec7be"/>
+  </g>
+
+  <g transform="translate(88 78)">
+    <text class="label sans" x="0" y="0">BUSINESS DEVELOPMENT RADAR</text>
+    <text class="headline serif" x="0" y="72">Public data <tspan class="headline-accent">→</tspan> evidence-backed signals</text>
+    <text class="caption sans" x="2" y="118">A staged RAG pipeline that turns messy company-source noise into traceable opportunity and risk intelligence.</text>
+  </g>
+
+  <g transform="translate(82 285)" filter="url(#softShadow)">
+    <text class="label sans" x="0" y="-30">OPEN WEB NOISE</text>
+    <g transform="translate(0 0)">
+      <rect x="0" y="0" width="292" height="92" rx="18" fill="url(#cardFill)" stroke="#3a4654"/>
+      <text class="node-title sans" x="28" y="38">Company websites</text>
+      <text class="node-sub sans" x="28" y="66">news · jobs · pages</text>
+      <path d="M224 24h34M224 46h46M224 68h28" stroke="#7ec7be" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+    </g>
+    <g transform="translate(42 124)">
+      <rect x="0" y="0" width="292" height="92" rx="18" fill="url(#cardFill)" stroke="#3a4654"/>
+      <text class="node-title sans" x="28" y="38">PDF reports</text>
+      <text class="node-sub sans" x="28" y="66">segments · figures</text>
+      <path d="M234 20v48M216 20h36l18 18v30h-54z" fill="none" stroke="#d58b54" stroke-width="4" stroke-linejoin="round" opacity="0.8"/>
+    </g>
+    <g transform="translate(8 248)">
+      <rect x="0" y="0" width="292" height="92" rx="18" fill="url(#cardFill)" stroke="#3a4654"/>
+      <text class="node-title sans" x="28" y="38">RSS + sitemaps</text>
+      <text class="node-sub sans" x="28" y="66">fresh public updates</text>
+      <circle cx="236" cy="47" r="30" fill="none" stroke="#7ec7be" stroke-opacity="0.34" stroke-width="4"/>
+      <path d="M222 58a24 24 0 0 0-24-24M222 58a14 14 0 0 0-14-14" fill="none" stroke="#7ec7be" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="204" cy="58" r="4" fill="#7ec7be"/>
+    </g>
+    <g transform="translate(58 372)">
+      <rect x="0" y="0" width="292" height="92" rx="18" fill="url(#cardFill)" stroke="#3a4654"/>
+      <text class="node-title sans" x="28" y="38">Registry context</text>
+      <text class="node-sub sans" x="28" y="66">financials · structure</text>
+      <path d="M218 28h50M218 46h50M218 64h50M228 18v58M248 18v58" stroke="#8f96a3" stroke-width="3" opacity="0.9"/>
+    </g>
+  </g>
+
+  <g opacity="0.85">
+    <path d="M438 331 C558 340 610 380 694 436" stroke="url(#flow)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+    <path d="M476 456 C566 464 622 482 696 490" stroke="url(#flow)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+    <path d="M438 581 C556 570 622 550 694 520" stroke="url(#flow)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+    <path d="M496 709 C590 670 636 610 704 544" stroke="url(#flow)" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  </g>
+
+  <g transform="translate(650 320)" filter="url(#tealShadow)">
+    <circle cx="210" cy="210" r="190" fill="#0b0d11" stroke="#7ec7be" stroke-width="3" stroke-opacity="0.75"/>
+    <circle cx="210" cy="210" r="136" fill="none" stroke="#7ec7be" stroke-width="2" stroke-opacity="0.32"/>
+    <circle cx="210" cy="210" r="78" fill="none" stroke="#7ec7be" stroke-width="2" stroke-opacity="0.22"/>
+    <path d="M210 210 346 120" stroke="#7ec7be" stroke-width="9" stroke-linecap="round" opacity="0.9"/>
+    <path d="M210 210 116 320" stroke="#d58b54" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+    <path d="M68 210h284M210 68v284" stroke="#f4f1ea" stroke-width="1.5" opacity="0.16"/>
+    <circle cx="304" cy="148" r="10" fill="#d58b54"/>
+    <circle cx="152" cy="292" r="8" fill="#7ec7be"/>
+    <circle cx="244" cy="238" r="7" fill="#f4f1ea" opacity="0.8"/>
+    <text class="label sans" x="92" y="174" text-anchor="middle">FILTER</text>
+    <text class="metric sans" x="210" y="224" text-anchor="middle">13,753</text>
+    <text class="small sans" x="210" y="260" text-anchor="middle">evidence units</text>
+    <text class="tiny sans" x="210" y="302" text-anchor="middle">classified · deduplicated · ranked</text>
+  </g>
+
+  <g transform="translate(1016 396)">
+    <path d="M0 124 C72 108 116 84 164 38" stroke="#7ec7be" stroke-width="5" fill="none" marker-end="url(#arrow)" opacity="0.9"/>
+    <path d="M0 160 C82 160 130 180 190 224" stroke="#d58b54" stroke-width="5" fill="none" marker-end="url(#arrow)" opacity="0.75"/>
+  </g>
+
+  <g transform="translate(1110 270)" filter="url(#softShadow)">
+    <text class="label sans" x="0" y="-30">USEFUL SIGNALS</text>
+    <rect x="0" y="0" width="398" height="146" rx="24" fill="#11141a" stroke="#7ec7be" stroke-opacity="0.78" stroke-width="2"/>
+    <text class="metric-secondary sans" x="34" y="72">1,523</text>
+    <text class="node-title sans" x="228" y="58">retained</text>
+    <text class="node-sub sans" x="228" y="92">main + weak signals</text>
+    <path d="M35 106h326" stroke="#29303a" stroke-width="2"/>
+    <text class="tiny mono" x="36" y="132">source_id · category · confidence · evidence</text>
+  </g>
+
+  <g transform="translate(1110 462)" filter="url(#orangeShadow)">
+    <rect x="0" y="0" width="398" height="168" rx="24" fill="#11141a" stroke="#d58b54" stroke-opacity="0.86" stroke-width="2"/>
+    <text class="metric sans" x="34" y="80">54.41×</text>
+    <text class="node-title sans" x="34" y="118">less LLM2 input</text>
+    <text class="node-sub sans" x="34" y="146">summarized relevant text instead of raw noise</text>
+  </g>
+
+  <g transform="translate(1106 670)" filter="url(#softShadow)">
+    <text class="label sans" x="0" y="-28">DECISION VIEW</text>
+    <g>
+      <rect x="0" y="0" width="190" height="112" rx="22" fill="#11141a" stroke="#3a4654"/>
+      <path d="M34 64l22-22 22 18 34-42" fill="none" stroke="#7ec7be" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="node-title sans" x="34" y="86">Opportunity</text>
+    </g>
+    <g transform="translate(214 0)">
+      <rect x="0" y="0" width="190" height="112" rx="22" fill="#11141a" stroke="#3a4654"/>
+      <path d="M48 24l62 0 30 52H18z" fill="none" stroke="#d58b54" stroke-width="6" stroke-linejoin="round"/>
+      <text class="node-title sans" x="34" y="86">Risk</text>
+    </g>
+    <g transform="translate(0 136)">
+      <rect x="0" y="0" width="404" height="112" rx="22" fill="#11141a" stroke="#3a4654"/>
+      <path d="M38 36h74M38 58h122M38 80h90" stroke="#f4f1ea" stroke-width="5" stroke-linecap="round" opacity="0.76"/>
+      <circle cx="332" cy="56" r="26" fill="none" stroke="#7ec7be" stroke-width="6"/>
+      <path d="M352 76l34 34" stroke="#7ec7be" stroke-width="6" stroke-linecap="round"/>
+      <text class="node-title sans" x="188" y="66">Evidence review</text>
+    </g>
+  </g>
+
+  <g transform="translate(88 856)">
+    <rect x="0" y="0" width="982" height="62" rx="31" fill="#050608" fill-opacity="0.58" stroke="#29303a"/>
+    <text class="tiny mono" x="34" y="39">Scrapy / Playwright</text>
+    <circle cx="248" cy="31" r="4" fill="#7ec7be"/>
+    <text class="tiny mono" x="272" y="39">Docling PDF parsing</text>
+    <circle cx="512" cy="31" r="4" fill="#7ec7be"/>
+    <text class="tiny mono" x="536" y="39">PostgreSQL + pgvector</text>
+    <circle cx="812" cy="31" r="4" fill="#7ec7be"/>
+    <text class="tiny mono" x="836" y="39">LLM synthesis</text>
+  </g>
+</svg>

@@ -29,6 +29,12 @@ visual:
   kind: "pipeline"
   label: "Radar architecture"
   caption: "The pipeline turns public company sources into structured evidence, semantic retrieval, and company-level business-development recommendations."
+personalOutcome:
+  intro: "This is the project that most clearly connected my technical, business, and communication interests. It pushed me to think less like someone building an isolated pipeline and more like someone designing an inspectable decision-support system."
+  takeaways:
+    - "I learned how much value comes from filtering, source judgment, and evidence structure before any final AI synthesis happens."
+    - "It made me more interested in business-development intelligence, retrieval workflows, and tools that help people review messy public information without losing traceability."
+    - "The project gave me a stronger sense for where product thinking belongs in technical work: not after the system works, but while deciding what the system should make visible."
 ---
 
 ## What I Built

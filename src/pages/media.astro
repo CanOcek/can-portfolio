@@ -63,6 +63,7 @@ const selectedPhotos = [
     orientation: "landscape",
   },
 ] as const;
+
 ---
 
 <BaseLayout
@@ -114,29 +115,6 @@ const selectedPhotos = [
   </header>
 
   <section
-    id="photography"
-    class="section"
-    aria-labelledby="photography-title"
-    data-section-label="Photography"
-  >
-    <div class="container">
-      <div class="section-heading" data-reveal>
-        <div>
-          <p class="eyebrow">Photography</p>
-          <h2 id="photography-title">Selected concert photography.</h2>
-        </div>
-        <p>
-          Seven frames from the live-music archive show low-light work, event context, and the
-          interaction between performers, production, and audience.
-        </p>
-      </div>
-      <div class="photo-grid" data-reveal>
-        {selectedPhotos.map((photo) => <PhotoTile {...photo} />)}
-      </div>
-    </div>
-  </section>
-
-  <section
     class="section section--media"
     aria-labelledby="video-title"
     data-section-label="Video production"
@@ -169,6 +147,29 @@ const selectedPhotos = [
             allowfullscreen
           ></iframe>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="photography"
+    class="section"
+    aria-labelledby="photography-title"
+    data-section-label="Photography"
+  >
+    <div class="container">
+      <div class="section-heading" data-reveal>
+        <div>
+          <p class="eyebrow">Photography</p>
+          <h2 id="photography-title">Selected concert photography.</h2>
+        </div>
+        <p>
+          Seven frames from the live-music archive show low-light work, event context, and the
+          interaction between performers, production, and audience.
+        </p>
+      </div>
+      <div class="photo-grid" data-reveal>
+        {selectedPhotos.map((photo) => <PhotoTile {...photo} />)}
       </div>
     </div>
   </section>

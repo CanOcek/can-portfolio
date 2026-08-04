@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import TagList from "./TagList.astro";
+import PersonalOutcome from "./PersonalOutcome.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -413,6 +414,8 @@ const storeConfig = isRoguelike
       </div>
     </div>
   </section>
+
+  <PersonalOutcome outcome={project.data.personalOutcome} />
 </article>
 
 <style>

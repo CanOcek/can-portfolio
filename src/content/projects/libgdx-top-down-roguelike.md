@@ -22,6 +22,12 @@ visual:
   kind: "game"
   label: "Bomber Quest gameplay media placeholder"
   caption: "Replace with gameplay screenshots, short clips, menu captures, and architecture notes from the libGDX build."
+personalOutcome:
+  intro: "This project helped me practice software design inside a real-time game loop, where small systems constantly affect each other. It was a useful reminder that user experience comes from many small technical details working together."
+  takeaways:
+    - "I learned more about state, collision, screens, asset loading, and feedback loops in an interactive application."
+    - "The project made debugging feel very concrete because every logic issue appeared immediately as broken movement, timing, collision, or feedback."
+    - "It strengthened my interest in technical systems that are not only correct, but understandable and responsive to use."
 ---
 
 ## Context
@@ -53,4 +59,3 @@ Priority media slots:
 - Menu and map-loading capture.
 - Upgrade pickup moment showing the HUD changing.
 - End screen capture with score.
-

@@ -23,6 +23,21 @@ const contactLinks = [
     value: "@CanOcekMusic",
   },
 ];
+
+const focusAreas = [
+  {
+    title: "AI-assisted research and retrieval tools",
+    body: "Systems that collect, structure, retrieve, and explain messy information with enough evidence for a human reviewer to trust the result.",
+  },
+  {
+    title: "Business-development and CRM systems",
+    body: "Projects where data models, workflows, business context, and technical implementation need to fit together clearly.",
+  },
+  {
+    title: "Product-facing technical work",
+    body: "Interfaces, demos, dashboards, and prototypes that make complex technical behavior understandable to the people using it.",
+  },
+] as const;
 ---
 
 <BaseLayout
@@ -41,6 +56,32 @@ const contactLinks = [
       <a class="button" href="/pdfs/Can%20Ocek%20CV.pdf" download>Download CV</a>
     </div>
   </header>
+
+  <section class="section current-focus-section" aria-labelledby="current-focus-title">
+    <div class="container two-column">
+      <div>
+        <p class="eyebrow">Current focus</p>
+        <h2 id="current-focus-title">What I am looking for</h2>
+      </div>
+      <div class="stack">
+        <p class="lede">
+          I am especially interested in working-student roles, thesis topics, and project
+          conversations around business intelligence, retrieval-augmented workflows, practical
+          data pipelines, and product-facing technical systems.
+        </p>
+        <ul class="meta-list">
+          {
+            focusAreas.map((area) => (
+              <li>
+                <strong>{area.title}</strong>
+                <p>{area.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
 
   <section class="section" aria-labelledby="contact-links-title">
     <div class="container two-column">
@@ -101,3 +142,11 @@ const contactLinks = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .current-focus-section {
+    background:
+      linear-gradient(115deg, rgb(126 199 190 / 0.08), transparent 42%),
+      var(--color-bg-soft);
+  }
+</style>

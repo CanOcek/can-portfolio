@@ -22,6 +22,12 @@ visual:
   kind: "procedural"
   label: "Voxel chunk mesh placeholder"
   caption: "Replace with generated terrain screenshots, wireframe proof, code captures, and short inspection clips."
+personalOutcome:
+  intro: "This project was valuable because it forced me below the surface of a familiar game mechanic. Instead of placing cubes, I had to understand how block data becomes geometry."
+  takeaways:
+    - "I learned how much performance and clarity can come from representing the same world differently."
+    - "The visible-face logic made mesh generation feel less mysterious and more like a sequence of inspectable decisions."
+    - "It still influences how I approach technical learning: rebuild the core mechanism until I understand what the tool normally hides."
 ---
 
 ## Placeholder
@@ -39,4 +45,3 @@ Priority media slots:
 - Wireframe proof showing generated mesh geometry.
 - Code screenshot of the core mesh-generation loop.
 - Cutaway or block-edit moment showing visible-face behavior.
-
